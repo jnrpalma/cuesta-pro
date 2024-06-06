@@ -1,0 +1,68 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+}
+
+.login-box {
+  display: flex;
+  width: 800px;
+  height: 450px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-left {
+  flex: 1;
+  padding: 40px;
+}
+
+.login-left h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.login-left p {
+  margin: 5px 0 20px;
+  color: #888;
+}
+
+.login-left form div {
+  margin-bottom: 15px;
+}
+
+.forgot-password {
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+.forgot-password a {
+  color: #888;
+  text-decoration: none;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.login-right {
+  flex: 1;
+  background-color: #e0e0e0;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
