@@ -1,27 +1,14 @@
 # CuestaSheepApp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.1.
+## Sobre o CuestaSheepApp
 
-## Development server
+CuestaSheepApp é uma aplicação voltada para a gestão de ovinocultura, permitindo o gerenciamento eficiente de rebanhos ovinos. Com este aplicativo, é possível acompanhar informações detalhadas sobre os animais, facilitando a tomada de decisões e melhorando a produtividade da criação.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+### Funcionalidades Principais:
 
-## Code scaffolding
+- **Cadastro e Gerenciamento de Animais:** Adicione, edite e visualize informações sobre cada animal, incluindo dados de nascimento, histórico médico e genética.
+- **Controle de Rebanho:** Monitore o tamanho do rebanho, rastreie movimentações e mantenha registros detalhados.
+- **Relatórios e Análises:** Gere relatórios personalizados para acompanhar o desempenho do rebanho e identificar tendências importantes.
+- **Notificações:** Receba alertas sobre eventos importantes, como datas de vacinação e períodos de reprodução.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+O CuestaSheepApp foi desenvolvido para ser uma ferramenta completa e intuitiva para criadores de ovelhas, proporcionando uma gestão mais eficiente e assertiva.
