@@ -1,0 +1,24 @@
+<div class="login-container">
+    <div class="login-box">
+      <div class="login-left">
+        <h1>Bem-vindo !</h1>
+        <p>entre com suas credenciais.</p>
+        <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+          <div>
+            <po-email name="email" p-label="PO Email" [(ngModel)]="email" required></po-email>
+          </div>
+          <div>
+            <po-password name="password" p-label="PO Password" [(ngModel)]="password" required></po-password>
+          </div>
+          <div class="forgot-password">
+            <a href="#">Esqueceu a senha?</a>
+          </div>
+          <div >
+            <po-button p-label="ENTRAR" type="submit"></po-button>
+          </div>
+        </form>
+      </div>
+      <div class="login-right"></div>
+    </div>
+  </div>
+  
