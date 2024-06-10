@@ -1,0 +1,76 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  height: 100%;
+}
+
+.dashboard {
+  display: flex;
+  min-height: 100vh; /* Garante que o dashboard ocupe pelo menos 100% da altura da viewport */
+}
+
+.sidebar {
+  width: 200px; /* Diminuir a largura do menu */
+  background-color: #ececec;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  position: fixed; /* Garante que o menu fique fixo */
+  height: 100%; /* Garante que o menu ocupe 100% da altura da viewport */
+}
+
+.sidebar h2 {
+  margin-top: 0;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin: 20px 0;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: #000;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar ul li a:hover {
+  text-decoration: underline;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+  margin-left: 220px; /* Espaço para o menu fixo */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.charts-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+}
+
+.charts-column .card {
+  min-height: 240px; /* Ajuste conforme necessário */
+}
+
+.charts-column po-chart {
+  flex: 1;
+  min-height: 200px; /* Ajuste conforme necessário */
+}

@@ -15,7 +15,7 @@
             <a (click)="toggleForgotPassword()">Esqueceu a senha?</a>
           </div>
           <div class="button-container">
-            <po-button p-label="ENTRAR" type="submit"></po-button>
+            <po-button p-label="ENTRAR" (p-click)="onSubmit()"></po-button>
           </div>
         </form>
       </div>
@@ -27,7 +27,7 @@
             <po-email name="email" p-label="Email" [(ngModel)]="email" required></po-email>
           </div>
           <div class="button-container">
-            <po-button p-label="ENVIAR" type="submit"></po-button>
+            <po-button p-label="ENVIAR" (p-click)="onForgotPasswordSubmit()"></po-button>
           </div>
         </form>
         <div class="back-to-login">
