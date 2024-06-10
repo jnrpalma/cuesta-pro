@@ -1,4 +1,5 @@
-<div class="login-container">
+<div class="login-container" style="position: relative;">
+  <po-loading-overlay *ngIf="isLoading" [p-screen-lock]="true" p-text="Autenticando..."></po-loading-overlay>
   <div class="login-box">
     <div class="login-left" [ngClass]="{ 'forgot-password-active': isForgotPassword }">
       <div class="login-form">
