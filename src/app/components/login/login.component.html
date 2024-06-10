@@ -1,22 +1,39 @@
 <div class="login-container">
   <div class="login-box">
-    <div class="login-left">
-      <h1>Bem-vindo !</h1>
-      <p>entre com suas credenciais.</p>
-      <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
-        <div>
-          <po-email name="email" p-label="Email" [(ngModel)]="email" required></po-email>
+    <div class="login-left" [ngClass]="{ 'forgot-password-active': isForgotPassword }">
+      <div class="login-form">
+        <h1>Bem-vindo !</h1>
+        <p>Entre com suas credenciais.</p>
+        <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+          <div>
+            <po-email name="email" p-label="Email" [(ngModel)]="email" required></po-email>
+          </div>
+          <div>
+            <po-password name="password" p-label="Senha" [(ngModel)]="password" required></po-password>
+          </div>
+          <div class="forgot-password">
+            <a (click)="toggleForgotPassword()">Esqueceu a senha?</a>
+          </div>
+          <div class="button-container">
+            <po-button p-label="ENTRAR" type="submit"></po-button>
+          </div>
+        </form>
+      </div>
+      <div class="forgot-password-form">
+        <h1>Esqueceu a senha ?</h1>
+        <p>Digite seu endereço de e-mail e enviaremos um link para redefinir sua senha.</p>
+        <form (ngSubmit)="onForgotPasswordSubmit()" #forgotPasswordForm="ngForm">
+          <div>
+            <po-email name="email" p-label="Email" [(ngModel)]="email" required></po-email>
+          </div>
+          <div class="button-container">
+            <po-button p-label="ENVIAR" type="submit"></po-button>
+          </div>
+        </form>
+        <div class="back-to-login">
+          <a (click)="toggleForgotPassword()">Voltar ao login</a>
         </div>
-        <div>
-          <po-password name="password" p-label="Senha" [(ngModel)]="password" required></po-password>
-        </div>
-        <div class="forgot-password">
-          <a href="#">Esqueceu a senha?</a>
-        </div>
-        <div class="button-container">
-          <po-button p-label="ENTRAR" type="submit"></po-button>
-        </div>
-      </form>
+      </div>
     </div>
     <div class="login-right">
       <img src="assets/ovino-login.jpg" alt="Imagem de login">
