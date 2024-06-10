@@ -43,6 +43,10 @@ body {
   text-decoration: underline;
 }
 
+.sidebar ul li a .fas {
+  margin-right: 10px; /* Espaço entre o ícone e o texto */
+}
+
 .content {
   flex: 1;
   padding: 20px;
