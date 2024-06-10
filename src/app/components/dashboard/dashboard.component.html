@@ -1,0 +1,62 @@
+<div class="dashboard">
+    <div class="sidebar">
+      <h2>Bem-vindo !</h2>
+      <p>john doe</p>
+      <ul>
+        <li><a href="#">Overview</a></li>
+      </ul>
+    </div>
+    <div class="content">
+      <div class="charts-column">
+        <div class="card">
+          <po-chart
+            [p-type]="chartTypeLine"
+            [p-categories]="['Jan', 'Feb', 'Mar', 'Apr', 'May']"
+            [p-series]="[{ label: 'Sales', data: [10, 20, 30, 40, 50] }]"
+            [p-height]="250">
+          </po-chart>
+        </div>
+        <div class="card">
+          <po-chart
+            [p-type]="chartTypePie"
+            [p-series]="[
+              { label: 'Sales Q1', data: 30 },
+              { label: 'Sales Q2', data: 40 },
+              { label: 'Sales Q3', data: 20 },
+              { label: 'Sales Q4', data: 10 }
+            ]"
+            [p-height]="250">
+          </po-chart>
+        </div>
+        <div class="card">
+          <po-chart
+            [p-type]="chartTypeColumn"
+            [p-categories]="['Jan', 'Feb', 'Mar', 'Apr', 'May']"
+            [p-series]="[{ label: 'Revenue', data: [15, 25, 35, 45, 55] }]"
+            [p-height]="250">
+          </po-chart>
+        </div>
+        <div class="card">
+          <po-chart
+            [p-type]="chartTypeDonut"
+            [p-series]="[
+              { label: 'Product A', data: 40 },
+              { label: 'Product B', data: 30 },
+              { label: 'Product C', data: 20 },
+              { label: 'Product D', data: 10 }
+            ]"
+            [p-height]="250">
+          </po-chart>
+        </div>
+        <div class="card">
+          <po-chart
+            [p-type]="chartTypeBar"
+            [p-categories]="['Jan', 'Feb', 'Mar', 'Apr', 'May']"
+            [p-series]="[{ label: 'Profits', data: [5, 15, 25, 35, 45] }]"
+            [p-height]="250">
+          </po-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+  
