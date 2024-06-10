@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-  background-color: #e0e0e0; /* Ajusta a cor de fundo da página */
+  background-color: #e0e0e0; 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,9 +23,9 @@ body {
   height: 450px;
   background-color: #eaeaea;
   border-radius: 10px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Adiciona sombra ao contêiner para dar aparência flutuante */
-  position: relative; /* Necessário para o posicionamento flutuante */
-  z-index: 1; /* Certifique-se de que o contêiner esteja acima de outros elementos */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); 
+  position: relative; 
+  z-index: 1; 
 }
 
 .login-left {
@@ -73,7 +73,7 @@ body {
   background-color: #e0e0e0;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
-  overflow: hidden; /* Certifique-se de que a imagem não saia dos limites do contêiner */
+  overflow: hidden; 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -82,8 +82,8 @@ body {
 .login-right img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Faz a imagem cobrir todo o contêiner */
+  object-fit: cover; 
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
-  opacity: 0.9; /* Ajusta a opacidade da imagem */
+  opacity: 0.9; 
 }
