@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PoFieldModule, PoButtonModule, PoLoadingModule } from '@po-ui/ng-components';
+import { PoFieldModule, PoButtonModule, PoLoadingModule, PoLinkModule } from '@po-ui/ng-components';
 import { AuthService } from '../../auth/auth.service';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, PoFieldModule, PoButtonModule, PoLoadingModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, PoFieldModule, PoButtonModule, PoLoadingModule, PoLinkModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
@@ -18,15 +18,15 @@ export class LoginComponent {
   isForgotPassword: boolean = false;
   isLoading: boolean = false;
 
-  constructor(private authService: AuthService) {
-    this.authService.logout(); // Desloga o usuário ao iniciar o componente
+  constructor(private authService: AuthService, private router: Router) {
+    this.authService.logout(); 
   }
 
   onSubmit() {
     if (this.email && this.password) {
-      this.isLoading = true; // Mostrar o loading
+      this.isLoading = true; 
       this.authService.login(this.email, this.password).finally(() => {
-        this.isLoading = false; // Esconder o loading
+        this.isLoading = false; 
       });
     } else {
       console.log('Please enter email and password');
@@ -43,5 +43,25 @@ export class LoginComponent {
 
   toggleForgotPassword() {
     this.isForgotPassword = !this.isForgotPassword;
+  }
+
+  navigateToRegister() {
+    this.showLoading();
+    setTimeout(() => {
+      this.router.navigate(['/register']);
+      this.hideLoading();
+    }, 1000); 
+  }
+
+  showLoading() {
+    setTimeout(() => {
+      this.isLoading = true;
+    }, 300); 
+  }
+
+  hideLoading() {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 300); 
   }
 }

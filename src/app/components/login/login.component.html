@@ -1,5 +1,5 @@
 <div class="login-container" style="position: relative;">
-  <po-loading-overlay *ngIf="isLoading" [p-screen-lock]="true" p-text="Autenticando..."></po-loading-overlay>
+  <po-loading-overlay *ngIf="isLoading" [p-screen-lock]="true" p-text="Redirecionando..."></po-loading-overlay>
   <div class="login-box">
     <div class="login-left" [ngClass]="{ 'forgot-password-active': isForgotPassword }">
       <div class="login-form">
@@ -12,8 +12,9 @@
           <div>
             <po-password name="password" p-label="Senha" [(ngModel)]="password" required></po-password>
           </div>
-          <div class="forgot-password">
-            <a (click)="toggleForgotPassword()">Esqueceu a senha?</a>
+          <div class="links-container">
+            <po-link p-label="Cadastre-se" (p-action)="navigateToRegister()"></po-link>
+            <po-link p-label="Esqueceu a senha?" (p-action)="toggleForgotPassword()"></po-link>
           </div>
           <div class="button-container">
             <po-button p-label="ENTRAR" (p-click)="onSubmit()"></po-button>
@@ -32,7 +33,7 @@
           </div>
         </form>
         <div class="back-to-login">
-          <a (click)="toggleForgotPassword()">Voltar ao login</a>
+          <po-link p-label="Voltar ao login" (p-action)="toggleForgotPassword()"></po-link>
         </div>
       </div>
     </div>

@@ -21,6 +21,34 @@ export class AuthService {
     }
   }
 
+  async register(email: string, password: string, displayName: string) {
+    try {
+      const userCredential = await this.afAuth.createUserWithEmailAndPassword(email, password);
+      if (userCredential.user) {
+        await userCredential.user.updateProfile({
+          displayName: displayName
+        });
+        console.log('User registered with displayName:', displayName); // Log do displayName
+        // Sincronizar a atualização do perfil
+        await this.syncUserProfileUpdate();
+        this.router.navigate(['/dashboard']);
+      }
+    } catch (error) {
+      console.log('Error during registration:', error);
+    }
+  }
+
+  private async syncUserProfileUpdate() {
+    let user = await this.afAuth.currentUser;
+    let attempts = 0;
+    while (user && !user.displayName && attempts < 5) {
+      await new Promise(resolve => setTimeout(resolve, 500));
+      user = await this.afAuth.currentUser;
+      attempts++;
+      console.log(`Attempt ${attempts}: User displayName:`, user?.displayName);
+    }
+  }
+
   async logout() {
     await this.afAuth.signOut();
     this.router.navigate(['/login']);
@@ -40,6 +68,21 @@ export class AuthService {
   }
 
   getUser(): Observable<any> {
-    return this.afAuth.authState;
+    return this.afAuth.authState.pipe(
+      map(user => {
+        if (user) {
+          const firstName = user.displayName ? user.displayName.split(' ')[0] : '';
+          console.log('User logged in with displayName:', user.displayName); // Log do displayName
+          console.log('Extracted firstName:', firstName); // Log do firstName
+          return {
+            displayName: user.displayName,
+            email: user.email,
+            firstName: firstName
+          };
+        } else {
+          return null;
+        }
+      })
+    );
   }
 }

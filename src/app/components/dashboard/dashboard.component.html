@@ -1,4 +1,5 @@
 <div class="dashboard">
+  <po-loading-overlay *ngIf="isLoading" [p-screen-lock]="true" p-text="Saindo..."></po-loading-overlay>
   <div class="sidebar">
     <h2>Bem-vindo !</h2>
     <p>{{ userName }}</p>
@@ -7,6 +8,7 @@
       <li><a href="#"><span class="fas fa-dog"></span> Animais</a></li>
       <li><a href="#"><span class="fas fa-warehouse"></span> Lotes</a></li>
     </ul>
+    <po-button p-label="Logout" p-type="danger" (p-click)="logout()"></po-button>
   </div>
   <div class="content">
     <div class="charts-column">

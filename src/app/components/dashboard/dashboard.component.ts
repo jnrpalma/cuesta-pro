@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { PoChartModule, PoChartType } from '@po-ui/ng-components';
-
+import { PoButtonModule, PoChartModule, PoChartType, PoLoadingModule } from '@po-ui/ng-components';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, PoChartModule],
+  imports: [CommonModule, PoChartModule, PoButtonModule, PoLoadingModule],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
@@ -18,14 +18,28 @@ export class DashboardComponent implements OnInit {
   chartTypeDonut: PoChartType = PoChartType.Donut;
   chartTypeBar: PoChartType = PoChartType.Bar;
   userName: string = 'John Doe';
+  isLoading: boolean = false;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.authService.getUser().subscribe(user => {
       if (user) {
-        this.userName = user.displayName || user.email;
+        this.userName = user.firstName || user.email;
+        console.log('User name set to:', this.userName); // Log do userName
+      } else {
+        this.userName = '';
       }
+    });
+  }
+
+  logout() {
+    this.isLoading = true;
+    this.authService.logout().then(() => {
+      setTimeout(() => {
+        this.isLoading = false;
+        this.router.navigate(['/login']);
+      }, 1000);
     });
   }
 }

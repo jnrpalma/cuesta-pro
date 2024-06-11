@@ -1,0 +1,41 @@
+<div class="register-container">
+  <po-loading-overlay *ngIf="isLoading" [p-screen-lock]="true" p-text="Cadastrando..."></po-loading-overlay>
+  <div class="register-box">
+    <div class="register-left">
+      <div class="register-form">
+        <h1>Cadastro</h1>
+        <p>Informe seus dados</p>
+        <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+          <div class="name-surname">
+            <div>
+              <po-input name="firstName" p-label="Nome" [(ngModel)]="firstName" required></po-input>
+            </div>
+            <div>
+              <po-input name="lastName" p-label="Sobrenome" [(ngModel)]="lastName" required></po-input>
+            </div>
+          </div>
+          <div>
+            <po-email name="email" p-label="Email" [(ngModel)]="email" required></po-email>
+          </div>
+          <div class="password-confirm">
+            <div>
+              <po-password name="password" p-label="Senha" [(ngModel)]="password" required></po-password>
+            </div>
+            <div>
+              <po-password name="confirmPassword" p-label="Confirme a senha" [(ngModel)]="confirmPassword" required></po-password>
+            </div>
+          </div>
+          <div class="button-container">
+            <po-button p-label="CADASTRAR" (p-click)="onSubmit()" type="submit"></po-button>
+          </div>
+        </form>
+        <div class="back-to-login">
+          <po-link p-label="Já tem uma conta? Login!" (p-action)="goToLogin()"></po-link>
+        </div>
+      </div>
+    </div>
+    <div class="register-right">
+      <img src="assets/ovino-register.jpg" alt="Imagem de cadastro">
+    </div>
+  </div>
+</div>
