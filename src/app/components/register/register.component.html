@@ -8,14 +8,14 @@
         <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
           <div class="name-surname">
             <div>
-              <po-input name="firstName" p-label="Nome" [(ngModel)]="firstName" required></po-input>
+              <po-input name="firstName" p-label="Nome" [(ngModel)]="firstName" p-clean="true" required></po-input>
             </div>
             <div>
-              <po-input name="lastName" p-label="Sobrenome" [(ngModel)]="lastName" required></po-input>
+              <po-input name="lastName" p-label="Sobrenome" [(ngModel)]="lastName" p-clean="true" required></po-input>
             </div>
           </div>
           <div>
-            <po-email name="email" p-label="Email" [(ngModel)]="email" required></po-email>
+            <po-email name="email" p-label="Email" [(ngModel)]="email" p-clean="true" required></po-email>
           </div>
           <div class="password-confirm">
             <div>

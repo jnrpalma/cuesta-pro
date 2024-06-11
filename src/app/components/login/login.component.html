@@ -7,7 +7,7 @@
         <p>Entre com suas credenciais.</p>
         <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
           <div>
-            <po-email name="email" p-label="Email" [(ngModel)]="email" required></po-email>
+            <po-email name="email" p-label="Email" [(ngModel)]="email" p-clean="true" required></po-email>
           </div>
           <div>
             <po-password name="password" p-label="Senha" [(ngModel)]="password" required></po-password>
