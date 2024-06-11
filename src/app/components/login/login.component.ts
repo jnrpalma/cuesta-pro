@@ -35,7 +35,11 @@ export class LoginComponent {
 
   onForgotPasswordSubmit() {
     if (this.email) {
-      this.authService.forgotPassword(this.email);
+      this.isLoading = true;
+      this.authService.forgotPassword(this.email).finally(() => {
+        this.isLoading = false;
+        console.log('If the email is registered, a password reset link will be sent to the email address provided.');
+      });
     } else {
       console.log('Please enter email');
     }
