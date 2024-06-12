@@ -14,7 +14,7 @@ body {
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  max-width: 800px;
+  max-width: 100%;
   margin: 20px auto;
   display: flex;
   flex-direction: column;
@@ -28,19 +28,13 @@ h3 {
   color: #333;
 }
 
-.po-dynamic-form {
-  width: 100%;
-}
 
 .buttons-container {
   display: flex;
-  justify-content: flex-start;
+  justify-content: start;
   gap: 10px;
   width: 100%;
-  margin-top: 20px; /* Espaçamento para descolar dos campos acima */
-  padding-left: 16px; /* Alinhamento com os inputs */
+  margin-top: 20px; 
+  padding-left: 8.5px; 
 }
 
-.po-button {
-  margin-top: 10px;
-}

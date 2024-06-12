@@ -1,18 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-import { PoDynamicModule, PoDynamicFormField, PoButtonModule } from '@po-ui/ng-components';
+import { PoDynamicModule, PoDynamicFormField, PoButtonModule, PoNotificationService, PoLoadingModule,  } from '@po-ui/ng-components';
 import { AnimalService } from '../../services/animal/animal.service';
+import { AuthService } from '../../services/auth/auth.service'; // Importe o AuthService
+import { Animal } from './interface/animal.interface';
+// Importe a interface Animal
 
 @Component({
   selector: 'app-register-animal',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, PoButtonModule, PoDynamicModule],
+  imports: [CommonModule, FormsModule, RouterModule, PoButtonModule, PoDynamicModule, PoLoadingModule ],
   templateUrl: './register-animal.component.html',
   styleUrls: ['./register-animal.component.css']
 })
-export class RegisterAnimalComponent {
+export class RegisterAnimalComponent implements OnInit {
+  animal: Animal = {
+    id: '',
+    genero: '',
+    categoria: '',
+    data: null,
+    raca: '',
+    registradoPor: '' 
+  };
+  
+  isLoading = false;
+  loggedInUser: string = '';
+
   fields: Array<PoDynamicFormField> = [
     { property: 'id', label: 'ID animal', gridColumns: 3, required: true },
     { 
@@ -51,36 +66,66 @@ export class RegisterAnimalComponent {
         { label: 'Raça 4', value: 'raca4' },
       ]
     },
-    { property: 'data', label: 'Data', type: 'date', gridColumns: 12, required: true }
+    { property: 'data', label: 'Data', type: 'date', gridColumns: 12, required: true },
+    { property: 'registradoPor', label: 'Registrado por', gridColumns: 12, disabled: true }
   ];
 
-  animal = {
-    id: '',
-    genero: '',
-    categoria: '',
-    data: null,
-    raca: ''
-  };
+  constructor(
+    private animalService: AnimalService, 
+    private authService: AuthService, 
+    private router: Router,
+    private poNotification: PoNotificationService 
+  ) {}
 
-  constructor(private animalService: AnimalService, private router: Router) {}
-
-  cadastrar() {
-    console.log('Dados do animal a serem cadastrados:', this.animal);
-    this.animalService.addAnimal(this.animal).then(() => {
-      console.log('Animal cadastrado:', this.animal);
-      // Adicione a lógica para redirecionar ou mostrar uma mensagem de sucesso
-    }).catch(error => {
-      console.log('Erro ao cadastrar animal:', error);
+  ngOnInit() {
+    this.authService.getUser().subscribe(user => {
+      if (user) {
+        this.loggedInUser = user.displayName; // ou user.displayName, dependendo do que é retornado
+        this.animal.registradoPor = this.loggedInUser;
+      }
     });
   }
 
-  restaurar() {
+  cadastrar() {
+    if (!this.camposValidos()) {
+      this.poNotification.error('Preencha todos os campos obrigatórios.');
+      return;
+    }
+
+    this.isLoading = true;
+    console.log('Dados do animal a serem cadastrados:', this.animal);
+    this.animalService.addAnimal(this.animal).then(() => {
+      console.log('Animal cadastrado:', this.animal);
+      this.poNotification.success('Animal cadastrado com sucesso!'); // Exibe a notificação de sucesso
+      this.limparFormulario(); // Limpa os campos do formulário
+      this.isLoading = false;
+    }).catch(error => {
+      console.log('Erro ao cadastrar animal:', error);
+      this.poNotification.error('Erro ao cadastrar animal!'); // Exibe a notificação de erro
+      this.isLoading = false;
+    });
+  }
+
+  camposValidos(): boolean {
+    return this.animal.id !== '' &&
+           this.animal.genero !== '' &&
+           this.animal.categoria !== '' &&
+           this.animal.data !== null &&
+           this.animal.raca !== '';
+  }
+
+  limparFormulario() {
     this.animal = {
       id: '',
       genero: '',
       categoria: '',
       data: null,
-      raca: ''
+      raca: '',
+      registradoPor: this.loggedInUser // Mantenha o usuário logado no novo cadastro
     };
+  }
+
+  restaurar() {
+    this.limparFormulario();
   }
 }

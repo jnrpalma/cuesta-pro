@@ -1,12 +1,12 @@
-<div class="container">
-    <h3>Registrar Animal</h3>
-    <po-dynamic-form 
-      [p-fields]="fields"
-      [p-value]="animal">
-    </po-dynamic-form>
-    <div class="buttons-container">
-      <po-button p-label="Cadastrar" p-kind="primary" (p-click)="cadastrar()"></po-button>
-      <po-button p-label="Restaurar" p-kind="default" (p-click)="restaurar()"></po-button>
-    </div>
+<div class="container" style="position: relative;">
+  <po-loading-overlay *ngIf="isLoading" [p-screen-lock]="true" p-text="Carregando..."></po-loading-overlay>
+  <h3>Registrar Animal</h3>
+  <po-dynamic-form 
+    [p-fields]="fields"
+    [p-value]="animal">
+  </po-dynamic-form>
+  <div class="buttons-container">
+    <po-button p-label="Cadastrar" p-kind="primary" (p-click)="cadastrar()"></po-button>
+    <po-button p-label="Restaurar" p-kind="default" (p-click)="restaurar()"></po-button>
   </div>
-  
+</div>
