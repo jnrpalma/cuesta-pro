@@ -2,12 +2,14 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-import { PoDynamicModule, PoDynamicFormField, PoFieldModule, PoButtonModule, PoLoadingModule } from '@po-ui/ng-components';
+import { PoDynamicModule, PoDynamicFormField, PoButtonModule } from '@po-ui/ng-components';
+import { AnimalService } from '../../services/animal/animal.service';
+ // Certifique-se de ajustar o caminho para o serviço corretamente
 
 @Component({
   selector: 'app-register-animal',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, PoFieldModule, PoButtonModule, PoDynamicModule, PoLoadingModule],
+  imports: [CommonModule, FormsModule, RouterModule, PoButtonModule, PoDynamicModule],
   templateUrl: './register-animal.component.html',
   styleUrls: ['./register-animal.component.css']
 })
@@ -28,11 +30,16 @@ export class RegisterAnimalComponent {
     raca: ''
   };
 
-  constructor(private router: Router) {}
+  constructor(private animalService: AnimalService, private router: Router) {}
 
   cadastrar() {
-    console.log('Animal cadastrado:', this.animal);
-    // Adicione a lógica de cadastro aqui
+    console.log('Dados do animal a serem cadastrados:', this.animal);
+    this.animalService.addAnimal(this.animal).then(() => {
+      console.log('Animal cadastrado:', this.animal);
+      // Adicione a lógica para redirecionar ou mostrar uma mensagem de sucesso
+    }).catch(error => {
+      console.log('Erro ao cadastrar animal:', error);
+    });
   }
 
   restaurar() {
