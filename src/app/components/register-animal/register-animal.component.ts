@@ -2,16 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-import { PoDynamicModule, PoDynamicFormField, PoButtonModule, PoNotificationService, PoLoadingModule,  } from '@po-ui/ng-components';
+import { PoDynamicModule, PoDynamicFormField, PoButtonModule, PoNotificationService, PoLoadingModule, PoTableModule, PoTableColumn } from '@po-ui/ng-components';
 import { AnimalService } from '../../services/animal/animal.service';
-import { AuthService } from '../../services/auth/auth.service'; // Importe o AuthService
+import { AuthService } from '../../services/auth/auth.service';
 import { Animal } from './interface/animal.interface';
-// Importe a interface Animal
+
 
 @Component({
   selector: 'app-register-animal',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, PoButtonModule, PoDynamicModule, PoLoadingModule ],
+  imports: [CommonModule, FormsModule, RouterModule, PoButtonModule, PoDynamicModule, PoLoadingModule, PoTableModule],
   templateUrl: './register-animal.component.html',
   styleUrls: ['./register-animal.component.css']
 })
@@ -22,11 +22,12 @@ export class RegisterAnimalComponent implements OnInit {
     categoria: '',
     data: null,
     raca: '',
-    registradoPor: '' 
+    registradoPor: ''
   };
   
   isLoading = false;
   loggedInUser: string = '';
+  animals: Animal[] = [];
 
   fields: Array<PoDynamicFormField> = [
     { property: 'id', label: 'ID animal', gridColumns: 3, required: true },
@@ -65,7 +66,6 @@ export class RegisterAnimalComponent implements OnInit {
         { label: 'Morada Nova2', value: 'moradaNova' },
         { label: 'Suffolk', value: 'suffolk' },
         { label: 'Bergamácia', value: 'bergamacia' },
-        { label: 'Bergamácia', value: 'bergamacia' },
         { label: 'Hampshire Down', value: 'hampshireDown' },
         { label: 'Poll Dorset', value: 'pollDorset' },
         { label: 'Dorper', value: 'dorper' },
@@ -78,11 +78,20 @@ export class RegisterAnimalComponent implements OnInit {
     { property: 'registradoPor', label: 'Registrado por', gridColumns: 12, disabled: true }
   ];
 
+  columns: PoTableColumn[] = [
+    { property: 'id', label: 'ID' },
+    { property: 'genero', label: 'Gênero' },
+    { property: 'categoria', label: 'Categoria' },
+    { property: 'raca', label: 'Raça' },
+    { property: 'data', label: 'Data', type: 'date' },
+    { property: 'registradoPor', label: 'Registrado por' }
+  ];
+
   constructor(
-    private animalService: AnimalService, 
-    private authService: AuthService, 
+    private animalService: AnimalService,
+    private authService: AuthService,
     private router: Router,
-    private poNotification: PoNotificationService 
+    private poNotification: PoNotificationService
   ) {}
 
   ngOnInit() {
@@ -91,6 +100,16 @@ export class RegisterAnimalComponent implements OnInit {
         this.loggedInUser = user.displayName; // ou user.displayName, dependendo do que é retornado
         this.animal.registradoPor = this.loggedInUser;
       }
+    });
+
+    this.loadAnimals();
+  }
+
+  loadAnimals() {
+    this.animalService.getAnimals().subscribe((data: Animal[]) => {
+      this.animals = data;
+    }, error => {
+      console.error('Erro ao carregar animais:', error);
     });
   }
 
@@ -106,6 +125,7 @@ export class RegisterAnimalComponent implements OnInit {
       console.log('Animal cadastrado:', this.animal);
       this.poNotification.success('Animal cadastrado com sucesso!'); // Exibe a notificação de sucesso
       this.limparFormulario(); // Limpa os campos do formulário
+      this.loadAnimals(); // Recarrega a lista de animais
       this.isLoading = false;
     }).catch(error => {
       console.log('Erro ao cadastrar animal:', error);

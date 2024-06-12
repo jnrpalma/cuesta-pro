@@ -10,3 +10,11 @@
     <po-button p-label="Restaurar" p-kind="default" (p-click)="restaurar()"></po-button>
   </div>
 </div>
+
+<div class="container">
+  <h3>Animais Registrados</h3>
+  <po-table 
+    [p-columns]="columns"
+    [p-items]="animals">
+  </po-table>
+</div>
