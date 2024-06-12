@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { PoDynamicModule, PoDynamicFormField, PoButtonModule } from '@po-ui/ng-components';
 import { AnimalService } from '../../services/animal/animal.service';
- // Certifique-se de ajustar o caminho para o serviço corretamente
 
 @Component({
   selector: 'app-register-animal',
@@ -16,9 +15,42 @@ import { AnimalService } from '../../services/animal/animal.service';
 export class RegisterAnimalComponent {
   fields: Array<PoDynamicFormField> = [
     { property: 'id', label: 'ID animal', gridColumns: 3, required: true },
-    { property: 'genero', label: 'Gênero', gridColumns: 3, required: true },
-    { property: 'categoria', label: 'Categoria', gridColumns: 3, required: true },
-    { property: 'raca', label: 'Raça', gridColumns: 3, required: true },
+    { 
+      property: 'genero', 
+      label: 'Gênero', 
+      gridColumns: 3, 
+      required: true,
+      options: [
+        { label: 'Masculino', value: 'M' },
+        { label: 'Feminino', value: 'F' },
+        { label: 'Outros', value: 'O' },
+        { label: 'N/A', value: 'N' },
+      ]
+    },
+    { 
+      property: 'categoria', 
+      label: 'Categoria', 
+      gridColumns: 3, 
+      required: true,
+      options: [
+        { label: 'Mamífero', value: 'mamifero' },
+        { label: 'Ave', value: 'ave' },
+        { label: 'Réptil', value: 'reptil' },
+        { label: 'ovelha', value: 'ovino' }
+      ]
+    },
+    { 
+      property: 'raca', 
+      label: 'Raça', 
+      gridColumns: 3, 
+      required: true,
+      options: [
+        { label: 'Raça 1', value: 'raca1' },
+        { label: 'Raça 2', value: 'raca2' },
+        { label: 'Raça 3', value: 'raca3' },
+        { label: 'Raça 4', value: 'raca4' },
+      ]
+    },
     { property: 'data', label: 'Data', type: 'date', gridColumns: 12, required: true }
   ];
 
