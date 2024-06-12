@@ -120,3 +120,11 @@ body {
   border-bottom-right-radius: 10px;
   opacity: 0.9;
 }
+
+.login-container {
+  font-family: 'Poppins', sans-serif;
+}
+
+.login-box .login-left, .login-box .login-left .login-form, .login-box .forgot-password-form, .login-box .login-right, .login-box h1, .login-box p, .login-box form, .login-box .button-container, .login-box .links-container, .login-box .back-to-login {
+  font-family: 'Poppins', sans-serif;
+}

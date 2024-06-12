@@ -36,8 +36,8 @@ export class RegisterAnimalComponent implements OnInit {
       gridColumns: 3, 
       required: true,
       options: [
-        { label: 'Masculino', value: 'M' },
-        { label: 'Feminino', value: 'F' },
+        { label: 'Macho', value: 'M' },
+        { label: 'Fêmea', value: 'F' },
         { label: 'Outros', value: 'O' },
         { label: 'N/A', value: 'N' },
       ]
@@ -48,10 +48,11 @@ export class RegisterAnimalComponent implements OnInit {
       gridColumns: 3, 
       required: true,
       options: [
-        { label: 'Mamífero', value: 'mamifero' },
-        { label: 'Ave', value: 'ave' },
-        { label: 'Réptil', value: 'reptil' },
-        { label: 'ovelha', value: 'ovino' }
+        { label: 'Ovelha', value: 'ovelha' },
+        { label: 'Borrego', value: 'borrego' },
+        { label: 'Cordeiro', value: 'cordeiro' },
+        { label: 'Carneiro', value: 'carneiro' },
+        { label: 'Rufião', value: 'rufiao' },
       ]
     },
     { 
@@ -60,10 +61,17 @@ export class RegisterAnimalComponent implements OnInit {
       gridColumns: 3, 
       required: true,
       options: [
-        { label: 'Raça 1', value: 'raca1' },
-        { label: 'Raça 2', value: 'raca2' },
-        { label: 'Raça 3', value: 'raca3' },
-        { label: 'Raça 4', value: 'raca4' },
+        { label: 'Santa Inês', value: 'santaInes' },
+        { label: 'Morada Nova2', value: 'moradaNova' },
+        { label: 'Suffolk', value: 'suffolk' },
+        { label: 'Bergamácia', value: 'bergamacia' },
+        { label: 'Bergamácia', value: 'bergamacia' },
+        { label: 'Hampshire Down', value: 'hampshireDown' },
+        { label: 'Poll Dorset', value: 'pollDorset' },
+        { label: 'Dorper', value: 'dorper' },
+        { label: 'White Dorper', value: 'whiteDorper' },
+        { label: 'Somalis Brasileira', value: 'somalisBrasileira' },
+        { label: 'Sem raça definida', value: 'semRacaDefinida' },
       ]
     },
     { property: 'data', label: 'Data', type: 'date', gridColumns: 12, required: true },
