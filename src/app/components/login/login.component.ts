@@ -29,7 +29,7 @@ export class LoginComponent {
         this.isLoading = false; 
       });
     } else {
-      console.log('Please enter email and password');
+      console.log('erro de  email and password');
     }
   }
 

@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { PoButtonModule, PoChartModule, PoChartType, PoLoadingModule } from '@po-ui/ng-components';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { PoButtonModule, PoChartModule, PoChartType, PoLoadingModule } from '@po-ui/ng-components';
 import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, PoChartModule, PoButtonModule, PoLoadingModule],
+  imports: [CommonModule, RouterModule, PoChartModule, PoButtonModule, PoLoadingModule],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
@@ -26,11 +27,15 @@ export class DashboardComponent implements OnInit {
     this.authService.getUser().subscribe(user => {
       if (user) {
         this.userName = user.firstName || user.email;
-        console.log('User name set to:', this.userName); // Log do userName
+        console.log('User name set to:', this.userName);
       } else {
         this.userName = '';
       }
     });
+  }
+
+  navigateTo(route: string) {
+    this.router.navigate([`/dashboard/${route}`]);
   }
 
   logout() {

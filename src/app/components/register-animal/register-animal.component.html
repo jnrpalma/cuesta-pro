@@ -1,0 +1,17 @@
+<div class="container">
+    <h3>Registrar Animal</h3>
+    <div class="form-container">
+      <po-input p-label="ID animal" [(ngModel)]="animal.id"></po-input>
+      <po-input p-label="Gênero" [(ngModel)]="animal.genero"></po-input>
+      <po-input p-label="Categoria" [(ngModel)]="animal.categoria"></po-input>
+      <po-input p-label="Raça" [(ngModel)]="animal.raca"></po-input>
+    </div>
+    <div class="form-container">
+      <po-datepicker p-label="Data" [(ngModel)]="animal.data"></po-datepicker>
+    </div>
+    <div class="buttons">
+      <po-button p-label="Cadastrar" p-kind="primary" (p-click)="cadastrar()"></po-button>
+      <po-button p-label="Restaurar" p-kind="default" (p-click)="restaurar()"></po-button>
+    </div>
+  </div>
+  

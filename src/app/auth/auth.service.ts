@@ -17,7 +17,7 @@ export class AuthService {
       await this.afAuth.signInWithEmailAndPassword(email, password);
       this.router.navigate(['/dashboard']);
     } catch (error) {
-      console.log('Error during login:', error);
+      console.log('Error de login:', error);
     }
   }
 
@@ -28,13 +28,13 @@ export class AuthService {
         await userCredential.user.updateProfile({
           displayName: displayName
         });
-        console.log('User registered with displayName:', displayName); // Log do displayName
-        // Sincronizar a atualização do perfil
+        console.log('User registrado com displayName:', displayName); 
+    
         await this.syncUserProfileUpdate();
         this.router.navigate(['/dashboard']);
       }
     } catch (error) {
-      console.log('Error during registration:', error);
+      console.log('Error durante o registro:', error);
     }
   }
 
@@ -57,9 +57,9 @@ export class AuthService {
   async forgotPassword(email: string) {
     try {
       await this.afAuth.sendPasswordResetEmail(email);
-      console.log('Password reset email sent');
+      console.log('Password reset email enviado');
     } catch (error) {
-      console.log('Error during password reset:', error);
+      console.log('Error durante password reset:', error);
     }
   }
 
@@ -72,8 +72,6 @@ export class AuthService {
       map(user => {
         if (user) {
           const firstName = user.displayName ? user.displayName.split(' ')[0] : '';
-          console.log('User logged in with displayName:', user.displayName); // Log do displayName
-          console.log('Extracted firstName:', firstName); // Log do firstName
           return {
             displayName: user.displayName,
             email: user.email,
