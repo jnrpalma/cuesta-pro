@@ -29,7 +29,7 @@ export class RegisterAnimalComponent implements OnInit {
   showTable = false;
 
   columns = [
-    { property: 'id', label: 'ID', type: 'string' },
+    { property: 'id', label: 'ID Brinco', type: 'string' },
     { property: 'genero', label: 'Gênero', type: 'string' },
     { property: 'categoria', label: 'Categoria', type: 'string' },
     { property: 'raca', label: 'Raça', type: 'string' },
@@ -40,17 +40,17 @@ export class RegisterAnimalComponent implements OnInit {
   animals: Animal[] = [];
 
   fields: Array<PoDynamicFormField> = [
-    { property: 'id', label: 'ID animal', gridColumns: 3, required: true },
+    { property: 'id', label: 'ID Brinco', gridColumns: 3, required: true },
     { 
       property: 'genero', 
       label: 'Gênero', 
       gridColumns: 3, 
       required: true,
       options: [
-        { label: 'Macho', value: 'M' },
-        { label: 'Fêmea', value: 'F' },
-        { label: 'Outros', value: 'O' },
-        { label: 'N/A', value: 'N' },
+        { label: 'Macho', value: 'MACHO' },
+        { label: 'Fêmea', value: 'FEMEA' },
+        { label: 'Outros', value: 'OUTROS' },
+        { label: 'N/A', value: 'N/A' },
       ]
     },
     { 
