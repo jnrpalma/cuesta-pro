@@ -2,11 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-import { PoDynamicModule, PoDynamicFormField, PoButtonModule, PoNotificationService, PoLoadingModule, PoTableModule, PoTableColumn } from '@po-ui/ng-components';
+import { PoDynamicModule, PoDynamicFormField, PoButtonModule, PoNotificationService, PoLoadingModule, PoTableModule } from '@po-ui/ng-components';
 import { AnimalService } from '../../services/animal/animal.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { Animal } from './interface/animal.interface';
-
 
 @Component({
   selector: 'app-register-animal',
@@ -22,11 +21,22 @@ export class RegisterAnimalComponent implements OnInit {
     categoria: '',
     data: null,
     raca: '',
-    registradoPor: ''
+    registradoPor: '' 
   };
   
   isLoading = false;
   loggedInUser: string = '';
+  showTable = false;
+
+  columns = [
+    { property: 'id', label: 'ID', type: 'string' },
+    { property: 'genero', label: 'Gênero', type: 'string' },
+    { property: 'categoria', label: 'Categoria', type: 'string' },
+    { property: 'raca', label: 'Raça', type: 'string' },
+    { property: 'data', label: 'Data', type: 'date' },
+    { property: 'registradoPor', label: 'Registrado por', type: 'string' }
+  ];
+
   animals: Animal[] = [];
 
   fields: Array<PoDynamicFormField> = [
@@ -63,7 +73,7 @@ export class RegisterAnimalComponent implements OnInit {
       required: true,
       options: [
         { label: 'Santa Inês', value: 'santaInes' },
-        { label: 'Morada Nova2', value: 'moradaNova' },
+        { label: 'Morada Nova', value: 'moradaNova' },
         { label: 'Suffolk', value: 'suffolk' },
         { label: 'Bergamácia', value: 'bergamacia' },
         { label: 'Hampshire Down', value: 'hampshireDown' },
@@ -78,38 +88,19 @@ export class RegisterAnimalComponent implements OnInit {
     { property: 'registradoPor', label: 'Registrado por', gridColumns: 12, disabled: true }
   ];
 
-  columns: PoTableColumn[] = [
-    { property: 'id', label: 'ID' },
-    { property: 'genero', label: 'Gênero' },
-    { property: 'categoria', label: 'Categoria' },
-    { property: 'raca', label: 'Raça' },
-    { property: 'data', label: 'Data', type: 'date' },
-    { property: 'registradoPor', label: 'Registrado por' }
-  ];
-
   constructor(
-    private animalService: AnimalService,
-    private authService: AuthService,
+    private animalService: AnimalService, 
+    private authService: AuthService, 
     private router: Router,
-    private poNotification: PoNotificationService
+    private poNotification: PoNotificationService 
   ) {}
 
   ngOnInit() {
     this.authService.getUser().subscribe(user => {
       if (user) {
-        this.loggedInUser = user.displayName; // ou user.displayName, dependendo do que é retornado
+        this.loggedInUser = user.displayName || user.email;
         this.animal.registradoPor = this.loggedInUser;
       }
-    });
-
-    this.loadAnimals();
-  }
-
-  loadAnimals() {
-    this.animalService.getAnimals().subscribe((data: Animal[]) => {
-      this.animals = data;
-    }, error => {
-      console.error('Erro ao carregar animais:', error);
     });
   }
 
@@ -125,7 +116,6 @@ export class RegisterAnimalComponent implements OnInit {
       console.log('Animal cadastrado:', this.animal);
       this.poNotification.success('Animal cadastrado com sucesso!'); // Exibe a notificação de sucesso
       this.limparFormulario(); // Limpa os campos do formulário
-      this.loadAnimals(); // Recarrega a lista de animais
       this.isLoading = false;
     }).catch(error => {
       console.log('Erro ao cadastrar animal:', error);
@@ -155,5 +145,22 @@ export class RegisterAnimalComponent implements OnInit {
 
   restaurar() {
     this.limparFormulario();
+  }
+
+  toggleTable() {
+    if (!this.showTable) {
+      this.loadAnimals();
+    }
+    this.showTable = !this.showTable;
+  }
+
+  loadAnimals() {
+    this.animalService.getAnimals().subscribe((data: Animal[]) => {
+      this.animals = data;
+    });
+  }
+
+  get tableButtonLabel() {
+    return this.showTable ? 'Esconder Todos os Animais' : 'Ver Todos os Animais';
   }
 }

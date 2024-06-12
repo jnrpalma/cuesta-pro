@@ -11,10 +11,13 @@
   </div>
 </div>
 
-<div class="container">
-  <h3>Animais Registrados</h3>
-  <po-table 
-    [p-columns]="columns"
-    [p-items]="animals">
-  </po-table>
+<div class="container" style="position: relative; margin-top: 20px;">
+  <po-button p-label="{{ tableButtonLabel }}" p-kind="primary" (p-click)="toggleTable()"></po-button>
+  
+  <div *ngIf="showTable" style="margin-top: 20px;">
+    <po-table 
+      [p-columns]="columns" 
+      [p-items]="animals">
+    </po-table>
+  </div>
 </div>
