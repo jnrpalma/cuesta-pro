@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -15,9 +16,9 @@ export class AuthService {
   async login(email: string, password: string) {
     try {
       await this.afAuth.signInWithEmailAndPassword(email, password);
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/dashboard/overview']); // Atualizando a rota para "overview"
     } catch (error) {
-      console.log('Error de login:', error);
+      console.log('Erro de login:', error);
     }
   }
 
@@ -31,10 +32,10 @@ export class AuthService {
         console.log('User registrado com displayName:', displayName); 
     
         await this.syncUserProfileUpdate();
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/dashboard/overview']); // Atualizando a rota para "overview"
       }
     } catch (error) {
-      console.log('Error durante o registro:', error);
+      console.log('Erro durante o registro:', error);
     }
   }
 
@@ -59,7 +60,7 @@ export class AuthService {
       await this.afAuth.sendPasswordResetEmail(email);
       console.log('Password reset email enviado');
     } catch (error) {
-      console.log('Error durante password reset:', error);
+      console.log('Erro durante password reset:', error);
     }
   }
 

@@ -14,6 +14,7 @@
     "@angular/common": "~17.2.4",
     "@angular/compiler": "~17.2.4",
     "@angular/core": "~17.2.4",
+    "@angular/fire": "^18.0.1",
     "@angular/forms": "~17.2.4",
     "@angular/platform-browser": "~17.2.4",
     "@angular/platform-browser-dynamic": "~17.2.4",
@@ -21,6 +22,7 @@
     "@fortawesome/fontawesome-free": "^6.5.2",
     "@po-ui/ng-components": "^17.13.1",
     "@po-ui/style": "^17.13.1",
+    "firebase": "^10.12.2",
     "rxjs": "~7.8.1",
     "tslib": "^2.6.2",
     "zone.js": "~0.14.4"

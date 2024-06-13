@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-import { PoDynamicModule, PoDynamicFormField, PoButtonModule, PoNotificationService, PoLoadingModule, PoTableModule } from '@po-ui/ng-components';
+import { PoDynamicModule, PoDynamicFormField, PoButtonModule, PoNotificationService, PoLoadingModule, PoFieldModule } from '@po-ui/ng-components';
 import { AnimalService } from '../../services/animal/animal.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { Animal } from './interface/animal.interface';
@@ -10,7 +10,7 @@ import { Animal } from './interface/animal.interface';
 @Component({
   selector: 'app-register-animal',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, PoButtonModule, PoDynamicModule, PoLoadingModule, PoTableModule],
+  imports: [CommonModule, FormsModule, RouterModule, PoButtonModule, PoDynamicModule,PoFieldModule , PoLoadingModule],
   templateUrl: './register-animal.component.html',
   styleUrls: ['./register-animal.component.css']
 })
@@ -26,18 +26,7 @@ export class RegisterAnimalComponent implements OnInit {
   
   isLoading = false;
   loggedInUser: string = '';
-  showTable = false;
-
-  columns = [
-    { property: 'id', label: 'ID Brinco', type: 'string' },
-    { property: 'genero', label: 'Gênero', type: 'string' },
-    { property: 'categoria', label: 'Categoria', type: 'string' },
-    { property: 'raca', label: 'Raça', type: 'string' },
-    { property: 'data', label: 'Data', type: 'date' },
-    { property: 'registradoPor', label: 'Registrado por', type: 'string' }
-  ];
-
-  animals: Animal[] = [];
+  quantity: number = 1;
 
   fields: Array<PoDynamicFormField> = [
     { property: 'id', label: 'ID Brinco', gridColumns: 3, required: true },
@@ -102,6 +91,7 @@ export class RegisterAnimalComponent implements OnInit {
         this.animal.registradoPor = this.loggedInUser;
       }
     });
+    this.animal.data = new Date(); // Definindo a data atual
   }
 
   cadastrar() {
@@ -111,15 +101,17 @@ export class RegisterAnimalComponent implements OnInit {
     }
 
     this.isLoading = true;
-    console.log('Dados do animal a serem cadastrados:', this.animal);
-    this.animalService.addAnimal(this.animal).then(() => {
-      console.log('Animal cadastrado:', this.animal);
-      this.poNotification.success('Animal cadastrado com sucesso!'); // Exibe a notificação de sucesso
-      this.limparFormulario(); // Limpa os campos do formulário
+    const animalsToRegister = Array.from({ length: this.quantity }, () => ({ ...this.animal }));
+
+    const promises = animalsToRegister.map(animal => this.animalService.addAnimal(animal));
+
+    Promise.all(promises).then(() => {
+      this.poNotification.success('Todos os animais foram cadastrados com sucesso!');
+      this.limparFormulario();
       this.isLoading = false;
     }).catch(error => {
-      console.log('Erro ao cadastrar animal:', error);
-      this.poNotification.error('Erro ao cadastrar animal!'); // Exibe a notificação de erro
+      console.log('Erro ao cadastrar animais:', error);
+      this.poNotification.error('Erro ao cadastrar alguns animais!');
       this.isLoading = false;
     });
   }
@@ -137,30 +129,14 @@ export class RegisterAnimalComponent implements OnInit {
       id: '',
       genero: '',
       categoria: '',
-      data: null,
+      data: new Date(), // Definindo a data atual
       raca: '',
       registradoPor: this.loggedInUser // Mantenha o usuário logado no novo cadastro
     };
+    this.quantity = 1;
   }
 
   restaurar() {
     this.limparFormulario();
-  }
-
-  toggleTable() {
-    if (!this.showTable) {
-      this.loadAnimals();
-    }
-    this.showTable = !this.showTable;
-  }
-
-  loadAnimals() {
-    this.animalService.getAnimals().subscribe((data: Animal[]) => {
-      this.animals = data;
-    });
-  }
-
-  get tableButtonLabel() {
-    return this.showTable ? 'Esconder Todos os Animais' : 'Ver Todos os Animais';
   }
 }

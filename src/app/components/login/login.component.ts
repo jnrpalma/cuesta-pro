@@ -22,26 +22,30 @@ export class LoginComponent {
     this.authService.logout(); 
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.email && this.password) {
       this.isLoading = true; 
-      this.authService.login(this.email, this.password).finally(() => {
+      try {
+        await this.authService.login(this.email, this.password);
+      } finally {
         this.isLoading = false; 
-      });
+      }
     } else {
-      console.log('erro de  email and password');
+      console.log('Erro de email e senha');
     }
   }
 
-  onForgotPasswordSubmit() {
+  async onForgotPasswordSubmit() {
     if (this.email) {
       this.isLoading = true;
-      this.authService.forgotPassword(this.email).finally(() => {
+      try {
+        await this.authService.forgotPassword(this.email);
+        console.log('Se o email estiver registrado, um link de redefinição de senha será enviado.');
+      } finally {
         this.isLoading = false;
-        console.log('If the email is registered, a password reset link will be sent to the email address provided.');
-      });
+      }
     } else {
-      console.log('Please enter email');
+      console.log('Por favor, insira um email');
     }
   }
 

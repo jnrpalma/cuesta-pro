@@ -5,6 +5,14 @@
     [p-fields]="fields"
     [p-value]="animal">
   </po-dynamic-form>
+  <div class="quantity-container">
+    <po-number 
+      name="quantity" 
+      p-label="Quantidade de Registros" 
+      [(ngModel)]="quantity" 
+      [p-min]="1">
+    </po-number>
+  </div>
   <div class="buttons-container">
     <po-button p-label="Cadastrar" p-kind="primary" (p-click)="cadastrar()"></po-button>
     <po-button p-label="Restaurar" p-kind="default" (p-click)="restaurar()"></po-button>
