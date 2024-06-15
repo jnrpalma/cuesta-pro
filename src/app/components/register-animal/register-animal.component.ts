@@ -10,7 +10,7 @@ import { Animal } from './interface/animal.interface';
 @Component({
   selector: 'app-register-animal',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, PoButtonModule, PoDynamicModule,PoFieldModule , PoLoadingModule],
+  imports: [CommonModule, FormsModule, RouterModule, PoButtonModule, PoDynamicModule, PoFieldModule, PoLoadingModule],
   templateUrl: './register-animal.component.html',
   styleUrls: ['./register-animal.component.css']
 })
@@ -20,16 +20,16 @@ export class RegisterAnimalComponent implements OnInit {
     genero: '',
     categoria: '',
     data: null,
-    dataNascimento: null,  // Novo campo
-    peso: 0,  // Novo campo
+    dataNascimento: null,
+    peso: 0, 
     raca: '',
     registradoPor: '',
-    denticao: '',  // Novo campo
-    quantity: 1,  // Novo campo
-    paiAnimal: 'proprio', // Modificado para string
-    nomePai: '', // Novo campo
-    maeAnimal: 'proprio', // Modificado para string
-    nomeMae: '' // Novo campo
+    denticao: '', 
+    quantity: 1,
+    paiAnimal: 'proprio', 
+    nomePai: '',
+    maeAnimal: 'proprio',
+    nomeMae: '' 
   };
   
   isLoading = false;
@@ -90,15 +90,18 @@ export class RegisterAnimalComponent implements OnInit {
       gridColumns: 6, 
       options: [
         { label: 'Dente de Leite', value: 'denteDeLeite' },
-        { label: 'Dois Dentes', value: 'doisDentes' },
-        { label: 'Quatro Dentes', value: 'quatroDentes' },
-        { label: 'Seis Dentes', value: 'seisDentes' },
-        { label: 'Oito Dentes', value: 'oitoDentes' },
-        { label: 'Zero Dentes', value: 'zeroDentes' }
+        { label: 'Dois Dentes', value: '2Dentes' },
+        { label: 'Quatro Dentes', value: '4Dentes' },
+        { label: 'Seis Dentes', value: '6Dentes' },
+        { label: 'Oito Dentes', value: '8Dentes' },
+        { label: 'Zero Dentes', value: '0Dentes' }
       ]
     },
     { property: 'registradoPor', label: 'Registrado por', gridColumns: 6, disabled: true },
     { property: 'quantity', label: 'Quantidade de Registros', type: 'number', gridColumns: 6, required: true },
+  ];
+
+  paiFields: Array<PoDynamicFormField> = [
     { 
       property: 'paiAnimal', 
       label: 'O pai é um animal da sua fazenda ou de terceiro?', 
@@ -110,7 +113,10 @@ export class RegisterAnimalComponent implements OnInit {
       gridColumns: 12,
       required: true 
     },
-    { property: 'nomePai', label: 'Nome do pai', gridColumns: 12, required: true },
+    { property: 'nomePai', label: 'Nome do pai', gridColumns: 12, required: true }
+  ];
+
+  maeFields: Array<PoDynamicFormField> = [
     { 
       property: 'maeAnimal', 
       label: 'A mãe é um animal da sua fazenda ou de terceiro?', 
@@ -139,7 +145,7 @@ export class RegisterAnimalComponent implements OnInit {
         this.animal.registradoPor = this.loggedInUser;
       }
     });
-    this.animal.data = new Date(); // Definindo a data atual como Data de Registro
+    this.animal.data = new Date(); 
   }
 
   cadastrar() {
@@ -168,13 +174,13 @@ export class RegisterAnimalComponent implements OnInit {
     return this.animal.id !== '' &&
            this.animal.genero !== '' &&
            this.animal.categoria !== '' &&
-           this.animal.data !== null &&  // Validação para Data de Registro
-           this.animal.dataNascimento !== null &&  // Validação para Data de Nascimento
-           (this.animal.peso ?? 0) > 0 &&  // Validação para Peso, garantindo que peso não seja null
+           this.animal.data !== null &&  
+           this.animal.dataNascimento !== null &&  
+           (this.animal.peso ?? 0) > 0 &&  
            this.animal.raca !== '' &&
-           this.animal.denticao !== '' &&  // Validação para Dentição
-           this.animal.nomePai !== '' &&  // Validação para Nome do Pai
-           this.animal.nomeMae !== '';  // Validação para Nome da Mãe
+           this.animal.denticao !== '' &&  
+           this.animal.nomePai !== '' &&  
+           this.animal.nomeMae !== '';  
   }
 
   limparFormulario() {
@@ -182,17 +188,17 @@ export class RegisterAnimalComponent implements OnInit {
       id: '',
       genero: '',
       categoria: '',
-      data: new Date(), // Definindo a data atual como Data de Registro
-      dataNascimento: null,  // Novo campo
-      peso: 0,  // Novo campo
+      data: new Date(), 
+      dataNascimento: null, 
+      peso: 0,
       raca: '',
-      registradoPor: this.loggedInUser, // Mantenha o usuário logado no novo cadastro
-      denticao: '',  // Novo campo
-      quantity: 1,  // Novo campo
-      paiAnimal: 'proprio', // Modificado para string
-      nomePai: '', // Novo campo
-      maeAnimal: 'proprio', // Modificado para string
-      nomeMae: '' // Novo campo
+      registradoPor: this.loggedInUser, 
+      denticao: '',  
+      quantity: 1,  
+      paiAnimal: 'proprio', 
+      nomePai: '', 
+      maeAnimal: 'proprio', 
+      nomeMae: '' 
     };
   }
 
@@ -200,7 +206,3 @@ export class RegisterAnimalComponent implements OnInit {
     this.limparFormulario();
   }
 }
-
-
-
-

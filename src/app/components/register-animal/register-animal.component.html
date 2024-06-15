@@ -5,6 +5,20 @@
     [p-fields]="fields"
     [p-value]="animal">
   </po-dynamic-form>
+  <div class="parent-container">
+    <div class="parent-container-item">
+      <po-dynamic-form 
+        [p-fields]="paiFields"
+        [p-value]="animal">
+      </po-dynamic-form>
+    </div>
+    <div class="parent-container-item">
+      <po-dynamic-form 
+        [p-fields]="maeFields"
+        [p-value]="animal">
+      </po-dynamic-form>
+    </div>
+  </div>
   <div class="buttons-container">
     <po-button p-label="Cadastrar" p-kind="primary" (p-click)="cadastrar()"></po-button>
     <po-button p-label="Restaurar" p-kind="default" (p-click)="restaurar()"></po-button>

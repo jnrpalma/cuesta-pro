@@ -17,8 +17,16 @@ export class ListAnimalsComponent implements OnInit {
     { property: 'genero', label: 'Gênero', type: 'string' },
     { property: 'categoria', label: 'Categoria', type: 'string' },
     { property: 'raca', label: 'Raça', type: 'string' },
-    { property: 'data', label: 'Data', type: 'date' },
-    { property: 'registradoPor', label: 'Registrado por', type: 'string' }
+    { property: 'data', label: 'Data de Registro', type: 'date' },
+    { property: 'dataNascimento', label: 'Data de Nascimento', type: 'date' },
+    { property: 'peso', label: 'Peso', type: 'number' },
+    { property: 'denticao', label: 'Dentição', type: 'string' },
+    { property: 'paiAnimal', label: 'Pai (Animal Próprio/Terceiro)', type: 'string', visible: false },
+    { property: 'nomePai', label: 'Nome do Pai', type: 'string', visible: false },
+    { property: 'maeAnimal', label: 'Mãe (Animal Próprio/Terceiro)', type: 'string', visible: false },
+    { property: 'nomeMae', label: 'Nome da Mãe', type: 'string', visible: false },
+    { property: 'registradoPor', label: 'Registrado por', type: 'string' },
+    { property: 'quantity', label: 'Quantidade de Registros', type: 'number' , visible: false}
   ];
 
   animals: Animal[] = [];
