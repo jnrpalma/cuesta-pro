@@ -20,13 +20,20 @@ export class RegisterAnimalComponent implements OnInit {
     genero: '',
     categoria: '',
     data: null,
+    dataNascimento: null,  // Novo campo
+    peso: 0,  // Novo campo
     raca: '',
-    registradoPor: '' 
+    registradoPor: '',
+    denticao: '',  // Novo campo
+    quantity: 1,  // Novo campo
+    paiAnimal: 'proprio', // Modificado para string
+    nomePai: '', // Novo campo
+    maeAnimal: 'proprio', // Modificado para string
+    nomeMae: '' // Novo campo
   };
   
   isLoading = false;
   loggedInUser: string = '';
-  quantity: number = 1;
 
   fields: Array<PoDynamicFormField> = [
     { property: 'id', label: 'ID Brinco', gridColumns: 3, required: true },
@@ -73,8 +80,49 @@ export class RegisterAnimalComponent implements OnInit {
         { label: 'Sem raça definida', value: 'semRacaDefinida' },
       ]
     },
-    { property: 'data', label: 'Data', type: 'date', gridColumns: 12, required: true },
-    { property: 'registradoPor', label: 'Registrado por', gridColumns: 12, disabled: true }
+    { property: 'dataNascimento', label: 'Data de Nascimento', type: 'date', gridColumns: 6, required: true },
+    { property: 'peso', label: 'Peso', type: 'number', gridColumns: 6, required: true },  // Novo campo
+    { property: 'data', label: 'Data de Registro', type: 'date', gridColumns: 6, required: true },
+    { 
+      property: 'denticao', 
+      label: 'Dentição', 
+      type: 'select', 
+      gridColumns: 6, 
+      options: [
+        { label: 'Dente de Leite', value: 'denteDeLeite' },
+        { label: 'Dois Dentes', value: 'doisDentes' },
+        { label: 'Quatro Dentes', value: 'quatroDentes' },
+        { label: 'Seis Dentes', value: 'seisDentes' },
+        { label: 'Oito Dentes', value: 'oitoDentes' },
+        { label: 'Zero Dentes', value: 'zeroDentes' }
+      ]
+    },
+    { property: 'registradoPor', label: 'Registrado por', gridColumns: 6, disabled: true },
+    { property: 'quantity', label: 'Quantidade de Registros', type: 'number', gridColumns: 6, required: true },
+    { 
+      property: 'paiAnimal', 
+      label: 'O pai é um animal da sua fazenda ou de terceiro?', 
+      type: 'radioGroup', 
+      options: [
+        { label: 'Animal Próprio', value: 'proprio' },
+        { label: 'Animal de Terceiro', value: 'terceiro' }
+      ],
+      gridColumns: 12,
+      required: true 
+    },
+    { property: 'nomePai', label: 'Nome do pai', gridColumns: 12, required: true },
+    { 
+      property: 'maeAnimal', 
+      label: 'A mãe é um animal da sua fazenda ou de terceiro?', 
+      type: 'radioGroup', 
+      options: [
+        { label: 'Animal Próprio', value: 'proprio' },
+        { label: 'Animal de Terceiro', value: 'terceiro' }
+      ],
+      gridColumns: 12,
+      required: true 
+    },
+    { property: 'nomeMae', label: 'Nome da mãe', gridColumns: 12, required: true }
   ];
 
   constructor(
@@ -91,7 +139,7 @@ export class RegisterAnimalComponent implements OnInit {
         this.animal.registradoPor = this.loggedInUser;
       }
     });
-    this.animal.data = new Date(); // Definindo a data atual
+    this.animal.data = new Date(); // Definindo a data atual como Data de Registro
   }
 
   cadastrar() {
@@ -101,7 +149,7 @@ export class RegisterAnimalComponent implements OnInit {
     }
 
     this.isLoading = true;
-    const animalsToRegister = Array.from({ length: this.quantity }, () => ({ ...this.animal }));
+    const animalsToRegister = Array.from({ length: this.animal.quantity }, () => ({ ...this.animal }));
 
     const promises = animalsToRegister.map(animal => this.animalService.addAnimal(animal));
 
@@ -120,8 +168,13 @@ export class RegisterAnimalComponent implements OnInit {
     return this.animal.id !== '' &&
            this.animal.genero !== '' &&
            this.animal.categoria !== '' &&
-           this.animal.data !== null &&
-           this.animal.raca !== '';
+           this.animal.data !== null &&  // Validação para Data de Registro
+           this.animal.dataNascimento !== null &&  // Validação para Data de Nascimento
+           (this.animal.peso ?? 0) > 0 &&  // Validação para Peso, garantindo que peso não seja null
+           this.animal.raca !== '' &&
+           this.animal.denticao !== '' &&  // Validação para Dentição
+           this.animal.nomePai !== '' &&  // Validação para Nome do Pai
+           this.animal.nomeMae !== '';  // Validação para Nome da Mãe
   }
 
   limparFormulario() {
@@ -129,14 +182,25 @@ export class RegisterAnimalComponent implements OnInit {
       id: '',
       genero: '',
       categoria: '',
-      data: new Date(), // Definindo a data atual
+      data: new Date(), // Definindo a data atual como Data de Registro
+      dataNascimento: null,  // Novo campo
+      peso: 0,  // Novo campo
       raca: '',
-      registradoPor: this.loggedInUser // Mantenha o usuário logado no novo cadastro
+      registradoPor: this.loggedInUser, // Mantenha o usuário logado no novo cadastro
+      denticao: '',  // Novo campo
+      quantity: 1,  // Novo campo
+      paiAnimal: 'proprio', // Modificado para string
+      nomePai: '', // Novo campo
+      maeAnimal: 'proprio', // Modificado para string
+      nomeMae: '' // Novo campo
     };
-    this.quantity = 1;
   }
 
   restaurar() {
     this.limparFormulario();
   }
 }
+
+
+
+
