@@ -4,7 +4,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';  
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { RegisterAnimalComponent } from './components/register-animal/register-animal.component';
-import { ListAnimalsComponent } from './components/list-animals/list-animals.component';
+import { ListAnimalsComponent } from './components/all-animals/all-animals.component';
 import { OverviewComponent } from './components/overview/overview.component'; // Importe o componente Overview
 
 export const routes: Routes = [

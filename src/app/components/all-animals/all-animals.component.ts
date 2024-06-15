@@ -8,8 +8,8 @@ import { Animal } from '../register-animal/interface/animal.interface';
   selector: 'app-list-animals',
   standalone: true,
   imports: [CommonModule, PoTableModule, PoButtonModule],
-  templateUrl: './list-animals.component.html',
-  styleUrls: ['./list-animals.component.css']
+  templateUrl: './all-animals.component.html',
+  styleUrls: ['./all-animals.component.css']
 })
 export class ListAnimalsComponent implements OnInit {
   columns = [
