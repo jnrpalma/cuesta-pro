@@ -40,7 +40,7 @@ export class RegisterBatchComponent implements OnInit {
   }
 
   cadastrarLote() {
-    // Adicione a lógica para cadastrar lote aqui
+    
     this.poNotification.success('Cadastro de lote realizado com sucesso!');
   }
 
