@@ -1,17 +1,16 @@
 <div style="position: relative; margin-top: 20px;">
-    <po-button p-label="{{ batchFormButtonLabel }}" p-kind="primary" (p-click)="toggleBatchForm()" style="margin-top: 10px;"></po-button>
-    
-    <div *ngIf="showBatchForm" class="container" style="position: relative; margin-top: 20px;">
-      <po-loading-overlay *ngIf="isLoading" [p-screen-lock]="true" p-text="Carregando..."></po-loading-overlay>
-      <h3>Registrar Lote de Animais</h3>
-      <po-dynamic-form 
-        [p-fields]="batchFields"
-        [p-value]="batchAnimal">
-      </po-dynamic-form>
-      <div class="buttons-container">
-        <po-button p-label="Cadastrar Lote" p-kind="primary" (p-click)="cadastrarLote()"></po-button>
-        <po-button p-label="Restaurar" p-kind="default" (p-click)="restaurarBatchForm()"></po-button>
-      </div>
+  <po-button p-label="{{ batchFormButtonLabel }}" p-kind="primary" (p-click)="toggleBatchForm()" style="margin-top: 10px;"></po-button>
+  
+  <div *ngIf="showBatchForm" class="container" style="position: relative; margin-top: 20px;">
+    <po-loading-overlay *ngIf="isLoading" [p-screen-lock]="true" p-text="Carregando..."></po-loading-overlay>
+    <h3>Registrar Lote de Animais</h3>
+    <po-dynamic-form 
+      [p-fields]="batchFields"
+      [p-value]="batchAnimal">
+    </po-dynamic-form>
+    <div class="buttons-container">
+      <po-button p-label="Cadastrar Lote" p-kind="primary" (p-click)="cadastrarLote()"></po-button>
+      <po-button p-label="Restaurar" p-kind="default" (p-click)="restaurarBatchForm()"></po-button>
     </div>
   </div>
-  
+</div>

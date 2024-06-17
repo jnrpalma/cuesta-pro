@@ -17,14 +17,27 @@ export class RegisterBatchComponent implements OnInit {
 
   batchAnimal: any = {
     lote: '',
-    quantidade: 0
+    categoria: ''
   };
   
   isLoading = false;
 
   batchFields: Array<PoDynamicFormField> = [
     { property: 'lote', label: 'Nome do Lote', gridColumns: 12, required: true },
-    { property: 'quantidade', label: 'Quantidade', type: 'number', gridColumns: 12, required: true }
+    { 
+      property: 'categoria', 
+      label: 'Categoria do Lote', 
+      type: 'select', 
+      options: [
+        { label: 'Categoria 1', value: 'categoria1' },
+        { label: 'Categoria 2', value: 'categoria2' },
+        { label: 'Categoria 3', value: 'categoria3' },
+        { label: 'Categoria 4', value: 'categoria4' },
+        { label: 'Categoria 5', value: 'categoria5' }
+      ],
+      gridColumns: 12, 
+      required: true 
+    }
   ];
 
   constructor(
@@ -40,14 +53,13 @@ export class RegisterBatchComponent implements OnInit {
   }
 
   cadastrarLote() {
-    
     this.poNotification.success('Cadastro de lote realizado com sucesso!');
   }
 
   restaurarBatchForm() {
     this.batchAnimal = {
       lote: '',
-      quantidade: 0
+      categoria: ''
     };
   }
 }

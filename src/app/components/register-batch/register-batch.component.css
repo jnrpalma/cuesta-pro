@@ -1,17 +1,23 @@
 .container {
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    max-width: 100%;
-    margin: 20px auto;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .buttons-container {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-  }
-  
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.buttons-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
