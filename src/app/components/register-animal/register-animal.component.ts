@@ -6,19 +6,18 @@ import { PoDynamicModule, PoDynamicFormField, PoButtonModule, PoNotificationServ
 import { AnimalService } from '../../services/animal/animal.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { Animal } from './interface/animal.interface';
+import { RegisterBatchComponent } from '../register-batch/register-batch.component';
 
 @Component({
   selector: 'app-register-animal',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, PoButtonModule, PoDynamicModule, PoFieldModule, PoLoadingModule],
+  imports: [CommonModule, FormsModule, RouterModule, PoButtonModule, PoDynamicModule, PoFieldModule, PoLoadingModule, RegisterBatchComponent],
   templateUrl: './register-animal.component.html',
   styleUrls: ['./register-animal.component.css']
 })
 export class RegisterAnimalComponent implements OnInit {
   showForm: boolean = false;
-  showBatchForm: boolean = false;
   formButtonLabel: string = 'Formulário de Cadastro animal';
-  batchFormButtonLabel: string = 'Formulário de Cadastro de Lote';
 
   animal: Animal = {
     id: '',
@@ -35,11 +34,6 @@ export class RegisterAnimalComponent implements OnInit {
     nomePai: '',
     maeAnimal: 'proprio',
     nomeMae: '' 
-  };
-
-  batchAnimal: any = {
-    lote: '',
-    quantidade: 0
   };
   
   isLoading = false;
@@ -111,11 +105,6 @@ export class RegisterAnimalComponent implements OnInit {
     { property: 'quantity', label: 'Quantidade de Registros', type: 'number', gridColumns: 6, required: true },
   ];
 
-  batchFields: Array<PoDynamicFormField> = [
-    { property: 'lote', label: 'Nome do Lote', gridColumns: 12, required: true },
-    { property: 'quantidade', label: 'Quantidade', type: 'number', gridColumns: 12, required: true }
-  ];
-
   paiFields: Array<PoDynamicFormField> = [
     { 
       property: 'paiAnimal', 
@@ -168,11 +157,6 @@ export class RegisterAnimalComponent implements OnInit {
     this.formButtonLabel = this.showForm ? 'Ocultar Formulário de Cadastro animal' : 'Formulário de Cadastro animal';
   }
 
-  toggleBatchForm() {
-    this.showBatchForm = !this.showBatchForm;
-    this.batchFormButtonLabel = this.showBatchForm ? 'Ocultar Formulário de Cadastro de Lote' : 'Formulário de Cadastro de Lote';
-  }
-
   cadastrar() {
     if (!this.camposValidos()) {
       this.poNotification.error('Preencha todos os campos obrigatórios.');
@@ -193,11 +177,6 @@ export class RegisterAnimalComponent implements OnInit {
       this.poNotification.error('Erro ao cadastrar alguns animais!');
       this.isLoading = false;
     });
-  }
-
-  cadastrarLote() {
-    // Adicione a lógica para cadastrar lote aqui
-    this.poNotification.success('Cadastro de lote realizado com sucesso!');
   }
 
   camposValidos(): boolean {
@@ -234,12 +213,5 @@ export class RegisterAnimalComponent implements OnInit {
 
   restaurar() {
     this.limparFormulario();
-  }
-
-  restaurarBatchForm() {
-    this.batchAnimal = {
-      lote: '',
-      quantidade: 0
-    };
   }
 }
