@@ -1,0 +1,18 @@
+<div *ngIf="isLoading" style="position: relative;">
+    <po-loading-overlay [p-screen-lock]="true" p-text="Carregando..."></po-loading-overlay>
+  </div>
+  <div *ngIf="batches.length && !isLoading" style="margin-top: 20px;">
+    <h3>Lotes Cadastrados</h3>
+    <po-list-view 
+      p-property-title="nomeLote" 
+      [p-items]="batches">
+      
+      <ng-template p-list-view-content-template let-item>
+        <div class="po-row">
+          <po-info class="po-md-12" p-label="Categoria" [p-value]="item.categoria"></po-info>
+          <po-info class="po-md-12" p-label="Animais" [p-value]="item.animais.length"></po-info>
+        </div>
+      </ng-template>
+    </po-list-view>
+  </div>
+  
