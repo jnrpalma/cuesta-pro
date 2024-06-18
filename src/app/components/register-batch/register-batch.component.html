@@ -14,8 +14,21 @@
       <po-input p-label="Nova Categoria" [(ngModel)]="newCategory" style="margin-bottom: 10px;"></po-input>
       <po-button p-label="Adicionar Categoria" p-kind="default" (p-click)="adicionarCategoria()"></po-button>
     </div>
+    <div class="" style="margin-top: 20px;">
+      <label>Selecione os Animais</label>
+      <po-table 
+        #animalTable
+        [p-columns]="columns" 
+        [p-items]="animals"
+       
+        [p-selectable]="true"
+        [p-hide-select-all]="false"
+        (p-selected)="onAnimalSelectionChange($event, animalTable)"
+        (p-unselected)="onAnimalSelectionChange($event, animalTable)">
+      </po-table>
+    </div>
     <div class="buttons-container" style="margin-top: 20px;">
-      <po-button p-label="Cadastrar Lote" p-kind="primary" (p-click)="cadastrarLote()"></po-button>
+      <po-button p-label="Cadastrar Lote" p-kind="primary" (p-click)="cadastrarLote(animalTable)"></po-button>
       <po-button p-label="Restaurar" p-kind="default" (p-click)="restaurarBatchForm()"></po-button>
     </div>
   </div>

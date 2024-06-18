@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { PoDynamicModule, PoDynamicFormField, PoButtonModule, PoNotificationService, PoLoadingModule, PoFieldModule  } from '@po-ui/ng-components';
+import { PoDynamicModule, PoDynamicFormField, PoButtonModule, PoNotificationService, PoLoadingModule, PoFieldModule, PoTableModule, PoTableColumn, PoTableComponent } from '@po-ui/ng-components';
 import { AnimalService } from '../../services/animal/animal.service';
+import { BatchService } from '../../services/batch/batch.service';
 import { ChangeDetectorRef } from '@angular/core';
+import { Animal } from '../register-animal/interface/animal.interface';
 
 @Component({
   selector: 'app-register-batch',
   standalone: true,
-  imports: [CommonModule, FormsModule, PoButtonModule, PoDynamicModule, PoLoadingModule, PoFieldModule ],
+  imports: [CommonModule, FormsModule, PoButtonModule, PoDynamicModule, PoLoadingModule, PoFieldModule, PoTableModule],
   templateUrl: './register-batch.component.html',
   styleUrls: ['./register-batch.component.css']
 })
@@ -36,22 +38,72 @@ export class RegisterBatchComponent implements OnInit {
   ];
 
   newCategory: string = '';
+  animals: Animal[] = [];
+  selectedAnimals: Animal[] = [];
+
+  columns: PoTableColumn[] = [
+    { property: 'id', label: 'ID Brinco', type: 'string' },
+    { property: 'genero', label: 'Gênero', type: 'string' },
+    { property: 'categoria', label: 'Categoria', type: 'string' },
+    { property: 'raca', label: 'Raça', type: 'string' },
+    { property: 'data', label: 'Data de Registro', type: 'date' },
+    { property: 'dataNascimento', label: 'Data de Nascimento', type: 'date' },
+    { property: 'peso', label: 'Peso', type: 'number' },
+    { property: 'denticao', label: 'Dentição', type: 'string' },
+    { property: 'paiAnimal', label: 'Pai (Animal Próprio/Terceiro)', type: 'string', visible: false },
+    { property: 'nomePai', label: 'Nome do Pai', type: 'string', visible: false },
+    { property: 'maeAnimal', label: 'Mãe (Animal Próprio/Terceiro)', type: 'string', visible: false },
+    { property: 'nomeMae', label: 'Nome da Mãe', type: 'string', visible: false },
+    { property: 'registradoPor', label: 'Registrado por', type: 'string' },
+    { property: 'quantity', label: 'Quantidade de Registros', type: 'number', visible: false }
+  ];
 
   constructor(
     private animalService: AnimalService,
+    private batchService: BatchService,
     private poNotification: PoNotificationService,
     private cdr: ChangeDetectorRef
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loadAnimals();
+  }
+
+  loadAnimals() {
+    this.isLoading = true;
+    this.animalService.getAnimals().subscribe((data: Animal[]) => {
+      this.animals = data;
+      this.isLoading = false;
+    }, error => {
+      this.poNotification.error('Erro ao carregar animais.');
+      this.isLoading = false;
+    });
+  }
 
   toggleBatchForm() {
     this.showBatchForm = !this.showBatchForm;
     this.batchFormButtonLabel = this.showBatchForm ? 'Ocultar Formulário de Cadastro de Lote' : 'Formulário de Cadastro de Lote';
   }
 
-  cadastrarLote() {
-    this.poNotification.success('Cadastro de lote realizado com sucesso!');
+  cadastrarLote(animalTable: PoTableComponent) {
+    this.selectedAnimals = animalTable.getSelectedRows();
+    console.log('Animais selecionados:', this.selectedAnimals);
+
+    const batchData = {
+      nomeLote: this.batchAnimal.lote,
+      categoria: this.batchAnimal.categoria,
+      animais: this.selectedAnimals.map(animal => animal.id) // Apenas os IDs dos animais selecionados
+    };
+
+    console.log('Dados do lote a serem cadastrados:', batchData);
+
+    this.batchService.addBatch(batchData).then(() => {
+      this.poNotification.success('Cadastro de lote realizado com sucesso!');
+      this.restaurarBatchForm();
+    }).catch(error => {
+      console.error('Erro ao cadastrar lote:', error);
+      this.poNotification.error('Erro ao cadastrar lote.');
+    });
   }
 
   restaurarBatchForm() {
@@ -59,6 +111,7 @@ export class RegisterBatchComponent implements OnInit {
       lote: '',
       categoria: ''
     };
+    this.selectedAnimals = [];
   }
 
   adicionarCategoria() {
@@ -75,5 +128,10 @@ export class RegisterBatchComponent implements OnInit {
     } else {
       this.poNotification.error('Por favor, insira um nome de categoria válido.');
     }
+  }
+
+  onAnimalSelectionChange(event: any, animalTable: PoTableComponent) {
+    this.selectedAnimals = animalTable.getSelectedRows();
+    console.log('Seleção de animais atualizada:', this.selectedAnimals);
   }
 }
