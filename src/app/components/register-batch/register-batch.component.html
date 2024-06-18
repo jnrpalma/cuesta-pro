@@ -21,6 +21,7 @@
         [p-columns]="columns" 
         [p-items]="animals"
         [p-selectable]="true"
+        [p-hide-table-search]="false"
         [p-hide-select-all]="false"
         (p-selected)="onAnimalSelectionChange($event, animalTable)"
         (p-unselected)="onAnimalSelectionChange($event, animalTable)">
