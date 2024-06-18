@@ -48,7 +48,7 @@ export class RegisterBatchComponent implements OnInit {
     { property: 'genero', label: 'Gênero', type: 'string' },
     { property: 'categoria', label: 'Categoria', type: 'string' },
     { property: 'raca', label: 'Raça', type: 'string' },
-    { property: 'data', label: 'Data de Registro', type: 'date' },
+    { property: 'data', label: 'Data de Registro', type: 'date',visible: false },
     { property: 'dataNascimento', label: 'Data de Nascimento', type: 'date' },
     { property: 'peso', label: 'Peso', type: 'number' },
     { property: 'denticao', label: 'Dentição', type: 'string' },
@@ -92,10 +92,10 @@ export class RegisterBatchComponent implements OnInit {
     console.log('Animais selecionados:', this.selectedAnimals);
 
     const batchData: Batch = {
-      id: '', // Será definido pelo serviço
+      id: '', 
       nomeLote: this.batchAnimal.lote,
       categoria: this.batchAnimal.categoria,
-      animais: this.selectedAnimals // Passando o array de objetos Animal
+      animais: this.selectedAnimals 
     };
 
     console.log('Dados do lote a serem cadastrados:', batchData);
