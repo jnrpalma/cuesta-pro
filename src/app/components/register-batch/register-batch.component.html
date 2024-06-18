@@ -4,11 +4,17 @@
   <div *ngIf="showBatchForm" class="container" style="position: relative; margin-top: 20px;">
     <po-loading-overlay *ngIf="isLoading" [p-screen-lock]="true" p-text="Carregando..."></po-loading-overlay>
     <h3>Registrar Lote de Animais</h3>
-    <po-dynamic-form 
-      [p-fields]="batchFields"
-      [p-value]="batchAnimal">
-    </po-dynamic-form>
-    <div class="buttons-container">
+    <div class="form-row">
+      <po-dynamic-form 
+        [p-fields]="batchFields"
+        [p-value]="batchAnimal">
+      </po-dynamic-form>
+    </div>
+    <div class="new-category-container" style="margin-top: 20px;">
+      <po-input p-label="Nova Categoria" [(ngModel)]="newCategory" style="margin-bottom: 10px;"></po-input>
+      <po-button p-label="Adicionar Categoria" p-kind="default" (p-click)="adicionarCategoria()"></po-button>
+    </div>
+    <div class="buttons-container" style="margin-top: 20px;">
       <po-button p-label="Cadastrar Lote" p-kind="primary" (p-click)="cadastrarLote()"></po-button>
       <po-button p-label="Restaurar" p-kind="default" (p-click)="restaurarBatchForm()"></po-button>
     </div>
