@@ -4,6 +4,8 @@ import { PoChartModule, PoChartType, PoChartOptions, PoChartSerie, PoLoadingModu
 import { AnimalService } from '../../services/animal/animal.service';
 import { BatchService } from '../../services/batch/batch.service';
 import { Animal } from '../register-animal/interface/animal.interface';
+import { Batch } from '../register-batch/interface/batch.interface';
+
 
 @Component({
   selector: 'app-overview',
@@ -14,9 +16,9 @@ import { Animal } from '../register-animal/interface/animal.interface';
 })
 export class OverviewComponent implements OnInit {
   animals: Animal[] = [];
-  batches: any[] = [];
+  batches: Batch[] = [];
   isLoading = true;
-  chartType: PoChartType = PoChartType.Pie; // Define o tipo de gráfico como Pie
+  chartType: PoChartType = PoChartType.Pie; 
   chartOptions: PoChartOptions = {
     legend: true
   };
@@ -44,8 +46,9 @@ export class OverviewComponent implements OnInit {
   }
 
   loadBatches() {
-    this.batchService.getBatches().subscribe((data: any[]) => {
+    this.batchService.getBatches().subscribe((data: Batch[]) => {
       this.batches = data;
+      console.log('Batches:', this.batches);
     }, error => {
       console.error('Erro ao carregar lotes:', error);
     });

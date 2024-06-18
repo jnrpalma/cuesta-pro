@@ -6,6 +6,8 @@ import { AnimalService } from '../../services/animal/animal.service';
 import { BatchService } from '../../services/batch/batch.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { Animal } from '../register-animal/interface/animal.interface';
+import { Batch } from './interface/batch.interface';
+
 
 @Component({
   selector: 'app-register-batch',
@@ -89,10 +91,11 @@ export class RegisterBatchComponent implements OnInit {
     this.selectedAnimals = animalTable.getSelectedRows();
     console.log('Animais selecionados:', this.selectedAnimals);
 
-    const batchData = {
+    const batchData: Batch = {
+      id: '', // Será definido pelo serviço
       nomeLote: this.batchAnimal.lote,
       categoria: this.batchAnimal.categoria,
-      animais: this.selectedAnimals.map(animal => animal.id) 
+      animais: this.selectedAnimals // Passando o array de objetos Animal
     };
 
     console.log('Dados do lote a serem cadastrados:', batchData);

@@ -2,6 +2,7 @@
   <po-loading-overlay *ngIf="isLoading" [p-screen-lock]="true" p-text="Carregando..."></po-loading-overlay>
   <h3>Visão Geral dos Animais</h3>
   
+  <!-- Gráfico de Distribuição de Animais por Categoria -->
   <po-chart 
     [p-type]="chartType"
     [p-series]="chartSeries"
@@ -9,6 +10,7 @@
     p-title="Distribuição de Animais por Categoria">
   </po-chart>
 
+  <!-- Lista de Lotes Cadastrados -->
   <div *ngIf="batches.length" style="margin-top: 20px;">
     <h3>Lotes Cadastrados</h3>
     <po-list-view 
