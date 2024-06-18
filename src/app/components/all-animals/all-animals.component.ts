@@ -11,7 +11,7 @@ import { Animal } from '../register-animal/interface/animal.interface';
   templateUrl: './all-animals.component.html',
   styleUrls: ['./all-animals.component.css']
 })
-export class ListAnimalsComponent implements OnInit {
+export class AllAnimalsComponent implements OnInit {
   columns = [
     { property: 'id', label: 'ID Brinco', type: 'string' },
     { property: 'genero', label: 'Gênero', type: 'string' },
@@ -35,7 +35,6 @@ export class ListAnimalsComponent implements OnInit {
   constructor(private animalService: AnimalService) {}
 
   ngOnInit() {
-    // Optionally, load animals initially if required
   }
 
   toggleTable() {

@@ -1,19 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PoChartModule, PoChartType, PoChartOptions, PoChartSerie, PoLoadingModule } from '@po-ui/ng-components';
+import { PoChartModule, PoChartType, PoChartOptions, PoChartSerie, PoLoadingModule, PoListViewModule, PoInfoModule } from '@po-ui/ng-components';
 import { AnimalService } from '../../services/animal/animal.service';
+import { BatchService } from '../../services/batch/batch.service';
 import { Animal } from '../register-animal/interface/animal.interface';
-
 
 @Component({
   selector: 'app-overview',
   standalone: true,
-  imports: [CommonModule, PoChartModule, PoLoadingModule],
+  imports: [CommonModule, PoChartModule, PoLoadingModule, PoListViewModule, PoInfoModule ],
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.css']
 })
 export class OverviewComponent implements OnInit {
   animals: Animal[] = [];
+  batches: any[] = [];
   isLoading = true;
   chartType: PoChartType = PoChartType.Pie; // Define o tipo de gráfico como Pie
   chartOptions: PoChartOptions = {
@@ -21,9 +22,17 @@ export class OverviewComponent implements OnInit {
   };
   chartSeries: PoChartSerie[] = [];
 
-  constructor(private animalService: AnimalService) {}
+  constructor(
+    private animalService: AnimalService,
+    private batchService: BatchService
+  ) {}
 
   ngOnInit() {
+    this.loadAnimals();
+    this.loadBatches();
+  }
+
+  loadAnimals() {
     this.animalService.getAnimals().subscribe((data: Animal[]) => {
       this.animals = data;
       this.processChartData();
@@ -31,6 +40,14 @@ export class OverviewComponent implements OnInit {
     }, error => {
       console.error('Erro ao carregar animais:', error);
       this.isLoading = false;
+    });
+  }
+
+  loadBatches() {
+    this.batchService.getBatches().subscribe((data: any[]) => {
+      this.batches = data;
+    }, error => {
+      console.error('Erro ao carregar lotes:', error);
     });
   }
 

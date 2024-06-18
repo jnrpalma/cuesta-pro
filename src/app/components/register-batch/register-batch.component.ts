@@ -31,7 +31,7 @@ export class RegisterBatchComponent implements OnInit {
       property: 'categoria', 
       label: 'Categoria do Lote', 
       type: 'select', 
-      options: [], // Inicialmente vazio
+      options: [], 
       gridColumns: 6, 
       required: true 
     }
@@ -92,7 +92,7 @@ export class RegisterBatchComponent implements OnInit {
     const batchData = {
       nomeLote: this.batchAnimal.lote,
       categoria: this.batchAnimal.categoria,
-      animais: this.selectedAnimals.map(animal => animal.id) // Apenas os IDs dos animais selecionados
+      animais: this.selectedAnimals.map(animal => animal.id) 
     };
 
     console.log('Dados do lote a serem cadastrados:', batchData);
@@ -121,7 +121,7 @@ export class RegisterBatchComponent implements OnInit {
         categoriaField.options.push({ label: this.newCategory, value: this.newCategory.toLowerCase().replace(/\s+/g, '') });
         this.newCategory = '';
         this.poNotification.success('Categoria adicionada com sucesso!');
-        // Atualizar a lista de campos e forçar a detecção de mudanças
+       
         this.batchFields = [...this.batchFields];
         this.cdr.detectChanges();
       }

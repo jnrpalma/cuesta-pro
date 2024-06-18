@@ -15,12 +15,11 @@
       <po-button p-label="Adicionar Categoria" p-kind="default" (p-click)="adicionarCategoria()"></po-button>
     </div>
     <div class="" style="margin-top: 20px;">
-      <label>Selecione os Animais</label>
+    <h3>Selecione os Animais</h3>
       <po-table 
         #animalTable
         [p-columns]="columns" 
         [p-items]="animals"
-        [p-height]="350"
         [p-selectable]="true"
         [p-hide-select-all]="false"
         (p-selected)="onAnimalSelectionChange($event, animalTable)"

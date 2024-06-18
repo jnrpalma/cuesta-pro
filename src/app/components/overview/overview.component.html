@@ -1,11 +1,26 @@
 <div class="container" style="position: relative;">
-    <po-loading-overlay *ngIf="isLoading" [p-screen-lock]="true" p-text="Carregando..."></po-loading-overlay>
-    <h3>Visão Geral dos Animais</h3>
-    <po-chart 
-      [p-type]="chartType"
-      [p-series]="chartSeries"
-      [p-options]="chartOptions"
-      p-title="Distribuição de Animais por Categoria">
-    </po-chart>
-  </div>
+  <po-loading-overlay *ngIf="isLoading" [p-screen-lock]="true" p-text="Carregando..."></po-loading-overlay>
+  <h3>Visão Geral dos Animais</h3>
   
+  <po-chart 
+    [p-type]="chartType"
+    [p-series]="chartSeries"
+    [p-options]="chartOptions"
+    p-title="Distribuição de Animais por Categoria">
+  </po-chart>
+
+  <div *ngIf="batches.length" style="margin-top: 20px;">
+    <h3>Lotes Cadastrados</h3>
+    <po-list-view 
+      p-property-title="nomeLote" 
+      [p-items]="batches">
+      
+      <ng-template p-list-view-content-template let-item>
+        <div class="po-row">
+          <po-info class="po-md-12" p-label="Categoria" [p-value]="item.categoria"></po-info>
+          <po-info class="po-md-12" p-label="Animais" [p-value]="item.animais.length"></po-info>
+        </div>
+      </ng-template>
+    </po-list-view>
+  </div>
+</div>
