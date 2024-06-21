@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { PoButtonModule, PoChartModule, PoChartType, PoLoadingModule } from '@po-ui/ng-components';
+import { PoButtonModule, PoChartModule, PoChartType, PoLoadingModule, PoAvatarModule } from '@po-ui/ng-components';
 import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, PoChartModule, PoButtonModule, PoLoadingModule],
+  imports: [CommonModule, RouterModule, PoChartModule, PoButtonModule, PoLoadingModule, PoAvatarModule],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
@@ -19,6 +19,7 @@ export class DashboardComponent implements OnInit {
   chartTypeDonut: PoChartType = PoChartType.Donut;
   chartTypeBar: PoChartType = PoChartType.Bar;
   userName: string = 'John Doe';
+  profileImage: string = ''; // Nova propriedade para a URL da imagem de perfil
   isLoading: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
@@ -27,9 +28,12 @@ export class DashboardComponent implements OnInit {
     this.authService.getUser().subscribe(user => {
       if (user) {
         this.userName = user.firstName || user.email;
+        this.profileImage = user.photoURL || ''; // Atribuindo a URL da imagem de perfil
         console.log('User name set to:', this.userName);
+        console.log('Profile image URL:', this.profileImage);
       } else {
         this.userName = '';
+        this.profileImage = ''; // Certificando-se de limpar a URL da imagem se o usuário não estiver logado
       }
     });
   }

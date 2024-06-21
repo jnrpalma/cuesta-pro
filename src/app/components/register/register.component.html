@@ -6,16 +6,21 @@
         <h1>Cadastro</h1>
         <p>Informe seus dados</p>
         <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
-          <div class="name-surname">
+          <div class="avatar-container">
+            <po-avatar [p-src]="profileImage" p-size="md"></po-avatar>
+            <div class="file-input-container">
+              <input type="file" id="fileInput" accept="image/*" (change)="onFileChange($event)" hidden>
+              <po-button p-label="Escolher arquivo" (p-click)="triggerFileInput()"></po-button>
+              <span>{{ fileName }}</span>
+            </div>
+          </div>
+          <div class="name-email">
             <div>
               <po-input name="firstName" p-label="Nome" [(ngModel)]="firstName" p-clean="true" required></po-input>
             </div>
             <div>
-              <po-input name="lastName" p-label="Sobrenome" [(ngModel)]="lastName" p-clean="true" required></po-input>
+              <po-email name="email" p-label="Email" [(ngModel)]="email" p-clean="true" required></po-email>
             </div>
-          </div>
-          <div>
-            <po-email name="email" p-label="Email" [(ngModel)]="email" p-clean="true" required></po-email>
           </div>
           <div class="password-confirm">
             <div>

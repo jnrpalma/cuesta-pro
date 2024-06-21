@@ -10,7 +10,7 @@
 
 .register-box {
   display: flex;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 12px;
   overflow: hidden;
   width: 100%;
@@ -22,7 +22,7 @@
 .register-left {
   flex: 1;
   background-color: #f9f9f9;
-  padding: 30px;
+  padding: 20px;
   box-sizing: border-box;
 }
 
@@ -42,33 +42,47 @@
 }
 
 .register-form h1 {
-  margin-bottom: 8px;
   font-size: 24px;
+  margin-bottom: 8px;
 }
 
 .register-form p {
-  margin-bottom: 16px;
   font-size: 16px;
+  margin-bottom: 16px;
 }
 
 .register-form form {
   display: flex;
   flex-direction: column;
+  gap: 10px; /* Adicionando gap entre os elementos do formulário */
 }
 
-.register-form .name-surname,
-.register-form .password-confirm {
+.register-form .avatar-container {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px; /* Reduzindo margem inferior */
+}
+
+.register-form .file-input-container {
+  display: flex;
+  align-items: center;
   gap: 10px;
 }
 
-.register-form .name-surname div,
+.register-form .name-email,
+.register-form .password-confirm {
+  display: flex;
+  gap: 10px; /* Espaço entre os campos de nome/email e senha/confirmar senha */
+}
+
+.register-form .name-email div,
 .register-form .password-confirm div {
   flex: 1;
 }
 
 .register-form form div {
-  margin-bottom: 10px;
+  margin-bottom: 5px; /* Reduzindo margem inferior */
 }
 
 .register-form form po-input,

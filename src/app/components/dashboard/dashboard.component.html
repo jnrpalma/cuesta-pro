@@ -5,8 +5,11 @@
     p-text="Saindo..."
   ></po-loading-overlay>
   <div class="sidebar">
-    <h2>Bem-vindo !</h2>
-    <p>{{ userName }}</p>
+    <h2>Bem-vindo!</h2>
+    <div class="user-info">
+      <po-avatar [p-src]="profileImage" p-size="sm"></po-avatar>
+      <p>{{ userName }}</p>
+    </div>
     <ul>
       <li>
         <po-button
