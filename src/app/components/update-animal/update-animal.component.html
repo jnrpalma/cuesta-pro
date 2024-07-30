@@ -1,0 +1,78 @@
+<div class="update-animal-container">
+    <h2>Atualizar Animal</h2>
+    
+    <form #updateAnimalForm="ngForm" (ngSubmit)="onSubmit(updateAnimalForm)">
+      <div class="form-group">
+        <label for="id">ID Brinco</label>
+        <input type="text" id="id" name="id" [(ngModel)]="animal.id" class="form-control" readonly>
+      </div>
+  
+      <div class="form-group">
+        <label for="genero">Gênero</label>
+        <input type="text" id="genero" name="genero" [(ngModel)]="animal.genero" class="form-control">
+      </div>
+  
+      <div class="form-group">
+        <label for="categoria">Categoria</label>
+        <input type="text" id="categoria" name="categoria" [(ngModel)]="animal.categoria" class="form-control">
+      </div>
+  
+      <div class="form-group">
+        <label for="raca">Raça</label>
+        <input type="text" id="raca" name="raca" [(ngModel)]="animal.raca" class="form-control">
+      </div>
+  
+      <div class="form-group">
+        <label for="data">Data de Registro</label>
+        <input type="date" id="data" name="data" [(ngModel)]="animal.data" class="form-control">
+      </div>
+  
+      <div class="form-group">
+        <label for="dataNascimento">Data de Nascimento</label>
+        <input type="date" id="dataNascimento" name="dataNascimento" [(ngModel)]="animal.dataNascimento" class="form-control">
+      </div>
+  
+      <div class="form-group">
+        <label for="peso">Peso</label>
+        <input type="number" id="peso" name="peso" [(ngModel)]="animal.peso" class="form-control">
+      </div>
+  
+      <div class="form-group">
+        <label for="denticao">Dentição</label>
+        <input type="text" id="denticao" name="denticao" [(ngModel)]="animal.denticao" class="form-control">
+      </div>
+  
+      <div class="form-group">
+        <label for="paiAnimal">Pai (Animal Próprio/Terceiro)</label>
+        <input type="text" id="paiAnimal" name="paiAnimal" [(ngModel)]="animal.paiAnimal" class="form-control">
+      </div>
+  
+      <div class="form-group">
+        <label for="nomePai">Nome do Pai</label>
+        <input type="text" id="nomePai" name="nomePai" [(ngModel)]="animal.nomePai" class="form-control">
+      </div>
+  
+      <div class="form-group">
+        <label for="maeAnimal">Mãe (Animal Próprio/Terceiro)</label>
+        <input type="text" id="maeAnimal" name="maeAnimal" [(ngModel)]="animal.maeAnimal" class="form-control">
+      </div>
+  
+      <div class="form-group">
+        <label for="nomeMae">Nome da Mãe</label>
+        <input type="text" id="nomeMae" name="nomeMae" [(ngModel)]="animal.nomeMae" class="form-control">
+      </div>
+  
+      <div class="form-group">
+        <label for="registradoPor">Registrado por</label>
+        <input type="text" id="registradoPor" name="registradoPor" [(ngModel)]="animal.registradoPor" class="form-control">
+      </div>
+  
+      <div class="form-group">
+        <label for="quantity">Quantidade de Registros</label>
+        <input type="number" id="quantity" name="quantity" [(ngModel)]="animal.quantity" class="form-control">
+      </div>
+  
+      <button type="submit" class="po-button po-button-primary">Atualizar</button>
+    </form>
+  </div>
+  

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { PoTableModule, PoButtonModule, PoNotificationService, PoModalModule, PoModalComponent } from '@po-ui/ng-components';
 import { AnimalService } from '../../services/animal/animal.service';
 import { Animal } from '../register-animal/interface/animal.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-animals',
@@ -37,6 +38,12 @@ export class AllAnimalsComponent implements OnInit {
 
   actions = [
     {
+      action: this.updateAnimal.bind(this),
+      icon: 'po-icon-edit',
+      label: 'Atualizar',
+      type: 'default'
+    },
+    {
       action: this.confirmDelete.bind(this),
       icon: 'po-icon-delete',
       label: 'Excluir',
@@ -44,7 +51,7 @@ export class AllAnimalsComponent implements OnInit {
     }
   ];
 
-  constructor(private animalService: AnimalService, private poNotification: PoNotificationService) {}
+  constructor(private animalService: AnimalService, private poNotification: PoNotificationService, private router: Router) {}
 
   ngOnInit() {}
 
@@ -90,6 +97,10 @@ export class AllAnimalsComponent implements OnInit {
       this.poNotification.error('Erro ao excluir o animal: Firestore ID não encontrado.');
       this.poModal.close();
     }
+  }
+
+  updateAnimal(animal: Animal) {
+    this.router.navigate(['/dashboard/update-animal', animal.firestoreId]);
   }
 
   get tableButtonLabel() {

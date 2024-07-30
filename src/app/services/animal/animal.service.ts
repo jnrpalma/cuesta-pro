@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Animal } from '../../components/register-animal/interface/animal.interface';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -26,6 +25,20 @@ export class AnimalService {
         return { ...data, firestoreId }; // Adicionando o Firestore ID sem sobrescrever o ID do brinco
       }))
     );
+  }
+
+  getAnimalById(id: string): Observable<Animal> {
+    return this.firestore.collection(this.collectionName).doc<Animal>(id).snapshotChanges().pipe(
+      map(a => {
+        const data = a.payload.data() as Animal;
+        const firestoreId = a.payload.id;
+        return { ...data, firestoreId };
+      })
+    );
+  }
+
+  updateAnimal(animal: Animal): Promise<void> {
+    return this.firestore.collection(this.collectionName).doc(animal.firestoreId).update(animal);
   }
 
   deleteAnimal(firestoreId: string): Promise<void> {

@@ -7,7 +7,8 @@ import { RegisterAnimalComponent } from './components/register-animal/register-a
 import { AllAnimalsComponent } from './components/all-animals/all-animals.component';
 import { OverviewComponent } from './components/overview/overview.component';
 import { RegisterBatchComponent } from './components/register-batch/register-batch.component';
-import { AllBatchesComponent } from './components/all-batches/all-batches.component'; // Importe o novo componente
+import { AllBatchesComponent } from './components/all-batches/all-batches.component';
+import { UpdateAnimalComponent } from './components/update-animal/update-animal.component'; // Import the new component
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [LoginRegisterGuard] },
@@ -17,7 +18,8 @@ export const routes: Routes = [
       { path: 'overview', component: OverviewComponent }, 
       { path: 'cadastrar', component: RegisterAnimalComponent },
       { path: 'animais', component: AllAnimalsComponent },
-      { path: 'lotes', component: AllBatchesComponent } // Adicione a nova rota aqui
+      { path: 'lotes', component: AllBatchesComponent },
+      { path: 'update-animal/:id', component: UpdateAnimalComponent } // Add the new route
     ]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
