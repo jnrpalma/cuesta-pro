@@ -26,12 +26,7 @@ export class AllAnimalsComponent implements OnInit {
     { property: 'maeAnimal', label: 'Mãe (Animal Próprio/Terceiro)', type: 'string', visible: false },
     { property: 'nomeMae', label: 'Nome da Mãe', type: 'string', visible: false },
     { property: 'registradoPor', label: 'Registrado por', type: 'string' },
-    { property: 'quantity', label: 'Quantidade de Registros', type: 'number', visible: false },
-    {
-      property: 'actions', label: 'Ações', type: 'icon', icons: [
-        { action: this.deleteAnimal.bind(this), icon: 'po-icon-delete', tooltip: 'Excluir', value: 'delete' }
-      ]
-    }
+    { property: 'quantity', label: 'Quantidade de Registros', type: 'number', visible: false }
   ];
 
   animals: Animal[] = [];
@@ -62,24 +57,25 @@ export class AllAnimalsComponent implements OnInit {
       console.log('Lista de animais carregada:', this.animals);
     });
   }
-  
-  
 
   deleteAnimal(animal: Animal) {
-    console.log('Iniciando exclusão do animal com ID:', animal.id);
-    this.animalService.deleteAnimal(animal.id).then(() => {
-      console.log('Animal excluído com sucesso:', animal.id);
-      this.poNotification.success('Animal excluído com sucesso!');
-      setTimeout(() => {
-        this.loadAnimals(); // Recarregar a lista de animais após um pequeno delay
-      }, 500); // 0.5 segundo de delay
-    }).catch(error => {
-      console.error('Erro ao excluir o animal:', error);
-      this.poNotification.error('Erro ao excluir o animal: ' + error.message);
-    });
+    if (animal.firestoreId) {
+      console.log('Iniciando exclusão do animal com Firestore ID:', animal.firestoreId);
+      this.animalService.deleteAnimal(animal.firestoreId).then(() => {
+        console.log('Animal excluído com sucesso:', animal.firestoreId);
+        this.poNotification.success('Animal excluído com sucesso!');
+        setTimeout(() => {
+          this.loadAnimals(); // Recarregar a lista de animais após um pequeno delay
+        }, 500); // 0.5 segundo de delay
+      }).catch(error => {
+        console.error('Erro ao excluir o animal:', error);
+        this.poNotification.error('Erro ao excluir o animal: ' + error.message);
+      });
+    } else {
+      console.error('Erro ao excluir o animal: Firestore ID não encontrado.');
+      this.poNotification.error('Erro ao excluir o animal: Firestore ID não encontrado.');
+    }
   }
-  
-  
 
   get tableButtonLabel() {
     return this.showTable ? 'Esconder Todos os Animais' : 'Ver Todos os Animais';

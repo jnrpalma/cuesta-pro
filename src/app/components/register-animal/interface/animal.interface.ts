@@ -1,5 +1,6 @@
 export interface Animal {
-  id: string;
+  id: string; // ID do brinco
+  firestoreId?: string; // ID gerado pelo Firestore, opcional
   genero: string;
   categoria: string;
   data: Date | null;
