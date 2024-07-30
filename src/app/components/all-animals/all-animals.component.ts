@@ -1,17 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PoTableModule, PoButtonModule, PoNotificationService } from '@po-ui/ng-components';
+import { PoTableModule, PoButtonModule, PoNotificationService, PoModalModule, PoModalComponent } from '@po-ui/ng-components';
 import { AnimalService } from '../../services/animal/animal.service';
 import { Animal } from '../register-animal/interface/animal.interface';
 
 @Component({
   selector: 'app-list-animals',
   standalone: true,
-  imports: [CommonModule, PoTableModule, PoButtonModule],
+  imports: [CommonModule, PoTableModule, PoButtonModule, PoModalModule],
   templateUrl: './all-animals.component.html',
   styleUrls: ['./all-animals.component.css']
 })
 export class AllAnimalsComponent implements OnInit {
+  @ViewChild(PoModalComponent, { static: true }) poModal!: PoModalComponent;
+
   columns = [
     { property: 'id', label: 'ID Brinco', type: 'string' },
     { property: 'genero', label: 'Gênero', type: 'string' },
@@ -31,9 +33,11 @@ export class AllAnimalsComponent implements OnInit {
 
   animals: Animal[] = [];
   showTable = false;
+  animalToDelete: Animal | null = null;
+
   actions = [
     {
-      action: this.deleteAnimal.bind(this),
+      action: this.confirmDelete.bind(this),
       icon: 'po-icon-delete',
       label: 'Excluir',
       type: 'danger'
@@ -58,22 +62,33 @@ export class AllAnimalsComponent implements OnInit {
     });
   }
 
-  deleteAnimal(animal: Animal) {
-    if (animal.firestoreId) {
-      console.log('Iniciando exclusão do animal com Firestore ID:', animal.firestoreId);
-      this.animalService.deleteAnimal(animal.firestoreId).then(() => {
-        console.log('Animal excluído com sucesso:', animal.firestoreId);
+  confirmDelete(animal: Animal) {
+    this.animalToDelete = animal;
+    this.poModal.open();
+  }
+
+  deleteAnimal() {
+    const firestoreId = this.animalToDelete?.firestoreId;
+    if (firestoreId) {
+      console.log('Iniciando exclusão do animal com Firestore ID:', firestoreId);
+      this.animalService.deleteAnimal(firestoreId).then(() => {
+        console.log('Animal excluído com sucesso:', firestoreId);
         this.poNotification.success('Animal excluído com sucesso!');
         setTimeout(() => {
           this.loadAnimals(); // Recarregar a lista de animais após um pequeno delay
+          this.poModal.close();
+          this.animalToDelete = null; // Resetar animalToDelete
         }, 500); // 0.5 segundo de delay
       }).catch(error => {
         console.error('Erro ao excluir o animal:', error);
         this.poNotification.error('Erro ao excluir o animal: ' + error.message);
+        this.poModal.close();
+        this.animalToDelete = null; // Resetar animalToDelete
       });
     } else {
       console.error('Erro ao excluir o animal: Firestore ID não encontrado.');
       this.poNotification.error('Erro ao excluir o animal: Firestore ID não encontrado.');
+      this.poModal.close();
     }
   }
 
