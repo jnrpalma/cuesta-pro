@@ -1,0 +1,27 @@
+.update-animal-container {
+    position: relative;
+    margin-top: 20px;
+  }
+  
+  .buttons-container po-button {
+    margin-right: 10px;
+  }
+  
+  .buttons-container po-button:last-child {
+    margin-right: 0;
+  }
+  
+  .parent-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .parent-container-item {
+    flex: 1;
+    margin-right: 20px;
+  }
+  
+  .parent-container-item:last-child {
+    margin-right: 0;
+  }
+  
