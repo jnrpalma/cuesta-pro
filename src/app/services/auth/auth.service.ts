@@ -104,7 +104,7 @@ export class AuthService {
           return {
             displayName: user.displayName,
             email: user.email,
-            firstName: firstName,
+            firstName: firstName || user.email, // Aqui garantimos que o primeiro nome seja usado, ou o email se o nome estiver ausente
             photoURL: user.photoURL
           };
         } else {
@@ -113,4 +113,5 @@ export class AuthService {
       })
     );
   }
+  
 }

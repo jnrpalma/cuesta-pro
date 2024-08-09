@@ -27,7 +27,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.authService.getUser().subscribe(user => {
       if (user) {
-        this.userName = user.firstName || user.email;
+        this.userName = user.displayName || user.email;
         this.profileImage = user.photoURL || ''; // Atribuindo a URL da imagem de perfil
         console.log('User name set to:', this.userName);
         console.log('Profile image URL:', this.profileImage);
@@ -37,6 +37,7 @@ export class DashboardComponent implements OnInit {
       }
     });
   }
+  
 
   navigateTo(route: string) {
     this.router.navigate([`/dashboard/${route}`]);
