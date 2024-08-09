@@ -23,8 +23,10 @@ export class AuthService {
       this.router.navigate(['/dashboard/overview']);
     } catch (error) {
       console.log('Erro de login:', error);
+      throw error;  // Propaga o erro para que possa ser capturado no componente que chama o método
     }
   }
+  
 
   async register(email: string, password: string, displayName: string, profileImage: string) {
     try {

@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PoFieldModule, PoButtonModule, PoLoadingModule, PoLinkModule } from '@po-ui/ng-components';
+import { PoFieldModule, PoButtonModule, PoLoadingModule, PoLinkModule, PoNotificationService } from '@po-ui/ng-components';
 import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
+import { ErrorHandleService } from '../../services/error-handle/error-handle.service';
 
 @Component({
   selector: 'app-login',
@@ -18,34 +19,44 @@ export class LoginComponent {
   isForgotPassword: boolean = false;
   isLoading: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private poNotification: PoNotificationService,
+    private errorHandleService: ErrorHandleService
+  ) {
     this.authService.logout(); 
   }
 
   async onSubmit() {
     if (this.email && this.password) {
-      this.isLoading = true; 
+      this.isLoading = true;
       try {
         await this.authService.login(this.email, this.password);
+      } catch (error) {
+        this.errorHandleService.handleLoginError(error);  // Garante que o erro seja tratado e a notificação seja exibida
       } finally {
-        this.isLoading = false; 
+        this.isLoading = false;
       }
     } else {
-      console.log('Erro de email e senha');
+      this.poNotification.warning('Por favor, preencha todos os campos.');
     }
   }
+  
 
   async onForgotPasswordSubmit() {
     if (this.email) {
       this.isLoading = true;
       try {
         await this.authService.forgotPassword(this.email);
-        console.log('Se o email estiver registrado, um link de redefinição de senha será enviado.');
+        this.poNotification.success('Se o email estiver registrado, um link de redefinição de senha será enviado.');
+      } catch (error) {
+        this.errorHandleService.handleForgotPasswordError(error);
       } finally {
         this.isLoading = false;
       }
     } else {
-      console.log('Por favor, insira um email');
+      this.poNotification.warning('Por favor, insira um email.');
     }
   }
 
