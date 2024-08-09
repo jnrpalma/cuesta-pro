@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { map, finalize } from 'rxjs/operators';
+import { finalize, map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -27,31 +26,39 @@ export class AuthService {
     }
   }
   
-
   async register(email: string, password: string, displayName: string, profileImage: string) {
     try {
       const userCredential = await this.afAuth.createUserWithEmailAndPassword(email, password);
       if (userCredential.user) {
-        const filePath = `profile_images/${userCredential.user.uid}`;
-        const fileRef = this.storage.ref(filePath);
-        const task = this.storage.upload(filePath, this.dataURLtoFile(profileImage, 'profileImage.png'));
+        if (profileImage) {
+          // Se a imagem de perfil foi fornecida, faça o upload e depois atualize o perfil
+          const filePath = `profile_images/${userCredential.user.uid}`;
+          const fileRef = this.storage.ref(filePath);
+          const task = this.storage.upload(filePath, this.dataURLtoFile(profileImage, 'profileImage.png'));
 
-        task.snapshotChanges().pipe(
-          finalize(async () => {
-            const downloadURL = await fileRef.getDownloadURL().toPromise();
-            if (userCredential.user) { // Adicionando verificação
-              await userCredential.user.updateProfile({
+          task.snapshotChanges().pipe(
+            finalize(async () => {
+              const downloadURL = await fileRef.getDownloadURL().toPromise();
+              await userCredential.user?.updateProfile({
                 displayName: displayName,
                 photoURL: downloadURL
               });
               await this.syncUserProfileUpdate();
               this.router.navigate(['/dashboard/overview']);
-            }
-          })
-        ).subscribe();
+            })
+          ).subscribe();
+        } else {
+          // Se não há imagem de perfil, apenas atualize o nome de exibição
+          await userCredential.user.updateProfile({
+            displayName: displayName
+          });
+          await this.syncUserProfileUpdate();
+          this.router.navigate(['/dashboard/overview']);
+        }
       }
     } catch (error) {
       console.log('Erro durante o registro:', error);
+      throw error; // Propaga o erro para que possa ser capturado no componente que chama o método
     }
   }
 
@@ -113,5 +120,4 @@ export class AuthService {
       })
     );
   }
-  
 }

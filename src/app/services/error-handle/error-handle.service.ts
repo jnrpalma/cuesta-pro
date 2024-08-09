@@ -1,5 +1,5 @@
-import { Injectable } from "@angular/core";
-import { PoNotificationService } from "@po-ui/ng-components";
+import { Injectable } from '@angular/core';
+import { PoNotificationService } from '@po-ui/ng-components';
 
 @Injectable({
   providedIn: 'root'
@@ -52,5 +52,25 @@ export class ErrorHandleService {
 
     this.poNotification.error(message);
   }
-}
 
+  handleRegistrationError(error: any) {
+    let message = 'Ocorreu um erro ao tentar realizar o registro.';
+
+    switch (error.code) {
+      case 'auth/email-already-in-use':
+        message = 'O email fornecido já está em uso. Por favor, use outro email.';
+        break;
+      case 'auth/invalid-email':
+        message = 'O email fornecido é inválido.';
+        break;
+      case 'auth/weak-password':
+        message = 'A senha fornecida é muito fraca. Escolha uma senha mais forte.';
+        break;
+      default:
+        message = 'Ocorreu um erro desconhecido. Tente novamente mais tarde.';
+        break;
+    }
+
+    this.poNotification.error(message);
+  }
+}

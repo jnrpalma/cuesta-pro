@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PoFieldModule, PoButtonModule, PoLoadingModule, PoLinkModule, PoAvatarModule } from '@po-ui/ng-components';
+import { PoFieldModule, PoButtonModule, PoLoadingModule, PoLinkModule, PoAvatarModule, PoNotificationService } from '@po-ui/ng-components';
 import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
+import { ErrorHandleService } from '../../services/error-handle/error-handle.service';
 
 @Component({
   selector: 'app-register',
@@ -21,7 +22,12 @@ export class RegisterComponent {
   fileName: string = 'Nenhum arquivo escolhido'; // Nome do arquivo escolhido
   isLoading: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private poNotification: PoNotificationService,
+    private errorHandleService: ErrorHandleService
+  ) {}
 
   onFileChange(event: any) {
     const reader = new FileReader();
@@ -46,13 +52,14 @@ export class RegisterComponent {
       try {
         const displayName = this.firstName;
         await this.authService.register(this.email, this.password, displayName, this.profileImage);
+        this.poNotification.success('Registro realizado com sucesso!');
       } catch (error) {
-        console.log('Error during registration:', error);
+        this.errorHandleService.handleRegistrationError(error); // Utilize o serviço para lidar com os erros de registro
       } finally {
         this.isLoading = false;
       }
     } else {
-      console.log('Please fill all fields correctly');
+      this.poNotification.warning('Por favor, preencha todos os campos corretamente.');
     }
   }
 
