@@ -1,25 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PoListViewModule, PoInfoModule, PoLoadingModule, PoNotificationService } from '@po-ui/ng-components';
+import { PoListViewModule, PoInfoModule, PoLoadingModule, PoNotificationService, PoModalModule, PoModalComponent, PoButtonModule } from '@po-ui/ng-components';
 import { BatchService } from '../../services/batch/batch.service';
 
 @Component({
   selector: 'app-all-batches',
   standalone: true,
-  imports: [CommonModule, PoListViewModule, PoInfoModule, PoLoadingModule],
+  imports: [CommonModule, PoListViewModule, PoInfoModule, PoLoadingModule, PoModalModule, PoButtonModule],
   templateUrl: './all-batches.component.html',
   styleUrls: ['./all-batches.component.css']
 })
 export class AllBatchesComponent implements OnInit {
+  @ViewChild(PoModalComponent, { static: true }) poModal!: PoModalComponent;
+
   batches: any[] = [];
   isLoading: boolean = false;
+  batchToDelete: any;
 
   actions = [
     {
       label: 'Excluir',
       icon: 'po-icon-delete',
       type: 'danger',
-      action: this.deleteBatch.bind(this)
+      action: this.confirmDelete.bind(this)
     }
   ];
 
@@ -40,14 +43,21 @@ export class AllBatchesComponent implements OnInit {
     });
   }
 
-  deleteBatch(batch: any) {
-    if (confirm(`Tem certeza de que deseja excluir o lote "${batch.nomeLote}"?`)) {
-      this.batchService.deleteBatch(batch.firestoreId).then(() => {
+  confirmDelete(batch: any) {
+    this.batchToDelete = batch;
+    this.poModal.open(); // Abrir modal de confirmação de exclusão
+  }
+
+  deleteBatch() {
+    if (this.batchToDelete) {
+      this.batchService.deleteBatch(this.batchToDelete.firestoreId).then(() => {
         this.poNotification.success('Lote excluído com sucesso!');
         this.loadBatches(); // Recarregar a lista de lotes após exclusão
+        this.poModal.close(); // Fechar o modal após exclusão
       }).catch(error => {
         console.error('Erro ao excluir o lote:', error);
         this.poNotification.error('Erro ao excluir o lote: ' + error.message);
+        this.poModal.close(); // Fechar o modal mesmo em caso de erro
       });
     }
   }
