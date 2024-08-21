@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PoListViewModule, PoInfoModule, PoLoadingModule, PoNotificationService, PoModalModule, PoModalComponent, PoButtonModule } from '@po-ui/ng-components';
+import { PoListViewModule, PoInfoModule, PoLoadingModule, PoNotificationService, PoModalModule, PoModalComponent, PoButtonModule, PoTableModule, PoTableColumn } from '@po-ui/ng-components';
 import { BatchService } from '../../services/batch/batch.service';
+import { Animal } from '../register-animal/interface/animal.interface';
 
 @Component({
   selector: 'app-all-batches',
   standalone: true,
-  imports: [CommonModule, PoListViewModule, PoInfoModule, PoLoadingModule, PoModalModule, PoButtonModule],
+  imports: [CommonModule, PoListViewModule, PoInfoModule, PoLoadingModule, PoModalModule, PoButtonModule, PoTableModule],
   templateUrl: './all-batches.component.html',
   styleUrls: ['./all-batches.component.css']
 })
@@ -16,14 +17,33 @@ export class AllBatchesComponent implements OnInit {
   batches: any[] = [];
   isLoading: boolean = false;
   batchToDelete: any;
+  selectedBatchAnimals: Animal[] = []; // Lista de animais do lote selecionado
+  showAnimals: boolean = false; // Flag para mostrar ou ocultar animais
+  animalsVisibleBatchId: string | null = null; // ID do lote atual com animais visíveis
 
   actions = [
+    {
+      label: 'Ver Animais',
+      icon: 'po-icon-list',
+      action: this.toggleAnimalsView.bind(this)
+    },
     {
       label: 'Excluir',
       icon: 'po-icon-delete',
       type: 'danger',
       action: this.confirmDelete.bind(this)
     }
+  ];
+
+  columns: PoTableColumn[] = [
+    { property: 'id', label: 'ID Brinco', type: 'string' },
+    { property: 'genero', label: 'Gênero', type: 'string' },
+    { property: 'categoria', label: 'Categoria', type: 'string' },
+    { property: 'raca', label: 'Raça', type: 'string' },
+    { property: 'data', label: 'Data de Registro', type: 'date' },
+    { property: 'dataNascimento', label: 'Data de Nascimento', type: 'date' },
+    { property: 'peso', label: 'Peso', type: 'number' },
+    { property: 'denticao', label: 'Dentição', type: 'string' }
   ];
 
   constructor(private batchService: BatchService, private poNotification: PoNotificationService) {}
@@ -45,7 +65,7 @@ export class AllBatchesComponent implements OnInit {
 
   confirmDelete(batch: any) {
     this.batchToDelete = batch;
-    this.poModal.open(); // Abrir modal de confirmação de exclusão
+    this.poModal.open();
   }
 
   deleteBatch() {
@@ -53,12 +73,32 @@ export class AllBatchesComponent implements OnInit {
       this.batchService.deleteBatch(this.batchToDelete.firestoreId).then(() => {
         this.poNotification.success('Lote excluído com sucesso!');
         this.loadBatches(); // Recarregar a lista de lotes após exclusão
-        this.poModal.close(); // Fechar o modal após exclusão
+        this.selectedBatchAnimals = []; // Limpar a tabela de animais
+        this.showAnimals = false; // Ocultar a tabela de animais
+        this.animalsVisibleBatchId = null; // Resetar o lote visível
+        this.poModal.close(); // Fechar o modal após a exclusão
       }).catch(error => {
         console.error('Erro ao excluir o lote:', error);
         this.poNotification.error('Erro ao excluir o lote: ' + error.message);
-        this.poModal.close(); // Fechar o modal mesmo em caso de erro
+        this.poModal.close(); // Garantir que o modal feche mesmo em caso de erro
       });
+    }
+  }
+  
+
+  toggleAnimalsView(batch: any) {
+    if (this.animalsVisibleBatchId === batch.firestoreId) {
+      // Se os animais desse lote já estão visíveis, ocultar
+      this.showAnimals = false;
+      this.animalsVisibleBatchId = null;
+      this.selectedBatchAnimals = [];
+      this.actions[0].label = 'Ver Animais';
+    } else {
+      // Se outro lote está visível, trocar para o novo lote
+      this.selectedBatchAnimals = batch.animais || [];
+      this.showAnimals = true;
+      this.animalsVisibleBatchId = batch.firestoreId;
+      this.actions[0].label = 'Ocultar Animais';
     }
   }
 }

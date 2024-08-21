@@ -26,3 +26,13 @@
     <po-button p-label="Excluir" p-kind="danger" (p-click)="deleteBatch()"></po-button>
   </po-modal-footer>
 </po-modal>
+
+<!-- Tabela de Animais do Lote -->
+<div *ngIf="showAnimals && selectedBatchAnimals.length > 0" style="margin-top: 20px;">
+  <h3>Animais no Lote</h3>
+  <po-table 
+    [p-columns]="columns" 
+    [p-items]="selectedBatchAnimals"
+    [p-height]="350">
+  </po-table>
+</div>

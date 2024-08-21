@@ -5,17 +5,36 @@
     <po-loading-overlay *ngIf="isLoading" [p-screen-lock]="true" p-text="Carregando..."></po-loading-overlay>
     <h3>Registrar Lote de Animais</h3>
     <div class="form-row">
-      <po-dynamic-form 
-        [p-fields]="batchFields"
-        [p-value]="batchAnimal">
-      </po-dynamic-form>
+      <po-input
+        p-label="Nome do Lote"
+        [(ngModel)]="batchAnimal.lote"
+        p-required="true"
+        p-placeholder="Digite o nome do lote"
+        style="margin-bottom: 20px;">
+      </po-input>
+      <po-combo
+        p-label="Categoria do Lote"
+        [ngModel]="batchAnimal.categoria"
+        (ngModelChange)="batchAnimal.categoria = $event"
+        [p-options]="categoryOptions"
+       
+        p-placeholder="Selecione uma categoria">
+      </po-combo>
     </div>
     <div class="new-category-container" style="margin-top: 20px;">
-      <po-input p-label="Nova Categoria" [(ngModel)]="newCategory" style="margin-bottom: 10px;"></po-input>
-      <po-button p-label="Adicionar Categoria" p-kind="default" (p-click)="adicionarCategoria()"></po-button>
+      <po-input
+        p-label="Nova Categoria"
+        [(ngModel)]="newCategory"
+        style="margin-bottom: 10px;">
+      </po-input>
+      <po-button
+        p-label="Adicionar Categoria"
+        p-kind="default"
+        (p-click)="adicionarCategoria()">
+      </po-button>
     </div>
     <div class="" style="margin-top: 20px;">
-    <h3>Selecione os Animais</h3>
+      <h3>Selecione os Animais</h3>
       <po-table 
         #animalTable
         [p-columns]="columns" 
