@@ -73,7 +73,7 @@ export class RegisterBatchComponent implements OnInit {
 
   loadAnimals() {
     this.isLoading = true;
-    this.animalService.getAnimals().subscribe((data: Animal[]) => {
+    this.animalService.getAnimals(1,10).subscribe((data: Animal[]) => {
       this.animals = data;
       this.isLoading = false;
     }, error => {

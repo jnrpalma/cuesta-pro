@@ -35,7 +35,7 @@ export class OverviewComponent implements OnInit {
   }
 
   loadAnimals() {
-    this.animalService.getAnimals().subscribe((data: Animal[]) => {
+    this.animalService.getAllAnimals().subscribe((data: Animal[]) => {
       this.animals = data;
       this.processChartData();
       this.isLoading = false;
@@ -44,6 +44,7 @@ export class OverviewComponent implements OnInit {
       this.isLoading = false;
     });
   }
+  
 
   loadBatches() {
     this.batchService.getBatches().subscribe((data: Batch[]) => {

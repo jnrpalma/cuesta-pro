@@ -4,4 +4,5 @@ export interface Batch {
   nomeLote: string;
   categoria: string;
   animais: Animal[];
+  firestoreId?: string;
 }

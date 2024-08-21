@@ -35,6 +35,9 @@ export class AllAnimalsComponent implements OnInit {
   animals: Animal[] = [];
   showTable = false;
   animalToDelete: Animal | null = null;
+  currentPage = 1;
+  pageSize = 10;
+  totalItems = 0;
 
   actions = [
     {
@@ -57,16 +60,27 @@ export class AllAnimalsComponent implements OnInit {
 
   toggleTable() {
     if (!this.showTable) {
+      this.animalService.resetPagination(); // Reseta a paginação
       this.loadAnimals();
     }
     this.showTable = !this.showTable;
   }
 
   loadAnimals() {
-    this.animalService.getAnimals().subscribe((data: Animal[]) => {
+    this.animalService.getAnimals(this.currentPage, this.pageSize).subscribe((data: Animal[]) => {
       this.animals = data;
       console.log('Lista de animais carregada:', this.animals);
     });
+  }
+
+  loadMoreAnimals() {
+    if (this.animals.length >= this.pageSize * this.currentPage) {
+      this.currentPage++;
+      this.animalService.getAnimals(this.currentPage, this.pageSize).subscribe((data: Animal[]) => {
+        this.animals = [...this.animals, ...data];
+        console.log('Mais animais carregados:', data);
+      });
+    }
   }
 
   confirmDelete(animal: Animal) {

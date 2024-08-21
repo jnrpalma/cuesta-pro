@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PoListViewModule, PoInfoModule, PoLoadingModule } from '@po-ui/ng-components';
+import { PoListViewModule, PoInfoModule, PoLoadingModule, PoNotificationService } from '@po-ui/ng-components';
 import { BatchService } from '../../services/batch/batch.service';
 
 @Component({
@@ -14,7 +14,16 @@ export class AllBatchesComponent implements OnInit {
   batches: any[] = [];
   isLoading: boolean = false;
 
-  constructor(private batchService: BatchService) {}
+  actions = [
+    {
+      label: 'Excluir',
+      icon: 'po-icon-delete',
+      type: 'danger',
+      action: this.deleteBatch.bind(this)
+    }
+  ];
+
+  constructor(private batchService: BatchService, private poNotification: PoNotificationService) {}
 
   ngOnInit() {
     this.loadBatches();
@@ -29,5 +38,17 @@ export class AllBatchesComponent implements OnInit {
       this.isLoading = false;
       console.error('Erro ao carregar lotes cadastrados', error);
     });
+  }
+
+  deleteBatch(batch: any) {
+    if (confirm(`Tem certeza de que deseja excluir o lote "${batch.nomeLote}"?`)) {
+      this.batchService.deleteBatch(batch.firestoreId).then(() => {
+        this.poNotification.success('Lote excluído com sucesso!');
+        this.loadBatches(); // Recarregar a lista de lotes após exclusão
+      }).catch(error => {
+        console.error('Erro ao excluir o lote:', error);
+        this.poNotification.error('Erro ao excluir o lote: ' + error.message);
+      });
+    }
   }
 }
