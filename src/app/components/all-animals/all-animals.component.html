@@ -1,21 +1,34 @@
-<div style="position: relative; margin-top: 20px;">
-  <po-button p-label="{{ tableButtonLabel }}" p-kind="primary" (p-click)="toggleTable()"></po-button>
-  
-  <div *ngIf="showTable" style="margin-top: 20px;">
-    <po-table 
-      [p-columns]="columns" 
+<div style="position: relative; margin-top: 20px">
+  <po-button
+    p-label="{{ tableButtonLabel }}"
+    p-kind="primary"
+    (p-click)="toggleTable()"
+  ></po-button>
+
+  <div *ngIf="showTable" style="margin-top: 20px">
+    <po-table
+      [p-height]="350"
+      [p-columns]="columns"
       [p-items]="animals"
       [p-actions]="actions"
-      [p-height]="350"
-      (p-show-more)="loadMoreAnimals()">
+      (p-show-more)="loadMoreAnimals()"
+    >
     </po-table>
   </div>
 
   <po-modal #poModal p-title="Confirmação de Exclusão">
     <p>Tem certeza de que deseja excluir este animal?</p>
     <po-modal-footer>
-      <po-button p-label="Cancelar" p-kind="default" (p-click)="poModal.close()"></po-button>
-      <po-button p-label="Excluir" p-kind="danger" (p-click)="deleteAnimal()"></po-button>
+      <po-button
+        p-label="Cancelar"
+        p-kind="default"
+        (p-click)="poModal.close()"
+      ></po-button>
+      <po-button
+        p-label="Excluir"
+        p-kind="danger"
+        (p-click)="deleteAnimal()"
+      ></po-button>
     </po-modal-footer>
   </po-modal>
 </div>
