@@ -7,8 +7,8 @@
 
   <div *ngIf="showTable" style="margin-top: 20px">
     <po-table
-      [p-height]="350"
       [p-columns]="columns"
+      [p-height]="350"
       [p-items]="animals"
       [p-actions]="actions"
       (p-show-more)="loadMoreAnimals()"
