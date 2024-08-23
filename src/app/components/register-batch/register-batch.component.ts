@@ -13,7 +13,7 @@ import {
   PoComboOption,
   PoPageModule,
   PoModalModule,
-  PoModalComponent,  // Importe PoModalComponent diretamente
+  PoModalComponent,
 } from '@po-ui/ng-components';
 import { AnimalService } from '../../services/animal/animal.service';
 import { BatchService } from '../../services/batch/batch.service';
@@ -43,6 +43,7 @@ export class RegisterBatchComponent implements OnInit {
   @ViewChild('confirmCategoryModal') confirmCategoryModal!: PoModalComponent;
 
   loteAtual: string = '';
+  formularioValido: boolean = false;
 
   showBatchForm: boolean = false;
   batchFormButtonLabel: string = 'Formulário de Cadastro de Lote';
@@ -121,30 +122,33 @@ export class RegisterBatchComponent implements OnInit {
 
   onCategoryChange(selectedCategory: string) {
     this.batchAnimal.categoria = selectedCategory;
+    this.verificarFormularioValido();
 
-    // Verifica se a categoria já existe e carrega o lote associado
     this.batchService.batchExists(selectedCategory).pipe(
       take(1),
       switchMap(exists => {
         if (exists) {
-          return this.batchService.getLoteByCategoria(selectedCategory); // Novo método que criaremos no serviço
+          return this.batchService.getLoteByCategoria(selectedCategory);
         } else {
           return throwError(() => new Error('Categoria não existe'));
         }
       })
     ).subscribe({
       next: lote => {
-        this.loteAtual = lote.nomeLote; // Salva o nome do lote para exibir no modal
-        this.confirmCategoryModal.open(); // Abre o modal
+        this.loteAtual = lote.nomeLote;
+        this.confirmCategoryModal.open();
       },
-      error: err => {
+      error: () => {
         this.poNotification.error('Erro ao carregar o lote.');
       }
     });
   }
 
+  verificarFormularioValido() {
+    this.formularioValido = this.batchAnimal.lote.trim() !== '' && this.batchAnimal.categoria.trim() !== '';
+  }
+
   confirmCategorySelection() {
-    this.batchAnimal.categoria = this.pendingCategorySelection;
     this.confirmCategoryModal.close();
   }
 
@@ -225,6 +229,7 @@ export class RegisterBatchComponent implements OnInit {
       categoria: '',
     };
     this.selectedAnimals = [];
+    this.formularioValido = false;
   }
 
   adicionarCategoria() {
@@ -257,6 +262,7 @@ export class RegisterBatchComponent implements OnInit {
             this.poNotification.success('Categoria adicionada com sucesso! Agora selecione quais animais.');
             this.categoryOptions = [...this.categoryOptions];
             this.cdr.detectChanges();
+            this.verificarFormularioValido();
           },
           error: (err) => {
             console.error('Erro durante a adição da categoria:', err.message);
