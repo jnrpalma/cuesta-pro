@@ -1,8 +1,8 @@
-# CuestaSheepApp
+# TsonPro
 
-## Sobre o CuestaSheepApp
+## Sobre o TsonPro
 
-CuestaSheepApp é uma aplicação voltada para a gestão de ovinocultura, permitindo o gerenciamento eficiente de rebanhos ovinos. Com este aplicativo, é possível acompanhar informações detalhadas sobre os animais, facilitando a tomada de decisões e melhorando a produtividade da criação.
+TsonPro é uma aplicação voltada para a gestão de ovinocultura, permitindo o gerenciamento eficiente de rebanhos ovinos. Com este aplicativo, é possível acompanhar informações detalhadas sobre os animais, facilitando a tomada de decisões e melhorando a produtividade da criação.
 
 ### Funcionalidades Principais:
 
@@ -11,4 +11,4 @@ CuestaSheepApp é uma aplicação voltada para a gestão de ovinocultura, permit
 - **Relatórios e Análises:** Gere relatórios personalizados para acompanhar o desempenho do rebanho e identificar tendências importantes.
 - **Notificações:** Receba alertas sobre eventos importantes, como datas de vacinação e períodos de reprodução.
 
-O CuestaSheepApp foi desenvolvido para ser uma ferramenta completa e intuitiva para criadores de ovelhas, proporcionando uma gestão mais eficiente e assertiva.
+O TsonPro foi desenvolvido para ser uma ferramenta completa e intuitiva para criadores de ovelhas, proporcionando uma gestão mais eficiente e assertiva.
