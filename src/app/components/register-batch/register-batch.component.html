@@ -1,55 +1,52 @@
-<div style="position: relative; margin-top: 20px;">
-  <po-button p-label="{{ batchFormButtonLabel }}" p-kind="primary" (p-click)="toggleBatchForm()" style="margin-top: 10px;"></po-button>
-  
-  <div *ngIf="showBatchForm" class="container" style="position: relative; margin-top: 20px;">
-    <po-loading-overlay *ngIf="isLoading" [p-screen-lock]="true" p-text="Carregando..."></po-loading-overlay>
-    <h3>Registrar Lote de Animais</h3>
-    <div class="form-row">
-      <po-input
-        p-label="Nome do Lote"
-        [(ngModel)]="batchAnimal.lote"
-        p-required="true"
-        p-placeholder="Digite o nome do lote"
-        style="margin-bottom: 20px;">
-      </po-input>
-      <po-combo
-        p-label="Categoria do Lote"
-        [ngModel]="batchAnimal.categoria"
-        (ngModelChange)="batchAnimal.categoria = $event"
-        [p-options]="categoryOptions"
-       
-        p-placeholder="Selecione uma categoria">
-      </po-combo>
-    </div>
-    <div class="new-category-container" style="margin-top: 20px;">
-      <po-input
-        p-label="Nova Categoria"
-        [(ngModel)]="newCategory"
-        style="margin-bottom: 10px;">
-      </po-input>
-      <po-button
-        p-label="Adicionar Categoria"
-        p-kind="default"
-        (p-click)="adicionarCategoria()">
-      </po-button>
-    </div>
-    <div class="" style="margin-top: 20px;">
-      <h3>Selecione os Animais</h3>
-      <po-table 
-        #animalTable
-        [p-columns]="columns" 
-        [p-items]="animals"
-        [p-height]="350"
-        [p-selectable]="true"
-        [p-hide-table-search]="false"
-        [p-hide-select-all]="false"
-        (p-selected)="onAnimalSelectionChange($event, animalTable)"
-        (p-unselected)="onAnimalSelectionChange($event, animalTable)">
-      </po-table>
-    </div>
-    <div class="buttons-container" style="margin-top: 20px;">
-      <po-button p-label="Cadastrar Lote" p-kind="primary" (p-click)="cadastrarLote(animalTable)"></po-button>
-      <po-button p-label="Restaurar" p-kind="default" (p-click)="restaurarBatchForm()"></po-button>
-    </div>
+<po-modal #confirmCategoryModal p-title="Confirmação">
+  <p>
+    Você selecionou uma categoria existente. Deseja adicionar mais animais ao lote "{{ loteAtual }}" e categoria "{{ batchAnimal.categoria }}"?
+  </p>
+  <po-modal-footer>
+    <po-button p-label="Sim" p-kind="primary" ></po-button>
+    <po-button p-label="Não" p-kind="default" (p-click)="confirmCategoryModal.close()"></po-button>
+  </po-modal-footer>
+</po-modal>
+
+<po-button p-label="{{ batchFormButtonLabel }}" p-kind="primary" (p-click)="toggleBatchForm()"></po-button>
+
+<div *ngIf="showBatchForm" class="container">
+  <po-loading-overlay *ngIf="isLoading" [p-screen-lock]="true" p-text="Carregando..."></po-loading-overlay>
+  <h3>Registrar Lote de Animais</h3>
+
+  <div class="po-row form-row">
+    <po-input class="po-lg-3" p-label="Nome do Lote" [(ngModel)]="batchAnimal.lote" p-required="true"
+      p-placeholder="Digite o nome do lote">
+    </po-input>
+    <po-combo
+  class="po-lg-3"
+  p-label="Categoria do Lote"
+  [ngModel]="batchAnimal.categoria"
+  (ngModelChange)="onCategoryChange($event)"
+  [p-options]="categoryOptions"
+  p-placeholder="Selecione uma categoria"
+></po-combo>
+
+    <po-input class="po-lg-3" p-label="Nova Categoria" [(ngModel)]="newCategory"
+      p-placeholder="Digite a nova categoria">
+    </po-input>
+    <po-button class="po-lg-2 aling-margin-top" p-label="Adicionar Categoria" p-kind="default"
+      (p-click)="adicionarCategoria()">
+    </po-button>
+  </div>
+
+  <div class="">
+    <h3 class="selecione-animais-title">Selecione os Animais</h3>
+    <po-table #animalTable [p-columns]="columns" [p-items]="animals" [p-height]="350" [p-selectable]="true"
+      [p-hide-table-search]="false" [p-hide-select-all]="false"
+      (p-selected)="onAnimalSelectionChange($event, animalTable)"
+      (p-unselected)="onAnimalSelectionChange($event, animalTable)">
+    </po-table>
+  </div>
+
+  <div class="po-row buttons-container">
+    <po-button class="po-md-5" p-label="Cadastrar Lote" p-kind="primary"
+      (p-click)="cadastrarLote(animalTable)"></po-button>
+    <po-button class="po-md-5" p-label="Restaurar" p-kind="default" (p-click)="restaurarBatchForm()"></po-button>
   </div>
 </div>
