@@ -49,18 +49,18 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "lint-staged": "^15.2.9",
+    "prettier": "^3.3.3",
     "typescript": "~5.4.5"
   },
   "lint-staged": {
-  "*.ts": [
-    "ng lint --fix"
-  ],
-  "*.html": [
-    "prettier --write"
-  ],
-  "*.css": [
-    "prettier --write"
-  ]
-}
-
+    "*.ts": [
+      "ng lint --fix"
+    ],
+    "*.html": [
+      "prettier --write"
+    ],
+    "*.css": [
+      "prettier --write"
+    ]
+  }
 }
