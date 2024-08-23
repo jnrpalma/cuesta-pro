@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-import { PoDynamicModule, PoDynamicFormField, PoButtonModule, PoNotificationService, PoLoadingModule, PoFieldModule } from '@po-ui/ng-components';
+import { PoDynamicModule, PoDynamicFormField, PoButtonModule, PoNotificationService, PoLoadingModule, PoFieldModule, PoPageModule } from '@po-ui/ng-components';
 import { AnimalService } from '../../services/animal/animal.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { Animal } from './interface/animal.interface';
@@ -11,7 +11,7 @@ import { RegisterBatchComponent } from '../register-batch/register-batch.compone
 @Component({
   selector: 'app-register-animal',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, PoButtonModule, PoDynamicModule, PoFieldModule, PoLoadingModule, RegisterBatchComponent],
+  imports: [CommonModule, FormsModule, RouterModule, PoButtonModule, PoPageModule,PoDynamicModule, PoFieldModule, PoLoadingModule, RegisterBatchComponent],
   templateUrl: './register-animal.component.html',
   styleUrls: ['./register-animal.component.css']
 })

@@ -1,7 +1,7 @@
-<div style="position: relative; margin-top: 20px;">
+<div>
   <po-button p-label="{{ formButtonLabel }}" p-kind="primary" (p-click)="toggleForm()"></po-button>
   
-  <div *ngIf="showForm" class="container" style="position: relative; margin-top: 20px;">
+  <div *ngIf="showForm" class="container">
     <po-loading-overlay *ngIf="isLoading" [p-screen-lock]="true" p-text="Carregando..."></po-loading-overlay>
     <h3>Registrar Animal</h3>
     <po-dynamic-form 

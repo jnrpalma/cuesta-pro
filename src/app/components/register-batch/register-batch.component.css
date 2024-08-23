@@ -1,3 +1,11 @@
+.button-container {
+  display: flex;
+  justify-content: space-between; /* Distribui os botões horizontalmente */
+  gap: 20px; /* Adiciona espaçamento entre os botões */
+  margin-bottom: 20px; /* Espaço abaixo dos botões */
+  flex-wrap: wrap; /* Garante que os botões não se empilhem */
+}
+
 .container {
   background-color: #fff;
   border-radius: 10px;
@@ -12,7 +20,30 @@
 .form-row {
   display: flex;
   gap: 20px;
-  flex-wrap: wrap;
+  align-items: center;
+}
+
+.po-input,
+.po-combo {
+  flex-grow: 1;
+}
+
+.po-button {
+  margin-top: 0;
+  align-self: center;
+  flex-shrink: 0;
+}
+
+.aling-margin-top {
+  margin-top: 24px;
+}
+
+.selecione-animais-title {
+  margin-top: 30px; /* Adiciona espaço extra entre os inputs e o título */
+  margin-bottom: 20px; /* Espaço abaixo do título */
+  text-align: center;
+  font-size: 24px;
+  color: #333;
 }
 
 .buttons-container {
@@ -22,24 +53,5 @@
 }
 
 h3 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 24px;
-  color: #333;
-}
-
-.new-category-container {
-  margin-top: 20px;
-}
-
-h4 {
-  text-align: center;
-  margin-bottom: 10px;
-  font-size: 20px;
-  color: #333;
-}
-
-.po-input,
-.po-button {
   margin-bottom: 20px;
 }
