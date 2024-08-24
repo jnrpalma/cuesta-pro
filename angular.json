@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "cuesta-sheep-app": {
+    "tsonpro": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/cuesta-sheep-app",
+            "outputPath": "dist/tsonpro",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -36,8 +36,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "2mb",  
+                  "maximumError": "3mb"     
                 },
                 {
                   "type": "anyComponentStyle",
@@ -59,10 +59,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "cuesta-sheep-app:build:production"
+              "buildTarget": "tsonpro:build:production"
             },
             "development": {
-              "buildTarget": "cuesta-sheep-app:build:development"
+              "buildTarget": "tsonpro:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -70,7 +70,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "cuesta-sheep-app:build"
+            "buildTarget": "tsonpro:build"
           }
         },
         "test": {

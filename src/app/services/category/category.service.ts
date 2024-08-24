@@ -51,4 +51,24 @@ export class CategoryService {
       map(actions => actions.length > 0)
     );
   }
+
+   /**
+   * Remove uma categoria do Firebase Firestore com base no valor.
+   * @param value Valor da categoria a ser removida.
+   * @returns Promise que resolve quando a categoria é removida.
+   */
+   removeCategory(value: string): Promise<void> {
+    return this.firestore.collection(this.collectionName, ref => ref.where('value', '==', value))
+      .get().toPromise().then(snapshot => {
+        if (!snapshot || snapshot.empty) {
+          return Promise.reject('Categoria não encontrada.');
+        }
+
+        const batch = this.firestore.firestore.batch(); // Utiliza batch para garantir que todas as operações sejam concluídas com sucesso
+        snapshot.forEach(doc => {
+          batch.delete(doc.ref);
+        });
+        return batch.commit(); // Realiza todas as operações de remoção em lote
+      });
+  }
 }
