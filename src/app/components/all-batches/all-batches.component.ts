@@ -61,13 +61,40 @@ export class AllBatchesComponent implements OnInit {
   loadBatches() {
     this.isLoading = true;
     this.batchService.getBatches().subscribe(batches => {
-      this.batches = batches;
+      this.batches = batches.map(batch => {
+        const rawDate = batch.dataCadastro;
+  
+        let processedDate: Date | null = null;
+  
+        // Verifica se rawDate é um objeto do Firestore Timestamp
+        if (rawDate && typeof rawDate === 'object' && 'seconds' in rawDate && 'nanoseconds' in rawDate) {
+          const timestamp = rawDate as { seconds: number, nanoseconds: number }; // Type assertion
+          processedDate = new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
+        } else if (rawDate instanceof Date) {
+          processedDate = rawDate;
+        }
+  
+        console.log('Batch ID:', batch.id);
+        console.log('Raw dataCadastro:', rawDate);
+        console.log('Processed dataCadastro:', processedDate);
+        console.log('Is valid date:', processedDate instanceof Date && !isNaN(processedDate.getTime()));
+  
+        return {
+          ...batch,
+          dataCadastro: processedDate
+        };
+      });
       this.isLoading = false;
     }, error => {
       this.isLoading = false;
       console.error('Erro ao carregar lotes cadastrados', error);
     });
   }
+  
+  
+  
+  
+  
 
   confirmDelete(batch: any) {
     this.batchToDelete = batch;
@@ -101,6 +128,26 @@ export class AllBatchesComponent implements OnInit {
       });
     }
   }
+
+  formatDate(date: Date | null | undefined): string {
+    console.log('Formatting date:', date);
+    
+    if (!date) {
+      return 'Não informado';
+    }
+  
+    const validDate = new Date(date);
+    
+    // Verifica se a data é válida
+    if (isNaN(validDate.getTime())) {
+      console.log('Invalid date:', date);
+      return 'Data inválida';
+    }
+  
+    return validDate.toLocaleDateString();
+  }
+  
+  
   
   toggleAnimalsView(batch: any) {
     if (this.animalsVisibleBatchId === batch.firestoreId) {

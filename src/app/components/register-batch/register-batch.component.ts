@@ -210,18 +210,21 @@ export class RegisterBatchComponent implements OnInit {
       nomeLote: this.batchAnimal.lote,
       categoria: this.batchAnimal.categoria,
       animais: this.selectedAnimals,
+      dataCadastro: new Date(), // Garante que uma nova data válida está sendo salva
+      firestoreId: ''
     };
-
-    this.batchService
-      .addBatch(batchData)
-      .then(() => {
-        this.poNotification.success('Cadastro de lote realizado com sucesso!');
-        this.restaurarBatchForm();
-      })
+  
+    this.batchService.addBatch(batchData)
+  .then(() => {
+    this.poNotification.success('Cadastro de lote realizado com sucesso!');
+    this.restaurarBatchForm();
+  })
       .catch(() => {
         this.poNotification.error('Erro ao cadastrar lote.');
       });
   }
+  
+  
 
   restaurarBatchForm() {
     this.batchAnimal = {
