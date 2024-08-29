@@ -21,6 +21,7 @@ import { Animal } from '../register-animal/interface/animal.interface';
 import { Batch } from './interface/batch.interface';
 import { CategoryService } from '../../services/category/category.service';
 import { switchMap, take, throwError } from 'rxjs';
+import { AddAnimalsInBatchComponent } from '../add-animals-in-batch/add-animals-in-batch.component';
 
 @Component({
   selector: 'app-register-batch',
@@ -35,12 +36,14 @@ import { switchMap, take, throwError } from 'rxjs';
     PoFieldModule,
     PoTableModule,
     PoModalModule,
+    AddAnimalsInBatchComponent,
   ],
   templateUrl: './register-batch.component.html',
   styleUrls: ['./register-batch.component.css'],
 })
 export class RegisterBatchComponent implements OnInit {
   @ViewChild('confirmCategoryModal') confirmCategoryModal!: PoModalComponent;
+  @ViewChild('addAnimalsModal') addAnimalsModal!: PoModalComponent;
 
   loteAtual: string = '';
   formularioValido: boolean = false;
@@ -215,16 +218,14 @@ export class RegisterBatchComponent implements OnInit {
     };
   
     this.batchService.addBatch(batchData)
-  .then(() => {
-    this.poNotification.success('Cadastro de lote realizado com sucesso!');
-    this.restaurarBatchForm();
-  })
+      .then(() => {
+        this.poNotification.success('Cadastro de lote realizado com sucesso!');
+        this.restaurarBatchForm();
+      })
       .catch(() => {
         this.poNotification.error('Erro ao cadastrar lote.');
       });
   }
-  
-  
 
   restaurarBatchForm() {
     this.batchAnimal = {
@@ -280,5 +281,15 @@ export class RegisterBatchComponent implements OnInit {
 
   onAnimalSelectionChange(event: any, animalTable: PoTableComponent) {
     this.selectedAnimals = animalTable.getSelectedRows();
+  }
+
+  openAddAnimalsModal() {
+    this.addAnimalsModal.open();
+    this.confirmCategoryModal.close();
+  }
+
+  handleAnimalsAdded(animals: Animal[]) {
+    // Lógica para adicionar animais ao lote
+    // Você pode adicionar esses animais ao lote atual e salvar no serviço
   }
 }

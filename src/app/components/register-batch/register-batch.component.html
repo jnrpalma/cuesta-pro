@@ -3,7 +3,7 @@
     Você selecionou uma categoria existente. Deseja adicionar mais animais ao lote "{{ loteAtual }}" e categoria "{{ batchAnimal.categoria }}"?
   </p>
   <po-modal-footer>
-    <po-button p-label="Sim" p-kind="primary" (p-click)="confirmCategorySelection()"></po-button>
+    <po-button p-label="Sim" p-kind="primary" (p-click)="openAddAnimalsModal()"></po-button>
     <po-button p-label="Não" p-kind="default" (p-click)="cancelCategorySelection()"></po-button>
   </po-modal-footer>
 </po-modal>
@@ -60,3 +60,13 @@
     <po-button class="po-md-5" p-label="Restaurar" p-kind="default" (p-click)="restaurarBatchForm()"></po-button>
   </div>
 </div>
+
+<po-modal #addAnimalsModal p-title="Adicionar Animais ao Lote">
+  <app-add-animals-in-batch 
+    [batchId]="loteAtual"
+    (animalsAdded)="handleAnimalsAdded($event)">
+  </app-add-animals-in-batch>
+  <po-modal-footer>
+    <po-button p-label="Fechar" p-kind="primary" (p-click)="addAnimalsModal.close()"></po-button>
+  </po-modal-footer>
+</po-modal>
