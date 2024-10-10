@@ -1,5 +1,5 @@
 {
-  "name": "ovino-farm",
+  "name": "ovino-control",
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
@@ -22,8 +22,9 @@
     "@angular/router": "~18.0.1",
     "@fortawesome/fontawesome-free": "^6.5.2",
     "@npmcli/package-json": "^5.2.0",
-    "@po-ui/ng-components": "^18.3.0",
-    "@po-ui/style": "^18.3.0",
+    "@po-ui/ng-components": "^18.9.0",
+    "@po-ui/ng-templates": "^18.9.0",
+    "@po-ui/style": "^18.9.0",
     "firebase": "^10.12.4",
     "glob": "^11.0.0",
     "lru-cache": "^11.0.0",
