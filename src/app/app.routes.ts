@@ -8,6 +8,8 @@ import { AllAnimalsComponent } from './components/all-animals/all-animals.compon
 import { OverviewComponent } from './components/overview/overview.component';
 import { RegisterBatchComponent } from './components/register-batch/register-batch.component';
 import { AllBatchesComponent } from './components/all-batches/all-batches.component';
+import { VaccinationComponent } from './components/vaccination/vaccination.component';
+
 import { UpdateAnimalComponent } from './components/update-animal/update-animal.component'; // Import the new component
 
 export const routes: Routes = [
@@ -19,6 +21,7 @@ export const routes: Routes = [
       { path: 'cadastrar', component: RegisterAnimalComponent },
       { path: 'animais', component: AllAnimalsComponent },
       { path: 'lotes', component: AllBatchesComponent },
+      { path: 'vacinacao', component: VaccinationComponent },
       { path: 'update-animal/:id', component: UpdateAnimalComponent } // Add the new route
     ]
   },
