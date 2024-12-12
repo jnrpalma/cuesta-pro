@@ -1,16 +1,23 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class VaccinationService {
-  constructor(private http: HttpClient) {}
+  private collectionName = 'vaccinations'; // Nome da coleção no Firestore
 
+  constructor(private firestore: AngularFirestore) {}
+
+  // Obtém todas as vacinações
   getVaccinations(): Observable<any[]> {
-    return this.http.get<any[]>('/api/vaccinations');
+    return this.firestore.collection(this.collectionName).valueChanges({ idField: 'id' });
   }
 
-  applyVaccination(vaccination: any): Observable<any> {
-    return this.http.post('/api/vaccinations', vaccination);
+  // Adiciona uma nova vacinação
+  applyVaccination(vaccination: any): Promise<void> {
+    const id = this.firestore.createId(); // Gera um ID único para o documento
+    return this.firestore.collection(this.collectionName).doc(id).set({ id, ...vaccination });
   }
 }

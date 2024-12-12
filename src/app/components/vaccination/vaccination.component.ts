@@ -53,11 +53,11 @@ export class VaccinationComponent implements OnInit {
   }
 
   applyVaccination() {
-    if (!this.selectedAnimal || !this.vaccineName || !this.vaccinationDate) {
+    if (!this.selectedAnimal?.value || !this.vaccineName || !this.vaccinationDate ) {
       this.poNotification.warning('Por favor, preencha todos os campos para registrar a vacinação.');
       return;
     }
-
+  
     const vaccination = {
       animalId: this.selectedAnimal.value.firestoreId,
       animalName: this.selectedAnimal.label,
@@ -65,14 +65,16 @@ export class VaccinationComponent implements OnInit {
       date: this.vaccinationDate,
       observation: this.observation
     };
-
-    this.vaccinationService.applyVaccination(vaccination).subscribe(() => {
+  
+    this.vaccinationService.applyVaccination(vaccination).then(() => {
       this.poNotification.success('Vacinação registrada com sucesso!');
       this.loadVaccinations(); // Atualiza a tabela de vacinações
-    }, error => {
+    }).catch(error => {
       this.poNotification.error('Erro ao registrar a vacinação.');
+      console.error(error);
     });
   }
+  
 }
 
 
