@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { PoButtonModule, PoNotificationService, PoTableColumn, PoTableModule, PoModalModule, PoFieldModule } from '@po-ui/ng-components';
+import { PoButtonModule, PoNotificationService, PoTableColumn, PoTableModule, PoModalModule, PoFieldModule, PoSelectOption } from '@po-ui/ng-components';
 import { VaccinationService } from '../../services/vaccination/vaccination.service'; // Serviço que lidará com os dados de vacinação
 import { AnimalService } from '../../services/animal/animal.service'; // Importando o serviço AnimalService
 
@@ -19,11 +19,20 @@ export class VaccinationComponent implements OnInit {
   vaccinationDate: string = ''; // Data da vacinação
   vaccineName: string = ''; // Nome da vacina
   observation: string = ''; // Observações sobre a vacinação
+  dose: string = ''; // Dose selecionada
+
+  doseOptions: PoSelectOption[] = [
+    { label: '1', value: '1' },
+    { label: '2', value: '2' },
+    { label: '3', value: '3' },
+    { label: 'Dose Única', value: 'dose_unica' }
+  ];
 
   columns: PoTableColumn[] = [
     { property: 'animalName', label: 'Animal' },
     { property: 'vaccineName', label: 'Vacina' },
-    { property: 'date', label: 'Data de Aplicacao' },
+    { property: 'dose', label: 'Dose' },
+    { property: 'date', label: 'Data de Aplicação' },
     { property: 'observation', label: 'Observações' },
   ];
 
@@ -35,14 +44,12 @@ export class VaccinationComponent implements OnInit {
   }
 
   loadAnimals() {
-    // Carrega a lista de animais a partir do serviço de dados
     this.animalService.getAllAnimals().subscribe(animals => {
-      this.animals = animals.map(a => ({ value: a, label: a.id })); // Ajusta os animais para serem usados no PoSelect
+      this.animals = animals.map(a => ({ value: a, label: a.id }));
     });
   }
 
   loadVaccinations() {
-    // Carrega a lista de vacinações aplicadas
     this.vaccinationService.getVaccinations().subscribe(vaccinations => {
       this.vaccinations = vaccinations;
     });
@@ -53,29 +60,28 @@ export class VaccinationComponent implements OnInit {
   }
 
   applyVaccination() {
-    if (!this.selectedAnimal?.value || !this.vaccineName || !this.vaccinationDate ) {
+    if (!this.selectedAnimal?.value || !this.vaccineName || !this.vaccinationDate || !this.dose) {
       this.poNotification.warning('Por favor, preencha todos os campos para registrar a vacinação.');
       return;
     }
-  
+
     const vaccination = {
       animalId: this.selectedAnimal.value.firestoreId,
       animalName: this.selectedAnimal.label,
       vaccineName: this.vaccineName,
+      dose: this.dose,
       date: this.vaccinationDate,
       observation: this.observation
     };
-  
-    this.vaccinationService.applyVaccination(vaccination).then(() => {
-      this.poNotification.success('Vacinação registrada com sucesso!');
-      this.loadVaccinations(); // Atualiza a tabela de vacinações
-    }).catch(error => {
-      this.poNotification.error('Erro ao registrar a vacinação.');
-      console.error(error);
-    });
+
+    this.vaccinationService.applyVaccination(vaccination)
+  .then(() => {
+    this.poNotification.success('Vacinação registrada com sucesso!');
+    this.loadVaccinations(); // Atualiza a tabela de vacinações
+  })
+  .catch((error: any) => {
+    this.poNotification.error('Erro ao registrar a vacinação.');
+    console.error(error);
+  });
   }
-  
 }
-
-
-
