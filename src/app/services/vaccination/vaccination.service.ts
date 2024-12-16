@@ -20,4 +20,31 @@ export class VaccinationService {
     const id = this.firestore.createId(); // Gera um ID único para o documento
     return this.firestore.collection(this.collectionName).doc(id).set({ id, ...vaccination });
   }
+
+
+  // vaccination.service.ts
+deleteVaccinationsByAnimalId(animalId: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    this.firestore.collection(this.collectionName, ref => ref.where('animalId', '==', animalId))
+      .get()
+      .subscribe(querySnapshot => {
+        const batch = this.firestore.firestore.batch();
+        
+        querySnapshot.forEach(doc => {
+          batch.delete(doc.ref);
+        });
+        
+        batch.commit().then(() => {
+          resolve();
+        }).catch(error => {
+          reject(error);
+        });
+      }, error => {
+        reject(error);
+      });
+  });
+}
+
+
+
 }

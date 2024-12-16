@@ -14,4 +14,5 @@ export interface Animal {
   nomePai: string; 
   maeAnimal: string; 
   nomeMae: string; 
+  isVaccinated?: boolean;
 }

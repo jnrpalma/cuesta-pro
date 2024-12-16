@@ -9,3 +9,15 @@
     flex-direction: column;
   }
   
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 200px;
+    position: relative;
+    margin-top: 20px;
+  }
+
+  .button-container > po-button + po-button {
+    margin-top: 20px;
+  }
+  

@@ -1,35 +1,51 @@
-<div style="position: relative; margin-top: 20px">
+<div class="button-container">
   <po-button
     p-label="{{ tableButtonLabel }}"
     p-kind="primary"
-    (p-click)="toggleTable()"
-  ></po-button>
+    (p-click)="toggleAnimalsTable()">
+  </po-button>
 
-  <div *ngIf="showTable" style="margin-top: 20px">
-    <po-table
-      [p-columns]="columns"
-      [p-height]="550"
-      [p-draggable]="true"
-      [p-items]="animals"
-      [p-actions]="actions"
-      (p-show-more)="loadMoreAnimals()"
-    >
-    </po-table>
-  </div>
-
-  <po-modal #poModal p-title="Confirmação de Exclusão">
-    <p>Tem certeza de que deseja excluir este animal?</p>
-    <po-modal-footer>
-      <po-button
-        p-label="Cancelar"
-        p-kind="default"
-        (p-click)="poModal.close()"
-      ></po-button>
-      <po-button
-        p-label="Excluir"
-        p-kind="danger"
-        (p-click)="deleteAnimal()"
-      ></po-button>
-    </po-modal-footer>
-  </po-modal>
+  <po-button
+    p-label="{{ vaccinationsButtonLabel }}"
+    p-kind="primary"
+   
+    (p-click)="toggleVaccinationsTable()">
+  </po-button>
 </div>
+
+<!-- Tabela de Animais -->
+<div *ngIf="showTable" style="margin-top: 20px">
+  <po-table
+    [p-columns]="columns"
+    [p-height]="550"
+    [p-draggable]="true"
+    [p-items]="animals"
+    [p-actions]="actions"
+    (p-show-more)="loadMoreAnimals()">
+  </po-table>
+</div>
+
+<!-- Tabela de Vacinações -->
+<div *ngIf="showVaccinationsTable" style="margin-top: 20px">
+  <h2>Animais Vacinados</h2>
+  <po-table
+    [p-columns]="vacColumns"
+    [p-items]="vaccinations">
+  </po-table>
+</div>
+
+<po-modal #poModal p-title="Confirmação de Exclusão">
+  <p>Tem certeza de que deseja excluir este animal?</p>
+  <po-modal-footer>
+    <po-button
+      p-label="Cancelar"
+      p-kind="default"
+      (p-click)="poModal.close()">
+    </po-button>
+    <po-button
+      p-label="Excluir"
+      p-kind="danger"
+      (p-click)="deleteAnimal()">
+    </po-button>
+  </po-modal-footer>
+</po-modal>

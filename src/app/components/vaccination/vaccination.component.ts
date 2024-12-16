@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import {
   PoButtonModule,
   PoNotificationService,
-  PoTableColumn,
   PoTableModule,
   PoModalModule,
   PoFieldModule,
@@ -23,7 +22,6 @@ import { AnimalService } from '../../services/animal/animal.service';
 export class VaccinationComponent implements OnInit {
   animals: PoSelectOption[] = []; // Lista de opções para o po-select
   animalsMap: { [firestoreId: string]: any } = {}; // Mapa de firestoreId para animal completo
-  vaccinations: any[] = [];
   
   selectedAnimal: any = null;
   selectedAnimalFirestoreId: string | null = null; // Armazena apenas o ID para o ngModel do po-select
@@ -34,18 +32,10 @@ export class VaccinationComponent implements OnInit {
   dose: string = '';
 
   doseOptions: PoSelectOption[] = [
-    { label: '1', value: '1' },
-    { label: '2', value: '2' },
-    { label: '3', value: '3' },
+    { label: '1ª', value: '1' },
+    { label: '2ª', value: '2' },
+    { label: '3ª', value: '3' },
     { label: 'Dose Única', value: 'dose_unica' }
-  ];
-
-  columns: PoTableColumn[] = [
-    { property: 'animalName', label: 'Animal' },
-    { property: 'vaccineName', label: 'Vacina' },
-    { property: 'dose', label: 'Dose' },
-    { property: 'date', label: 'Data de Aplicação' },
-    { property: 'observation', label: 'Observações' },
   ];
 
   constructor(
@@ -56,7 +46,6 @@ export class VaccinationComponent implements OnInit {
 
   ngOnInit() {
     this.loadAnimals();
-    this.loadVaccinations();
   }
 
   loadAnimals() {
@@ -65,29 +54,17 @@ export class VaccinationComponent implements OnInit {
   
       this.animalsMap = {};
       this.animals = animals.map(a => {
-        // Garantimos ao TypeScript que firestoreId não é nulo/undefined
         const fid = a.firestoreId!;
-        
-        // Populamos o mapa com o objeto do animal completo
         this.animalsMap[fid] = a;
         
-        // Retornamos um PoSelectOption, garantindo que value seja string
         return {
-          label: a.id,     // nome amigável (brinco)
-          value: fid       // firestoreId como identificador único
+          label: a.id,     
+          value: fid       
         } as PoSelectOption;
       });
   
       console.log('Opções do select (this.animals):', this.animals);
       console.log('Mapa de animais (this.animalsMap):', this.animalsMap);
-    });
-  }
-  
-
-  loadVaccinations() {
-    this.vaccinationService.getVaccinations().subscribe(vaccinations => {
-      this.vaccinations = vaccinations;
-      console.log('Vacinações carregadas:', this.vaccinations);
     });
   }
 
@@ -126,14 +103,17 @@ export class VaccinationComponent implements OnInit {
     console.log('Objeto de vacinação que será salvo:', vaccination);
 
     this.vaccinationService.applyVaccination(vaccination)
-      .then(() => {
-        this.poNotification.success('Vacinação registrada com sucesso!');
-        console.log('Vacinação registrada com sucesso no Firestore.');
-        this.loadVaccinations();
-      })
-      .catch((error: any) => {
-        this.poNotification.error('Erro ao registrar a vacinação.');
-        console.error('Erro ao registrar a vacinação:', error);
+    .then(() => {
+      this.poNotification.success('Vacinação registrada com sucesso!');
+      // Atualiza o animal marcando como vacinado
+      const updatedAnimal = { ...this.selectedAnimal, isVaccinated: true };
+      this.animalService.updateAnimal(updatedAnimal).then(() => {
+        console.log('Flag de vacinação atualizada no animal.');
       });
+    })
+    .catch((error: any) => {
+      this.poNotification.error('Erro ao registrar a vacinação.');
+      console.error('Erro ao registrar a vacinação:', error);
+    });
   }
 }
