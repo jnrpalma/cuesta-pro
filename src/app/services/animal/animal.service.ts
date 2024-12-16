@@ -45,8 +45,17 @@ export class AnimalService {
 
   // Obtém todos os animais sem paginação
   getAllAnimals(): Observable<Animal[]> {
-    return this.firestore.collection<Animal>(this.collectionName).valueChanges();
+    return this.firestore.collection<Animal>(this.collectionName).snapshotChanges().pipe(
+      map(actions =>
+        actions.map(a => {
+          const data = a.payload.doc.data() as Animal;
+          const firestoreId = a.payload.doc.id;
+          return { ...data, firestoreId };
+        })
+      )
+    );
   }
+  
 
   // Obtém um animal específico pelo ID
   getAnimalById(id: string): Observable<Animal> {

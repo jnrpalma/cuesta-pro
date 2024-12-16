@@ -45,7 +45,10 @@ export class VaccinationComponent implements OnInit {
 
   loadAnimals() {
     this.animalService.getAllAnimals().subscribe(animals => {
-      this.animals = animals.map(a => ({ value: a, label: a.id }));
+      this.animals = animals.map(a => ({
+        value: a,      // o value agora é o objeto completo, incluindo firestoreId
+        label: a.id     // pode ajustar para um campo mais amigável, ex: a.nome ou a.tag
+      }));
     });
   }
 
@@ -56,32 +59,35 @@ export class VaccinationComponent implements OnInit {
   }
 
   onAnimalChange(animal: any) {
-    this.selectedAnimal = animal;
+    // Agora "animal" é o objeto completo do animal selecionado
+    this.selectedAnimal = animal; 
   }
 
   applyVaccination() {
-    if (!this.selectedAnimal?.value || !this.vaccineName || !this.vaccinationDate || !this.dose) {
+    if (!this.selectedAnimal || !this.selectedAnimal.firestoreId || !this.vaccineName || !this.vaccinationDate || !this.dose) {
       this.poNotification.warning('Por favor, preencha todos os campos para registrar a vacinação.');
       return;
     }
-
+  
     const vaccination = {
-      animalId: this.selectedAnimal.value.firestoreId,
-      animalName: this.selectedAnimal.label,
+      animalId: this.selectedAnimal.firestoreId,
+      animalName: this.selectedAnimal.id,
       vaccineName: this.vaccineName,
       dose: this.dose,
       date: this.vaccinationDate,
       observation: this.observation
     };
-
+  
     this.vaccinationService.applyVaccination(vaccination)
-  .then(() => {
-    this.poNotification.success('Vacinação registrada com sucesso!');
-    this.loadVaccinations(); // Atualiza a tabela de vacinações
-  })
-  .catch((error: any) => {
-    this.poNotification.error('Erro ao registrar a vacinação.');
-    console.error(error);
-  });
+      .then(() => {
+        this.poNotification.success('Vacinação registrada com sucesso!');
+        this.loadVaccinations();
+        // Limpar campos, se necessário
+      })
+      .catch((error: any) => {
+        this.poNotification.error('Erro ao registrar a vacinação.');
+        console.error(error);
+      });
   }
+  
 }

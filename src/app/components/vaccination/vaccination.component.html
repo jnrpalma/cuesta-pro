@@ -2,10 +2,11 @@
   <h2>Gerenciamento de Vacinações</h2>
 
   <po-select
-    p-label="Selecione o Animal"
-    [p-options]="animals"
-    (p-change)="onAnimalChange($event)"
-  ></po-select>
+  p-label="Selecione o Animal"
+  [p-options]="animals"
+  (p-change)="onAnimalChange($event)">
+</po-select>
+
   <po-input p-label="Nome da Vacina" [(ngModel)]="vaccineName"></po-input>
   <po-select
     p-label="Dose"
