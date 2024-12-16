@@ -20,16 +20,20 @@ import { AnimalService } from '../../services/animal/animal.service';
   styleUrls: ['./vaccination.component.css']
 })
 export class VaccinationComponent implements OnInit {
-  animals: PoSelectOption[] = []; // Lista de opções para o po-select
-  animalsMap: { [firestoreId: string]: any } = {}; // Mapa de firestoreId para animal completo
-  
+  animals: PoSelectOption[] = []; 
+  animalsMap: { [firestoreId: string]: any } = {}; 
   selectedAnimal: any = null;
-  selectedAnimalFirestoreId: string | null = null; // Armazena apenas o ID para o ngModel do po-select
+  selectedAnimalFirestoreId: string | null = null; 
 
   vaccinationDate: string = '';
   vaccineName: string = '';
   observation: string = '';
   dose: string = '';
+
+  // Novas propriedades para datas adicionais
+  secondDoseDate: string = '';
+  thirdDoseDate: string = '';
+  fourthDoseDate: string = '';
 
   doseOptions: PoSelectOption[] = [
     { label: '1ª', value: '1' },
@@ -82,16 +86,20 @@ export class VaccinationComponent implements OnInit {
       vaccineName: this.vaccineName,
       vaccinationDate: this.vaccinationDate,
       dose: this.dose,
-      observation: this.observation
+      observation: this.observation,
+      secondDoseDate: this.secondDoseDate,
+      thirdDoseDate: this.thirdDoseDate,
+      fourthDoseDate: this.fourthDoseDate
     });
 
+    // Validação básica
     if (!this.selectedAnimal || !this.selectedAnimal.firestoreId || !this.vaccineName || !this.vaccinationDate || !this.dose) {
-      this.poNotification.warning('Por favor, preencha todos os campos para registrar a vacinação.');
+      this.poNotification.warning('Por favor, preencha todos os campos obrigatórios.');
       console.log('Falha na validação dos campos.');
       return;
     }
 
-    const vaccination = {
+    const vaccination: any = {
       animalId: this.selectedAnimal.firestoreId,
       animalName: this.selectedAnimal.id,
       vaccineName: this.vaccineName,
@@ -100,16 +108,31 @@ export class VaccinationComponent implements OnInit {
       observation: this.observation
     };
 
+    // Se for a 1ª dose, inclui a data da 2ª dose (se preenchida)
+    if (this.dose === '1' && this.secondDoseDate) {
+      vaccination.secondDoseDate = this.secondDoseDate;
+    }
+
+    // Se for a 2ª dose, inclui a data da 3ª dose
+    if (this.dose === '2' && this.thirdDoseDate) {
+      vaccination.thirdDoseDate = this.thirdDoseDate;
+    }
+
+    // Se for a 3ª dose, inclui a data da 4ª dose
+    if (this.dose === '3' && this.fourthDoseDate) {
+      vaccination.fourthDoseDate = this.fourthDoseDate;
+    }
+
     console.log('Objeto de vacinação que será salvo:', vaccination);
 
     this.vaccinationService.applyVaccination(vaccination)
     .then(() => {
       this.poNotification.success('Vacinação registrada com sucesso!');
-      // Atualiza o animal marcando como vacinado
       const updatedAnimal = { ...this.selectedAnimal, isVaccinated: true };
-      this.animalService.updateAnimal(updatedAnimal).then(() => {
-        console.log('Flag de vacinação atualizada no animal.');
-      });
+      return this.animalService.updateAnimal(updatedAnimal);
+    })
+    .then(() => {
+      console.log('Flag de vacinação atualizada no animal.');
     })
     .catch((error: any) => {
       this.poNotification.error('Erro ao registrar a vacinação.');
