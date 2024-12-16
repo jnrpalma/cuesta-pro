@@ -2,31 +2,33 @@
   <h2>Gerenciamento de Vacinações</h2>
 
   <po-select
-  p-label="Selecione o Animal"
-  [p-options]="animals"
-  (p-change)="onAnimalChange($event)">
-</po-select>
+    p-label="Selecione o Animal"
+    [p-options]="animals"
+    [ngModel]="selectedAnimalFirestoreId"
+    (ngModelChange)="onAnimalChange($event)">
+  </po-select>
 
   <po-input p-label="Nome da Vacina" [(ngModel)]="vaccineName"></po-input>
+
   <po-select
     p-label="Dose"
     [p-options]="doseOptions"
     [ngModel]="dose"
-    (p-change)="dose = $event"
-  >
+    (ngModelChange)="dose = $event">
   </po-select>
 
   <po-input p-label="Observações" [(ngModel)]="observation"></po-input>
+
   <po-datepicker
     p-label="Data da Vacinação"
-    [(ngModel)]="vaccinationDate"
-  ></po-datepicker>
+    [(ngModel)]="vaccinationDate">
+  </po-datepicker>
 
   <po-button
     p-label="Registrar Vacinação"
     p-kind="primary"
-    (p-click)="applyVaccination()"
-  ></po-button>
+    (p-click)="applyVaccination()">
+  </po-button>
 
   <po-table [p-columns]="columns" [p-items]="vaccinations"></po-table>
 </div>
