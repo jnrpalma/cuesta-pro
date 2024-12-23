@@ -1,9 +1,5 @@
 <div class="dashboard">
-  <po-loading-overlay
-    *ngIf="isLoading"
-    [p-screen-lock]="true"
-    p-text="Saindo..."
-  ></po-loading-overlay>
+  <!-- Sidebar -->
   <div class="sidebar">
     <h2>Bem-vindo!</h2>
     <div class="user-info">
@@ -13,78 +9,85 @@
     <ul>
       <li>
         <po-button
-        p-label="Overview"
-        p-kind="tertiary"
-        p-icon="ph-fill ph-chart-bar-horizontal"
-        (p-click)="navigateTo('overview')"
-      ></po-button>
+          p-label="Overview"
+          p-kind="tertiary"
+          p-icon="ph-fill ph-chart-bar-horizontal"
+          (p-click)="navigateTo('overview')"
+        ></po-button>
       </li>
       <li>
         <po-button
-        p-label="Cadastrar"
-        p-kind="tertiary"
-        p-icon="ph-fill ph-plus-circle"
-        (p-click)="navigateTo('cadastrar')"
-      ></po-button>
+          p-label="Cadastrar"
+          p-kind="tertiary"
+          p-icon="ph-fill ph-plus-circle"
+          (p-click)="navigateTo('cadastrar')"
+        ></po-button>
       </li>
       <li>
         <po-button
-        p-label="Animais"
-        p-kind="tertiary"
-        p-icon="ph-fill ph-paw-print"
-        (p-click)="navigateTo('animais')"
-      ></po-button>
+          p-label="Animais"
+          p-kind="tertiary"
+          p-icon="ph-fill ph-paw-print"
+          (p-click)="navigateTo('animais')"
+        ></po-button>
       </li>
       <li>
         <po-button
-        p-label="Lotes"
-        p-kind="tertiary"
-        p-icon="ph-fill ph-shipping-container"
-        (p-click)="navigateTo('lotes')"
-      ></po-button>
+          p-label="Lotes"
+          p-kind="tertiary"
+          p-icon="ph-fill ph-shipping-container"
+          (p-click)="navigateTo('lotes')"
+        ></po-button>
       </li>
       <li>
         <po-button
-        p-label="Vacinação"
-        p-kind="tertiary"
-        p-icon="ph-fill ph-list-heart"
-        (p-click)="navigateTo('vacinacao')"
-      ></po-button>
-      
+          p-label="Vacinação"
+          p-kind="tertiary"
+          p-icon="ph-fill ph-list-heart"
+          (p-click)="navigateTo('vacinacao')"
+        ></po-button>
       </li>
       <li>
         <po-button
-        p-label="Mortes"
-        p-kind="tertiary"
-        p-icon="ph-fill ph-ghost"
-      
-      ></po-button>
+          p-label="Mortes"
+          p-kind="tertiary"
+          p-icon="ph-fill ph-ghost"
+        ></po-button>
       </li>
       <li>
         <po-button
-        p-label="Maternidade"
-        p-kind="tertiary"
-        p-icon="ph-fill ph-baby-carriage"
-      
-      ></po-button>
+          p-label="Maternidade"
+          p-kind="tertiary"
+          p-icon="ph-fill ph-baby-carriage"
+        ></po-button>
       </li>
       <li>
         <po-button
-        p-label="Enfermaria"
-        p-kind="tertiary"
-        p-icon="ph-fill ph-first-aid"
-      
-      ></po-button>
+          p-label="Enfermaria"
+          p-kind="tertiary"
+          p-icon="ph-fill ph-first-aid"
+        ></po-button>
       </li>
     </ul>
-    <po-button
-      p-label="Logout"
-      p-kind="secondary"
-      p-danger="true"
-      (p-click)="logout()"
-    ></po-button>
   </div>
-  <div class="content">
-    <router-outlet></router-outlet>
+
+  <!-- Main Section -->
+  <div class="main">
+    <!-- Header -->
+    <header class="header">
+      <h1>dashboard teste</h1>
+      <po-button
+        p-label="Sair"
+        p-kind="primary"
+        p-danger="true"
+        (p-click)="logout()"
+        class="logout-button"
+      ></po-button>
+    </header>
+
+    <!-- Content -->
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>
