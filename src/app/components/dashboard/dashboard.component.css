@@ -1,4 +1,3 @@
-/* Sidebar */
 .sidebar {
   width: 200px;
   background-color: #ececec;
@@ -26,7 +25,7 @@
 
 .sidebar p {
   margin: 0;
-  font-size: 16px; /* Ajuste o tamanho da fonte conforme necessário */
+  font-size: 16px;
 }
 
 .sidebar ul {
@@ -43,51 +42,44 @@
   width: 100%;
 }
 
-
-
-/* Header */
 .header {
-  background-color: #6f42c1; /* Roxo harmônico com os botões */
-  color: white; /* Texto branco */
-  height: 48px; /* Altura reduzida para um visual mais compacto */
-  line-height: 30px; /* Alinhamento vertical do texto */
-  font-size: 16px; /* Tamanho da fonte ajustado */
-  font-weight: 500; /* Peso médio para suavidade */
-  position: fixed; /* Fixar no topo */
+  background-color: #6f42c1;
+  color: white;
+  height: 48px;
+  line-height: 30px;
+  font-size: 16px;
+  font-weight: 500;
+  position: fixed;
   top: 0;
-  left: 200px; /* Compensar a largura da sidebar */
-  width: calc(100% - 200px); /* Ajustar a largura ao espaço restante */
-  z-index: 1000; /* Certificar-se de que está acima do conteúdo */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Elevação sutil */
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05); /* Linha decorativa */
+  left: 200px;
+  width: calc(100% - 200px);
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   display: flex;
-  justify-content: space-between; /* Espaço entre título e botão */
+  justify-content: space-between;
   align-items: center;
-  padding: 0 20px; /* Espaçamento interno para as laterais */
+  padding: 0 20px;
 }
-
 
 .header .logout-button {
   margin: 0;
 }
 
-/* Main Section */
 .main {
-  margin-left: 200px; /* Compensar largura da sidebar */
-  padding-top: 50px; /* Espaço para o header fixo */
-  width: calc(100% - 200px); /* Ajustar largura */
+  margin-left: 200px;
+  padding-top: 50px;
+  width: calc(100% - 200px);
   display: flex;
   flex-direction: column;
 }
 
-/* Content */
 .content {
   padding: 20px;
   background-color: #f9f9f9;
   flex: 1;
 }
 
-/* Geral */
 .dashboard {
   font-family: 'Poppins', sans-serif;
 }
