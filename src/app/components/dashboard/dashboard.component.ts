@@ -19,7 +19,7 @@ export class DashboardComponent implements OnInit {
   chartTypeDonut: PoChartType = PoChartType.Donut;
   chartTypeBar: PoChartType = PoChartType.Bar;
   userName: string = 'John Doe';
-  profileImage: string = ''; // Nova propriedade para a URL da imagem de perfil
+  profileImage: string = ''; 
   isLoading: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
@@ -28,12 +28,12 @@ export class DashboardComponent implements OnInit {
     this.authService.getUser().subscribe(user => {
       if (user) {
         this.userName = user.displayName || user.email;
-        this.profileImage = user.photoURL || ''; // Atribuindo a URL da imagem de perfil
+        this.profileImage = user.photoURL || ''; 
         console.log('User name set to:', this.userName);
         console.log('Profile image URL:', this.profileImage);
       } else {
         this.userName = '';
-        this.profileImage = ''; // Certificando-se de limpar a URL da imagem se o usuário não estiver logado
+        this.profileImage = ''; 
       }
     });
   }

@@ -64,11 +64,11 @@ export class CategoryService {
           return Promise.reject('Categoria não encontrada.');
         }
 
-        const batch = this.firestore.firestore.batch(); // Utiliza batch para garantir que todas as operações sejam concluídas com sucesso
+        const batch = this.firestore.firestore.batch(); 
         snapshot.forEach(doc => {
           batch.delete(doc.ref);
         });
-        return batch.commit(); // Realiza todas as operações de remoção em lote
+        return batch.commit(); 
       });
   }
 }

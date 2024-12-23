@@ -18,8 +18,8 @@ export class RegisterComponent {
   email: string = '';
   password: string = '';
   confirmPassword: string = '';
-  profileImage: string = ''; // Nova propriedade para armazenar a imagem de perfil
-  fileName: string = 'Nenhum arquivo escolhido'; // Nome do arquivo escolhido
+  profileImage: string = ''; 
+  fileName: string = 'Nenhum arquivo escolhido'; 
   isLoading: boolean = false;
 
   constructor(
@@ -54,7 +54,7 @@ export class RegisterComponent {
         await this.authService.register(this.email, this.password, displayName, this.profileImage);
         this.poNotification.success('Registro realizado com sucesso!');
       } catch (error) {
-        this.errorHandleService.handleRegistrationError(error); // Utilize o serviço para lidar com os erros de registro
+        this.errorHandleService.handleRegistrationError(error); 
       } finally {
         this.isLoading = false;
       }

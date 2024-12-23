@@ -17,7 +17,6 @@ export class AnimalService {
     private vaccinationService: VaccinationService
   ) {}
 
-  // Adiciona um novo animal ao Firestore
   addAnimal(animal: Animal): Promise<void> {
     const firestoreId = this.firestore.createId();
     return this.firestore
@@ -33,7 +32,7 @@ export class AnimalService {
       (ref) => {
         let q = ref.orderBy("id").limit(pageSize);
         if (this.lastVisible && page > 1) {
-          q = q.startAfter(this.lastVisible); // Começa após o último documento visível
+          q = q.startAfter(this.lastVisible); 
         }
         return q;
       }
@@ -42,7 +41,7 @@ export class AnimalService {
     return query.snapshotChanges().pipe(
       map((actions) => {
         if (actions.length > 0) {
-          this.lastVisible = actions[actions.length - 1].payload.doc; // Atualiza o último documento visível
+          this.lastVisible = actions[actions.length - 1].payload.doc;
         }
         return actions.map((a) => {
           const data = a.payload.doc.data() as Animal;
@@ -53,7 +52,6 @@ export class AnimalService {
     );
   }
 
-  // Obtém todos os animais sem paginação
   getAllAnimals(): Observable<Animal[]> {
     return this.firestore
       .collection<Animal>(this.collectionName)
@@ -69,7 +67,6 @@ export class AnimalService {
       );
   }
 
-  // Obtém um animal específico pelo ID
   getAnimalById(id: string): Observable<Animal> {
     return this.firestore
       .collection(this.collectionName)
@@ -84,7 +81,6 @@ export class AnimalService {
       );
   }
 
-  // Atualiza os dados de um animal existente
   updateAnimal(animal: Animal): Promise<void> {
     return this.firestore
       .collection(this.collectionName)

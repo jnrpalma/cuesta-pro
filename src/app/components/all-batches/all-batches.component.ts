@@ -51,7 +51,7 @@ export class AllBatchesComponent implements OnInit {
   constructor(
     private batchService: BatchService, 
     private poNotification: PoNotificationService, 
-    private categoryService: CategoryService // Injeção do CategoryService
+    private categoryService: CategoryService 
   ) {}
 
   ngOnInit() {
@@ -66,9 +66,9 @@ export class AllBatchesComponent implements OnInit {
   
         let processedDate: Date | null = null;
   
-        // Verifica se rawDate é um objeto do Firestore Timestamp
+       
         if (rawDate && typeof rawDate === 'object' && 'seconds' in rawDate && 'nanoseconds' in rawDate) {
-          const timestamp = rawDate as { seconds: number, nanoseconds: number }; // Type assertion
+          const timestamp = rawDate as { seconds: number, nanoseconds: number }; 
           processedDate = new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
         } else if (rawDate instanceof Date) {
           processedDate = rawDate;
@@ -91,11 +91,6 @@ export class AllBatchesComponent implements OnInit {
     });
   }
   
-  
-  
-  
-  
-
   confirmDelete(batch: any) {
     this.batchToDelete = batch;
     this.poModal.open();
@@ -107,12 +102,11 @@ export class AllBatchesComponent implements OnInit {
   
       this.batchService.deleteBatch(this.batchToDelete.firestoreId).then(() => {
         this.poNotification.success('Lote excluído com sucesso!');
-        this.loadBatches(); // Recarrega a lista de lotes
+        this.loadBatches(); 
         this.selectedBatchAnimals = [];
-        this.showAnimals = false; // Certifique-se de que a tabela de animais esteja oculta
+        this.showAnimals = false; 
         this.animalsVisibleBatchId = null;
   
-        // Remover a categoria do combo de seleção usando o CategoryService
         this.categoryService.removeCategory(categoriaExcluida).then(() => {
           this.poNotification.success('Categoria removida do combo.');
         }).catch(error => {
@@ -138,7 +132,6 @@ export class AllBatchesComponent implements OnInit {
   
     const validDate = new Date(date);
     
-    // Verifica se a data é válida
     if (isNaN(validDate.getTime())) {
       console.log('Invalid date:', date);
       return 'Data inválida';
@@ -146,8 +139,6 @@ export class AllBatchesComponent implements OnInit {
   
     return validDate.toLocaleDateString();
   }
-  
-  
   
   toggleAnimalsView(batch: any) {
     if (this.animalsVisibleBatchId === batch.firestoreId) {

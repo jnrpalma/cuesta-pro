@@ -22,7 +22,7 @@ export class AuthService {
       this.router.navigate(['/dashboard/overview']);
     } catch (error) {
       console.log('Erro de login:', error);
-      throw error;  // Propaga o erro para que possa ser capturado no componente que chama o método
+      throw error; 
     }
   }
   
@@ -31,7 +31,7 @@ export class AuthService {
       const userCredential = await this.afAuth.createUserWithEmailAndPassword(email, password);
       if (userCredential.user) {
         if (profileImage) {
-          // Se a imagem de perfil foi fornecida, faça o upload e depois atualize o perfil
+         
           const filePath = `profile_images/${userCredential.user.uid}`;
           const fileRef = this.storage.ref(filePath);
           const task = this.storage.upload(filePath, this.dataURLtoFile(profileImage, 'profileImage.png'));
@@ -48,7 +48,7 @@ export class AuthService {
             })
           ).subscribe();
         } else {
-          // Se não há imagem de perfil, apenas atualize o nome de exibição
+          
           await userCredential.user.updateProfile({
             displayName: displayName
           });
@@ -58,7 +58,7 @@ export class AuthService {
       }
     } catch (error) {
       console.log('Erro durante o registro:', error);
-      throw error; // Propaga o erro para que possa ser capturado no componente que chama o método
+      throw error; 
     }
   }
 
@@ -111,7 +111,7 @@ export class AuthService {
           return {
             displayName: user.displayName,
             email: user.email,
-            firstName: firstName || user.email, // Aqui garantimos que o primeiro nome seja usado, ou o email se o nome estiver ausente
+            firstName: firstName || user.email, 
             photoURL: user.photoURL
           };
         } else {

@@ -34,7 +34,7 @@ export class LoginComponent {
       try {
         await this.authService.login(this.email, this.password);
       } catch (error) {
-        this.errorHandleService.handleLoginError(error);  // Garante que o erro seja tratado e a notificação seja exibida
+        this.errorHandleService.handleLoginError(error);  
       } finally {
         this.isLoading = false;
       }

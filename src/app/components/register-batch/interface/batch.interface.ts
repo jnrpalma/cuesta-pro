@@ -5,6 +5,6 @@ export interface Batch {
   nomeLote: string;
   categoria: string;
   animais: Animal[];
-  dataCadastro?: Date | null; // Permite que dataCadastro seja opcional ou nulo
+  dataCadastro?: Date | null; 
   firestoreId?: string;
 }

@@ -30,7 +30,6 @@ export class VaccinationComponent implements OnInit {
   observation: string = '';
   dose: string = '';
 
-  // Novas propriedades para datas adicionais
   secondDoseDate: string = '';
   thirdDoseDate: string = '';
   fourthDoseDate: string = '';
@@ -108,17 +107,14 @@ export class VaccinationComponent implements OnInit {
       observation: this.observation
     };
 
-    // Se for a 1ª dose, inclui a data da 2ª dose (se preenchida)
     if (this.dose === '1' && this.secondDoseDate) {
       vaccination.secondDoseDate = this.secondDoseDate;
     }
 
-    // Se for a 2ª dose, inclui a data da 3ª dose
     if (this.dose === '2' && this.thirdDoseDate) {
       vaccination.thirdDoseDate = this.thirdDoseDate;
     }
 
-    // Se for a 3ª dose, inclui a data da 4ª dose
     if (this.dose === '3' && this.fourthDoseDate) {
       vaccination.fourthDoseDate = this.fourthDoseDate;
     }

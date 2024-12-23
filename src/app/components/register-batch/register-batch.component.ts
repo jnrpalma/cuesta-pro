@@ -213,7 +213,7 @@ export class RegisterBatchComponent implements OnInit {
       nomeLote: this.batchAnimal.lote,
       categoria: this.batchAnimal.categoria,
       animais: this.selectedAnimals,
-      dataCadastro: new Date(), // Garante que uma nova data válida está sendo salva
+      dataCadastro: new Date(), 
       firestoreId: ''
     };
   
@@ -289,7 +289,6 @@ export class RegisterBatchComponent implements OnInit {
   }
 
   handleAnimalsAdded(animals: Animal[]) {
-    // Lógica para adicionar animais ao lote
-    // Você pode adicionar esses animais ao lote atual e salvar no serviço
+    
   }
 }
