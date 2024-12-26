@@ -6,6 +6,7 @@
   padding: 10px;
   box-sizing: border-box;
   background-color: #f2f2f2;
+  position: relative;
 }
 
 .register-box {
@@ -14,7 +15,7 @@
   border-radius: 12px;
   overflow: hidden;
   width: 100%;
-  max-width: 900px;
+  max-width: 1100px;
   background-color: #fff;
   border: 1px solid #e0e0e0;
 }
@@ -39,6 +40,9 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+  opacity: 0.9;
 }
 
 .register-form h1 {
@@ -48,52 +52,32 @@
 
 .register-form p {
   font-size: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 1px;
+  font-weight: bold;
 }
 
 .register-form form {
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Adicionando gap entre os elementos do formulário */
+  gap: 10px;
 }
 
-.register-form .avatar-container {
+.avatar-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 10px; /* Reduzindo margem inferior */
+  margin-bottom: 10px;
 }
 
-.register-form .file-input-container {
+.file-input-container {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.register-form .name-email,
-.register-form .password-confirm {
-  display: flex;
-  gap: 10px; /* Espaço entre os campos de nome/email e senha/confirmar senha */
-}
 
-.register-form .name-email div,
-.register-form .password-confirm div {
-  flex: 1;
-}
 
-.register-form form div {
-  margin-bottom: 5px; /* Reduzindo margem inferior */
-}
 
-.register-form form po-input,
-.register-form form po-email,
-.register-form form po-password {
-  width: 100%;
-}
-
-.button-container {
-  text-align: center;
-}
 
 .button-container po-button {
   width: 100%;
@@ -104,11 +88,172 @@
   text-align: center;
 }
 
-.register-right img {
+.validation-panel {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 15px;
+  width: 300px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  color: #666;
+  z-index: 1000;
+}
+
+.validation-panel ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.validation-panel li {
+  margin-bottom: 5px;
+  color: red;
+}
+
+.validation-panel li.valid {
+  color: green;
+  font-weight: bold;
+}
+
+
+.error-message {
+  color: red;
+  font-size: 12px;
+}
+
+@media (max-width: 768px) {
+  .validation-panel {
+    position: static;
+    width: 100%;
+    margin-top: 10px;
+  }
+}
+
+.password-group {
+  position: relative; /* Contexto para posicionar o tooltip */
+  display: flex;
+   /* Tooltip ficará abaixo da linha de campos */
+  gap: 8px; /* Espaço entre os elementos do grupo */
+}
+
+.password-row {
+  display: flex; /* Alinha os campos lado a lado */
+  gap: 16px; /* Espaço entre os dois campos */
+}
+
+.password-row po-password {
+  flex: 1; /* Faz com que os campos ocupem tamanhos iguais */
+  min-width: 200px; /* Define um tamanho mínimo */
+}
+
+.password-validation-tooltip {
+  position: absolute; /* Tooltip sobreposto */
+  top: calc(100% + 8px); /* Exibe o tooltip logo abaixo da linha de campos */
+  left: 0; /* Alinha o tooltip à esquerda */
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem;
   width: 100%;
+  z-index: 10; /* Fica acima de outros elementos */
+  transition: opacity 0.3s ease-in-out;
+  opacity: 1;
+  margin-top: 15px;
+}
+.button-container {
+  text-align: center;
+  transition: margin-top 0.3s ease-in-out;
+  margin-top: 20%;
+}
+
+.password-validation-tooltip-hidden ~ .button-container {
+  margin-top: 20%; /* Botão sobe */
+}
+
+.password-validation-tooltip ~ .button-container {
+  margin-top: 42%; /* Botão desce */
+}
+/* Título do tooltip */
+.password-validation-tooltip .tooltip-title {
+  font-weight: bold;
+  font-size: 12px;
+  margin-bottom: 1px;
+}
+
+/* Lista de requisitos */
+.password-validation-tooltip ul {
+  list-style: none;
+  padding: 0;
+}
+
+/* Itens da lista */
+.password-validation-tooltip ul li {
+  color: #999;
+  font-size: 10px;
+}
+
+/* Estilo para requisitos válidos */
+.password-validation-tooltip ul li.valid {
+  color: #28a745; /* Verde para itens validados */
+  font-weight: bold;
+}
+
+/* Estilo do medidor de força */
+.strength-meter {
+  margin-top: 0px;
+  font-size: 10px;
+}
+
+/* Barra de força */
+.strength-meter .meter {
+  height: 8px;
+  background: #e9ecef;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Preenchimento da barra de força */
+.strength-meter .meter-fill {
   height: 100%;
-  object-fit: cover;
-  border-top-right-radius: 12px;
-  border-bottom-right-radius: 12px;
-  opacity: 0.9;
+  transition: width 0.3s ease-in-out;
+}
+
+/* Classes de força (fraca, média, forte) */
+.meter-fill.weak {
+  background-color: #dc3545; /* Vermelho para senha fraca */
+}
+
+.meter-fill.medium {
+  background-color: #ffc107; /* Amarelo para senha média */
+}
+
+.meter-fill.strong {
+  background-color: #28a745; /* Verde para senha forte */
+}
+
+/* Estilo para mensagens de erro */
+.validation-error {
+  color: #dc3545;
+  font-size: 0.85rem;
+  margin-top:15%;
+  position: absolute;
+}
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+/* Estilo para grupos de inputs */
+.input-group > * {
+  flex: 1;
+  min-width: 200px;
 }
