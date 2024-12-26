@@ -1,12 +1,19 @@
 <div class="container" style="position: relative;">
   <po-loading-overlay *ngIf="isLoading" [p-screen-lock]="true" p-text="Carregando..."></po-loading-overlay>
-  <h3>Visão Geral dos Animais</h3>
   
+  <h3>Visão Geral dos Animais</h3>
+
   <po-chart 
     [p-type]="chartType"
-    [p-series]="chartSeries"
+    [p-series]="categoryChartSeries"
     [p-options]="chartOptions"
     p-title="Distribuição de Animais por Categoria">
   </po-chart>
 
+  <po-chart 
+    [p-type]="chartType"
+    [p-series]="genderChartSeries"
+    [p-options]="chartOptions"
+    p-title="Distribuição de Animais por Gênero">
+  </po-chart>
 </div>
