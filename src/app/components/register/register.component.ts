@@ -18,9 +18,16 @@ export class RegisterComponent {
   email: string = '';
   password: string = '';
   confirmPassword: string = '';
-  profileImage: string = ''; 
-  fileName: string = 'Nenhum arquivo escolhido'; 
+  profileImage: string = ''; // Nova propriedade para armazenar a imagem de perfil
+  fileName: string = 'Nenhum arquivo escolhido'; // Nome do arquivo escolhido
   isLoading: boolean = false;
+
+  // Novas variáveis de validação de senha
+  hasLowercase: boolean = false;
+  hasUppercase: boolean = false;
+  hasNumber: boolean = false;
+  hasSpecialChar: boolean = false;
+  hasMinLength: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -46,6 +53,21 @@ export class RegisterComponent {
     fileInput.click();
   }
 
+  // Função para validar a força da senha
+  validatePassword() {
+    const password = this.password;
+    this.hasLowercase = /[a-z]/.test(password);
+    this.hasUppercase = /[A-Z]/.test(password);
+    this.hasNumber = /\d/.test(password);
+    this.hasSpecialChar = /[!@#$%^&*]/.test(password);
+    this.hasMinLength = password.length >= 8;
+  }
+
+  // Função para verificar se o formulário é válido
+  isFormValid(): boolean {
+    return this.hasLowercase && this.hasUppercase && this.hasNumber && this.hasSpecialChar && this.hasMinLength && this.password === this.confirmPassword;
+  }
+
   async onSubmit() {
     if (this.firstName && this.email && this.password && this.password === this.confirmPassword) {
       this.isLoading = true;
@@ -54,7 +76,7 @@ export class RegisterComponent {
         await this.authService.register(this.email, this.password, displayName, this.profileImage);
         this.poNotification.success('Registro realizado com sucesso!');
       } catch (error) {
-        this.errorHandleService.handleRegistrationError(error); 
+        this.errorHandleService.handleRegistrationError(error);
       } finally {
         this.isLoading = false;
       }

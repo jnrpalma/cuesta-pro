@@ -24,14 +24,25 @@
           </div>
           <div class="password-confirm">
             <div>
-              <po-password name="password" p-label="Senha" [(ngModel)]="password" required></po-password>
+              <po-password name="password" p-label="Senha" [(ngModel)]="password" (ngModelChange)="validatePassword()" required></po-password>
+              <!-- Validações de senha -->
+              <div class="password-validation">
+                <p>A senha deve conter:</p>
+                <ul>
+                  <li [class.valid]="hasLowercase">- Pelo menos uma letra minúscula</li>
+                  <li [class.valid]="hasUppercase">- Pelo menos uma letra maiúscula</li>
+                  <li [class.valid]="hasNumber">- Pelo menos um número</li>
+                  <li [class.valid]="hasSpecialChar">- Pelo menos um caractere especial</li>
+                  <li [class.valid]="hasMinLength">- Pelo menos 8 caracteres</li>
+                </ul>
+              </div>
             </div>
             <div>
               <po-password name="confirmPassword" p-label="Confirme a senha" [(ngModel)]="confirmPassword" required></po-password>
             </div>
           </div>
           <div class="button-container">
-            <po-button p-label="CADASTRAR" (p-click)="onSubmit()" type="submit"></po-button>
+            <po-button p-label="CADASTRAR" [p-disabled]="!isFormValid()" type="submit"></po-button>
           </div>
         </form>
         <div class="back-to-login">

@@ -112,3 +112,24 @@
   border-bottom-right-radius: 12px;
   opacity: 0.9;
 }
+.password-validation {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #666;
+}
+
+.password-validation ul {
+  padding: 0;
+  list-style: none;
+}
+
+.password-validation li {
+  color: red;
+  margin-bottom: 5px;
+  color: #666;
+}
+
+.password-validation li.valid {
+  color: green;
+  font-weight: bold;
+}
