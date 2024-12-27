@@ -1,28 +1,30 @@
-import { Component } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, ViewChild } from '@angular/core';
+import { PoAvatarModule, PoButtonModule, PoFieldModule, PoLinkModule, PoLoadingModule, PoModalComponent, PoNotificationService } from '@po-ui/ng-components';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth/auth.service';
+import { ErrorHandleService } from '../../services/error-handle/error-handle.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PoFieldModule, PoButtonModule, PoLoadingModule, PoLinkModule, PoAvatarModule, PoNotificationService } from '@po-ui/ng-components';
-import { AuthService } from '../../services/auth/auth.service';
-import { Router } from '@angular/router';
-import { ErrorHandleService } from '../../services/error-handle/error-handle.service';
 
 @Component({
   selector: 'app-register',
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule, PoFieldModule, PoButtonModule, PoLoadingModule, PoLinkModule, PoAvatarModule],
+schemas:[CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
+  @ViewChild('passwordValidationModal') passwordValidationModal!: PoModalComponent;
+
   firstName: string = '';
   email: string = '';
   password: string = '';
   confirmPassword: string = '';
-  profileImage: string = ''; // Nova propriedade para armazenar a imagem de perfil
-  fileName: string = 'Nenhum arquivo escolhido'; // Nome do arquivo escolhido
+  profileImage: string = '';
+  fileName: string = 'Nenhum arquivo escolhido';
   isLoading: boolean = false;
 
-  // Novas variáveis de validação de senha
   hasLowercase: boolean = false;
   hasUppercase: boolean = false;
   hasNumber: boolean = false;
@@ -53,7 +55,6 @@ export class RegisterComponent {
     fileInput.click();
   }
 
-  // Função para validar a força da senha
   validatePassword() {
     const password = this.password;
     this.hasLowercase = /[a-z]/.test(password);
@@ -63,18 +64,24 @@ export class RegisterComponent {
     this.hasMinLength = password.length >= 8;
   }
 
-  // Função para verificar se o formulário é válido
   isFormValid(): boolean {
-    return this.hasLowercase && this.hasUppercase && this.hasNumber && this.hasSpecialChar && this.hasMinLength && this.password === this.confirmPassword;
+    return (
+      this.hasLowercase &&
+      this.hasUppercase &&
+      this.hasNumber &&
+      this.hasSpecialChar &&
+      this.hasMinLength &&
+      this.password === this.confirmPassword
+    );
   }
 
   async onSubmit() {
-    if (this.firstName && this.email && this.password && this.password === this.confirmPassword) {
+    if (this.isFormValid()) {
       this.isLoading = true;
       try {
-        const displayName = this.firstName;
-        await this.authService.register(this.email, this.password, displayName, this.profileImage);
+        await this.authService.register(this.email, this.password, this.firstName, this.profileImage);
         this.poNotification.success('Registro realizado com sucesso!');
+        this.router.navigate(['/login']);
       } catch (error) {
         this.errorHandleService.handleRegistrationError(error);
       } finally {
@@ -87,5 +94,13 @@ export class RegisterComponent {
 
   goToLogin() {
     this.router.navigate(['/login']);
+  }
+
+  openPasswordValidationModal() {
+    this.passwordValidationModal.open();
+  }
+
+  closePasswordValidationModal() {
+    this.passwordValidationModal.close();
   }
 }
