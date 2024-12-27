@@ -23,8 +23,9 @@ export class OverviewComponent implements OnInit {
 
   categoryChartSeries: PoChartSerie[] = [];
   genderChartSeries: PoChartSerie[] = [];
-  
-  activeTab: string | null = null; // Aba ativa
+  totalChartSeries: PoChartSerie[] = [];
+  breedChartSeries: PoChartSerie[] = []; 
+  activeTab: string | null = null;
 
   constructor(
     private animalService: AnimalService,
@@ -42,6 +43,8 @@ export class OverviewComponent implements OnInit {
         this.animals = data;
         this.processCategoryChartData();
         this.processGenderChartData();
+        this.processTotalChartData();
+        this.processBreedChartData(); 
         this.isLoading = false;
       },
       error => {
@@ -55,7 +58,6 @@ export class OverviewComponent implements OnInit {
     this.batchService.getBatches().subscribe(
       (data: Batch[]) => {
         this.batches = data;
-        console.log('Batches:', this.batches);
       },
       error => {
         console.error('Erro ao carregar lotes:', error);
@@ -78,18 +80,45 @@ export class OverviewComponent implements OnInit {
   processGenderChartData() {
     const genders = new Map<string, number>([
       ['Machos', 0],
-      ['Fêmeas', 0]
+      ['Fêmeas', 0],
+      ['Outros', 0],
+      ['Não Informado', 0] 
     ]);
-
+  
     this.animals.forEach(animal => {
       if (animal.genero === 'MACHO') {
         genders.set('Machos', (genders.get('Machos') || 0) + 1);
       } else if (animal.genero === 'FEMEA') {
         genders.set('Fêmeas', (genders.get('Fêmeas') || 0) + 1);
+      } else if (animal.genero === 'OUTROS') {
+        genders.set('Outros', (genders.get('Outros') || 0) + 1);
+      } else if (animal.genero === 'N/A') {
+        genders.set('Não Informado', (genders.get('Não Informado') || 0) + 1);
       }
     });
-
+  
     this.genderChartSeries = Array.from(genders.entries()).map(([label, data]) => ({
+      label,
+      data
+    }));
+  }
+  
+
+  processTotalChartData() {
+    const total = this.animals.length;
+
+    this.totalChartSeries = [
+      { label: 'Total de Animais', data: total }
+    ];
+  }
+
+  processBreedChartData() {
+    const breeds = new Map<string, number>();
+    this.animals.forEach(animal => {
+      breeds.set(animal.raca, (breeds.get(animal.raca) || 0) + 1);
+    });
+
+    this.breedChartSeries = Array.from(breeds.entries()).map(([label, data]) => ({
       label,
       data
     }));
