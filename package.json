@@ -5,6 +5,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "zip:clean": "rimraf dist/portal.zip",
+    "zip:generate": "npm run zip:clean && npm run build && node zip.js",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint"
@@ -26,9 +28,7 @@
     "@po-ui/ng-templates": "^18.9.0",
     "@po-ui/style": "^18.9.0",
     "firebase": "^10.12.4",
-    "glob": "^11.0.0",
     "lru-cache": "^11.0.0",
-    "rimraf": "^6.0.1",
     "rxjs": "~7.8.1",
     "tslib": "^2.6.2",
     "zone.js": "~0.14.4"
@@ -39,6 +39,8 @@
     "@angular/cli": "~18.0.2",
     "@angular/compiler-cli": "~18.0.1",
     "@types/jasmine": "~5.1.0",
+    "archiver": "^7.0.1",
+    "glob": "^10.4.5",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
@@ -46,6 +48,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "prettier": "^3.3.3",
+    "rimraf": "^5.0.10",
     "typescript": "~5.4.5"
   }
 }
