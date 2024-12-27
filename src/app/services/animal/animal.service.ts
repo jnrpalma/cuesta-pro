@@ -9,8 +9,8 @@ import { VaccinationService } from "../vaccination/vaccination.service";
   providedIn: "root",
 })
 export class AnimalService {
-  private collectionName = "animals"; // Nome da coleção no Firestore
-  private lastVisible: any = null; // Armazena o último documento visível para paginação
+  private collectionName = "animals"; 
+  private lastVisible: any = null; 
 
   constructor(
     private firestore: AngularFirestore,
