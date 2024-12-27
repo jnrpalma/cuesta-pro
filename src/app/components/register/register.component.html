@@ -1,6 +1,6 @@
 <div class="register-container">
   <po-loading-overlay *ngIf="isLoading" [p-screen-lock]="true" p-text="Cadastrando..."></po-loading-overlay>
- 
+
   <div class="register-box">
     <div class="register-left">
       <div class="register-form">
@@ -16,29 +16,41 @@
             </div>
           </div>
 
-          <div class="name-email">
-            <div>
-              <po-input name="firstName" p-label="Nome" [(ngModel)]="firstName" p-clean="true" required></po-input>
-            </div>
-            <div>
-              <po-email name="email" p-label="Email" [(ngModel)]="email" p-clean="true" required></po-email>
-            </div>
+          <div class="input-group">
+            <po-input
+              name="firstName"
+              p-label="Nome"
+              [(ngModel)]="firstName"
+              p-clean="true"
+              required>
+            </po-input>
+            <po-email
+              name="email"
+              p-label="Email"
+              [(ngModel)]="email"
+              p-clean="true"
+              required>
+            </po-email>
           </div>
 
-          <div class="password-confirm">
-            <div>
-              <po-password
-                name="password"
-                p-label="Senha"
-                [(ngModel)]="password"
-                (focus)="openPasswordValidationModal()"
-                (ngModelChange)="validatePassword()"
-                required>
-              </po-password>
-            </div>
-            <div>
-              <po-password name="confirmPassword" p-label="Confirme a senha" [(ngModel)]="confirmPassword" required></po-password>
-            </div>
+          <div class="input-group">
+            <po-password
+              name="password"
+              p-label="Senha"
+              [(ngModel)]="password"
+              (ngModelChange)="validatePassword()"
+              required>
+            </po-password>
+            <po-password
+              name="confirmPassword"
+              p-label="Confirme a senha"
+              [(ngModel)]="confirmPassword"
+              [ngClass]="{'is-invalid': confirmPassword && confirmPassword !== password}"
+              required>
+            </po-password>
+            <small *ngIf="confirmPassword && confirmPassword !== password" class="error-message">
+              As senhas não coincidem.
+            </small>
           </div>
 
           <div class="button-container">
@@ -56,19 +68,15 @@
       <img src="assets/ovino-register.jpg" alt="Imagem de cadastro">
     </div>
   </div>
-</div>
 
-<!-- Modal de Validação de Senha -->
-<po-modal #passwordValidationModal p-title="Validação de Senha">
-  <div class="password-validation">
+  <div class="validation-panel" *ngIf="password">
     <p>A senha deve conter:</p>
     <ul>
-      <li [class.valid]="hasLowercase">- Pelo menos uma letra minúscula</li>
-      <li [class.valid]="hasUppercase">- Pelo menos uma letra maiúscula</li>
-      <li [class.valid]="hasNumber">- Pelo menos um número</li>
-      <li [class.valid]="hasSpecialChar">- Pelo menos um caractere especial</li>
-      <li [class.valid]="hasMinLength">- Pelo menos 8 caracteres</li>
+      <li [class.valid]="hasLowercase">✔ Pelo menos uma letra minúscula</li>
+      <li [class.valid]="hasUppercase">✔ Pelo menos uma letra maiúscula</li>
+      <li [class.valid]="hasNumber">✔ Pelo menos um número</li>
+      <li [class.valid]="hasSpecialChar">✔ Pelo menos um caractere especial</li>
+      <li [class.valid]="hasMinLength">✔ Pelo menos 8 caracteres</li>
     </ul>
   </div>
-  <po-button p-label="Fechar" (p-click)="closePasswordValidationModal()"></po-button>
-</po-modal>
+</div>
