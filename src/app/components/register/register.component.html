@@ -16,7 +16,7 @@
             </div>
           </div>
 
-          <div class="input-group">
+          <div class="input-group form-row">
             <po-input
               name="firstName"
               p-label="Nome"
@@ -33,14 +33,16 @@
             </po-email>
           </div>
 
-          <div class="input-group">
+          <div class="password-group password-row">
             <po-password
-              name="password"
-              p-label="Senha"
-              [(ngModel)]="password"
-              (ngModelChange)="validatePassword()"
-              required>
-            </po-password>
+            name="password"
+            p-label="Senha"
+            [(ngModel)]="password"
+            (ngModelChange)="validatePassword()"
+            required>
+          </po-password>
+      
+
             <po-password
               name="confirmPassword"
               p-label="Confirme a senha"
@@ -48,9 +50,25 @@
               [ngClass]="{'is-invalid': confirmPassword && confirmPassword !== password}"
               required>
             </po-password>
-            <small *ngIf="confirmPassword && confirmPassword !== password" class="error-message">
-              As senhas não coincidem.
+            <small *ngIf="confirmPassword && confirmPassword !== password" class="validation-error">
+              ❌ As senhas não coincidem.
             </small>
+            <div class="password-validation-tooltip" *ngIf="password"   [ngClass]="{'password-validation-tooltip-hidden': !isTooltipVisible}">
+              <p>Requisitos para uma senha segura:</p>
+              <ul>
+                <li [class.valid]="hasMinLength">✔ Utilize pelo menos 8 caracteres</li>
+                <li [class.valid]="hasLowercase">✔ Pelo menos uma letra minúscula (a-z)</li>
+                <li [class.valid]="hasUppercase">✔ Pelo menos uma letra maiúscula (A-Z)</li>
+                <li [class.valid]="hasNumber">✔ Pelo menos um número (0-9)</li>
+                <li [class.valid]="hasSpecialChar">✔ Pelo menos um caractere especial</li>
+              </ul>
+              <div class="strength-meter">
+                <span [class]="strengthClass">{{ strengthLabel }}</span>
+                <div class="meter">
+                  <div class="meter-fill" [style.width]="strengthPercentage + '%'" [class]="strengthClass"></div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="button-container">
@@ -63,20 +81,8 @@
         </div>
       </div>
     </div>
-
-    <div class="register-right">
+  <div class="register-right">
       <img src="assets/ovino-register.jpg" alt="Imagem de cadastro">
     </div>
-  </div>
-
-  <div class="validation-panel" *ngIf="password">
-    <p>A senha deve conter:</p>
-    <ul>
-      <li [class.valid]="hasLowercase">✔ Pelo menos uma letra minúscula</li>
-      <li [class.valid]="hasUppercase">✔ Pelo menos uma letra maiúscula</li>
-      <li [class.valid]="hasNumber">✔ Pelo menos um número</li>
-      <li [class.valid]="hasSpecialChar">✔ Pelo menos um caractere especial</li>
-      <li [class.valid]="hasMinLength">✔ Pelo menos 8 caracteres</li>
-    </ul>
   </div>
 </div>

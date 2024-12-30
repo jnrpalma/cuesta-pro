@@ -31,6 +31,9 @@ export class RegisterComponent {
   hasSpecialChar: boolean = false;
   hasMinLength: boolean = false;
 
+  strengthLabel: string = '';
+  strengthClass: string = '';
+  strengthPercentage: number = 0;
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -54,7 +57,9 @@ export class RegisterComponent {
     const fileInput = document.getElementById('fileInput') as HTMLInputElement;
     fileInput.click();
   }
-
+  get isTooltipVisible(): boolean {
+    return !!this.password;
+  }
   validatePassword() {
     const password = this.password;
     this.hasLowercase = /[a-z]/.test(password);
@@ -62,6 +67,28 @@ export class RegisterComponent {
     this.hasNumber = /\d/.test(password);
     this.hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
     this.hasMinLength = password.length >= 8;
+
+    const strengthChecks = [
+      this.hasLowercase,
+      this.hasUppercase,
+      this.hasNumber,
+      this.hasSpecialChar,
+      this.hasMinLength
+    ];
+
+    const strengthScore = strengthChecks.filter(Boolean).length;
+
+    this.strengthPercentage = (strengthScore / 5) * 100;
+    if (strengthScore === 5) {
+      this.strengthLabel = 'Forte!';
+      this.strengthClass = 'strong';
+    } else if (strengthScore >= 3) {
+      this.strengthLabel = 'Média';
+      this.strengthClass = 'medium';
+    } else {
+      this.strengthLabel = 'Fraca';
+      this.strengthClass = 'weak';
+    }
   }
 
   isFormValid(): boolean {
