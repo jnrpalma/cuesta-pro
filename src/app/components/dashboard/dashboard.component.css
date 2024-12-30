@@ -1,6 +1,14 @@
-/* Estilos gerais */
 .dashboard {
   font-family: 'Poppins', sans-serif;
+}
+
+.dashboard p, 
+.dashboard h1, 
+.dashboard h2, 
+.dashboard h3, 
+.dashboard span, 
+.dashboard div {
+  user-select: none; 
 }
 
 /* Sidebar */
@@ -67,11 +75,20 @@
   padding: 0 20px;
 }
 
+.header-icons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.notification-button {
+  font-size: 16px;
+}
+
 .header .logout-button {
   margin: 0;
 }
 
-/* Main Section */
 .main {
   margin-left: 200px;
   padding-top: 50px;
@@ -123,7 +140,6 @@
   text-align: center;
 }
 
-/* Botões */
 .btn {
   padding: 10px 20px;
   cursor: pointer;
@@ -140,4 +156,3 @@
   background: #007bff;
   color: white;
 }
-

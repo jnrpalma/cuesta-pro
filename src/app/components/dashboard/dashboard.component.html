@@ -80,20 +80,28 @@
   <div class="main">
     <header class="header">
       <h2>TsonPro</h2>
-      <po-button
-        p-label="Sair"
-        p-kind="primary"
-        p-danger="true"
-        (p-click)="openModal()"
-        class="logout-button"
-      ></po-button>
+      <div class="header-icons">
+        <po-button
+          p-icon="ph-fill ph-bell-ringing"
+          p-kind="tertiary"
+          (p-click)="onNotificationClick()"
+          class="notification-button"
+        ></po-button>
+        <po-button
+          p-label="Sair"
+          p-kind="primary"
+          p-danger="true"
+          (p-click)="openModal()"
+          class="logout-button"
+        ></po-button>
+      </div>
     </header>
 
     <div class="content">
       <router-outlet></router-outlet>
     </div>
 
-    <!-- aqui modal para sair -->
+    <!-- Modal para confirmação de saída -->
     <po-modal
       #confirmExitModal
       p-title="Confirmação"
@@ -116,7 +124,7 @@
       </po-modal-footer>
     </po-modal>
 
-    <!-- aqui modal para troca de foto -->
+    <!-- Modal para troca de foto -->
     <po-modal
       #photoModal
       p-title="Alterar Foto de Perfil"
