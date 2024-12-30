@@ -1,5 +1,6 @@
 <div class="register-container">
   <po-loading-overlay *ngIf="isLoading" [p-screen-lock]="true" p-text="Cadastrando..."></po-loading-overlay>
+
   <div class="register-box">
     <div class="register-left">
       <div class="register-form">
@@ -14,32 +15,73 @@
               <span>{{ fileName }}</span>
             </div>
           </div>
-          <div class="name-email">
-            <div>
-              <po-input name="firstName" p-label="Nome" [(ngModel)]="firstName" p-clean="true" required></po-input>
-            </div>
-            <div>
-              <po-email name="email" p-label="Email" [(ngModel)]="email" p-clean="true" required></po-email>
+
+          <div class="input-group form-row">
+            <po-input
+              name="firstName"
+              p-label="Nome"
+              [(ngModel)]="firstName"
+              p-clean="true"
+              required>
+            </po-input>
+            <po-email
+              name="email"
+              p-label="Email"
+              [(ngModel)]="email"
+              p-clean="true"
+              required>
+            </po-email>
+          </div>
+
+          <div class="password-group password-row">
+            <po-password
+            name="password"
+            p-label="Senha"
+            [(ngModel)]="password"
+            (ngModelChange)="validatePassword()"
+            required>
+          </po-password>
+      
+
+            <po-password
+              name="confirmPassword"
+              p-label="Confirme a senha"
+              [(ngModel)]="confirmPassword"
+              [ngClass]="{'is-invalid': confirmPassword && confirmPassword !== password}"
+              required>
+            </po-password>
+            <small *ngIf="confirmPassword && confirmPassword !== password" class="validation-error">
+              ❌ As senhas não coincidem.
+            </small>
+            <div class="password-validation-tooltip" *ngIf="password"   [ngClass]="{'password-validation-tooltip-hidden': !isTooltipVisible}">
+              <p>Requisitos para uma senha segura:</p>
+              <ul>
+                <li [class.valid]="hasMinLength">✔ Utilize pelo menos 8 caracteres</li>
+                <li [class.valid]="hasLowercase">✔ Pelo menos uma letra minúscula (a-z)</li>
+                <li [class.valid]="hasUppercase">✔ Pelo menos uma letra maiúscula (A-Z)</li>
+                <li [class.valid]="hasNumber">✔ Pelo menos um número (0-9)</li>
+                <li [class.valid]="hasSpecialChar">✔ Pelo menos um caractere especial</li>
+              </ul>
+              <div class="strength-meter">
+                <span [class]="strengthClass">{{ strengthLabel }}</span>
+                <div class="meter">
+                  <div class="meter-fill" [style.width]="strengthPercentage + '%'" [class]="strengthClass"></div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="password-confirm">
-            <div>
-              <po-password name="password" p-label="Senha" [(ngModel)]="password" required></po-password>
-            </div>
-            <div>
-              <po-password name="confirmPassword" p-label="Confirme a senha" [(ngModel)]="confirmPassword" required></po-password>
-            </div>
-          </div>
+
           <div class="button-container">
-            <po-button p-label="CADASTRAR" (p-click)="onSubmit()" type="submit"></po-button>
+            <po-button p-label="CADASTRAR" [p-disabled]="!isFormValid()" type="submit"></po-button>
           </div>
         </form>
+
         <div class="back-to-login">
           <po-link p-label="Já tem uma conta? Login!" (p-action)="goToLogin()"></po-link>
         </div>
       </div>
     </div>
-    <div class="register-right">
+  <div class="register-right">
       <img src="assets/ovino-register.jpg" alt="Imagem de cadastro">
     </div>
   </div>
