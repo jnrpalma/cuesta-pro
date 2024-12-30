@@ -3,7 +3,7 @@
   <div class="sidebar">
     <h2>Bem-vindo!</h2>
     <div class="user-info">
-      <po-avatar [p-src]="profileImage" p-size="sm"></po-avatar>
+      <po-avatar [p-src]="profileImage"    (p-click)="openPhotoModal()" p-size="sm"></po-avatar>
       <p>{{ userName }}</p>
     </div>
     <ul>
@@ -77,17 +77,51 @@
     <header class="header">
       <h2>TsonPro</h2>
       <po-button
-        p-label="Sair"
-        p-kind="primary"
-        p-danger="true"
-        (p-click)="logout()"
-        class="logout-button"
-      ></po-button>
+      p-label="Sair"
+      p-kind="primary"
+      p-danger="true"
+      (p-click)="openModal()"
+      class="logout-button"
+    ></po-button>
     </header>
 
     <!-- Content -->
     <div class="content">
       <router-outlet></router-outlet>
     </div>
-  </div>
+    <div class="modal" id="confirmExitModal" tabindex="-1" [ngClass]="{ 'show': isModalVisible }">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Confirmação</h5>
+            <button type="button" class="btn-close" (click)="closeModal()" aria-label="Fechar"></button>
+          </div>
+          <div class="modal-body">
+            <p>Tem certeza de que deseja sair?</p>
+          </div>
+          <div class="modal-footer">
+            <po-button p-label="Cancelar" p-kind="primary"  class="cancel-button" p-danger="false" (click)="closeModal()"></po-button>
+            <po-button p-label="Sair"   p-kind="primary" p-danger="true"(click)="logout()"></po-button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="custom-modal" [ngClass]="{ 'show': isPhotoModalVisible }">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Alterar Foto</h5>
+            <button class="close-button" (click)="closePhotoModal()">×</button>
+          </div>
+          <div class="modal-body">
+            <label for="photoUpload">Selecione uma nova foto:</label>
+            <input id="photoUpload" type="file" (change)="onPhotoSelected($event)" />
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-danger" (click)="removePhoto()">Remover Foto</button>
+            <button class="btn btn-primary" (click)="savePhoto()">Salvar</button>
+          </div>
+        </div>
+      </div>
+    </div>
 </div>
