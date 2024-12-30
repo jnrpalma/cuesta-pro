@@ -1,7 +1,7 @@
 ## < COMPONENTE >
 
 
-## < NÚMERO DO CARD TRELLO >
+## < FIXE >
 
 
 ---

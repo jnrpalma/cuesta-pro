@@ -94,4 +94,9 @@ export class DashboardComponent implements OnInit {
   navigateTo(route: string) {
     this.router.navigate([`/dashboard/${route}`]);
   }
+
+  onNotificationClick() {
+    console.log('Notificação clicada');
+    
+  }
 }
