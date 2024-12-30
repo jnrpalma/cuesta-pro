@@ -1,3 +1,9 @@
+/* Estilos gerais */
+.dashboard {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Sidebar */
 .sidebar {
   width: 200px;
   background-color: #ececec;
@@ -9,7 +15,6 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; 
   align-items: center;
 }
 
@@ -19,8 +24,8 @@
 
 .user-info {
   display: flex;
-  align-items: center; 
-  gap: 10px; 
+  align-items: center;
+  gap: 10px;
 }
 
 .sidebar p {
@@ -42,11 +47,11 @@
   width: 100%;
 }
 
+/* Header */
 .header {
   background-color: #dddddd;
   color: white;
   height: 50px;
-  line-height: 30px;
   font-size: 16px;
   font-weight: 500;
   position: fixed;
@@ -66,6 +71,7 @@
   margin: 0;
 }
 
+/* Main Section */
 .main {
   margin-left: 200px;
   padding-top: 50px;
@@ -80,35 +86,7 @@
   flex: 1;
 }
 
-.dashboard {
-  font-family: 'Poppins', sans-serif;
-}
-
-.sidebar h2,
-.sidebar p,
-.sidebar ul li,
-.sidebar .po-button,
-.content {
-  font-family: 'Poppins', sans-serif;
-}
-.modal {
-  display: none; /* Modal escondido por padrão */
-  position: fixed;
-  z-index: 1050;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background-color: rgba(0, 0, 0, 0.5);
-  justify-content: center;
-  align-items: center;
-}
-
-.modal.show {
-  display: flex; /* Mostrar modal quando ativo */
-}
-
+/* Modal */
 .modal-dialog {
   background: white;
   border-radius: 5px;
@@ -122,83 +100,13 @@
   justify-content: space-between;
   align-items: center;
   font-size: 15px;
-}
-.modal-footer po-button {
-  flex: none; 
-  text-align: center; 
-}
-.modal-footer {
-  display: flex; 
-  justify-content: space-between; 
-  gap: 10px; 
-}
-.modal-body {
-  margin: 15px 0;
-  margin-top:5%;
-  margin-bottom: 5%;
-}
-
-.btn-close {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-.modal-title{
-  font-size: 20px;
-}
-.clickable-avatar {
-  cursor: pointer;
-  border: 2px solid transparent;
-}
-
-.clickable-avatar:hover {
-  border: 2px solid #007bff;
-}
-.custom-modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.custom-modal.show {
-  display: flex;
-}
-
-.modal-dialog {
-  background: white;
-  border-radius: 8px;
-  width: 400px;
-  max-width: 90%;
-  padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   border-bottom: 1px solid #ddd;
   padding-bottom: 10px;
-  
 }
 
 .modal-title {
+  font-size: 20px;
   margin: 0;
-}
-
-.close-button {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
 }
 
 .modal-body {
@@ -208,8 +116,14 @@
 .modal-footer {
   display: flex;
   justify-content: space-between;
+  gap: 10px;
 }
 
+.po-modal-footer po-button {
+  text-align: center;
+}
+
+/* Botões */
 .btn {
   padding: 10px 20px;
   cursor: pointer;
@@ -226,3 +140,4 @@
   background: #007bff;
   color: white;
 }
+
