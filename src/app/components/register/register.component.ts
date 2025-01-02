@@ -34,6 +34,8 @@ export class RegisterComponent {
   strengthLabel: string = '';
   strengthClass: string = '';
   strengthPercentage: number = 0;
+  isPasswordValidationModalOpen: boolean = false;
+  isTooltipVisible: boolean = false;
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -57,9 +59,6 @@ export class RegisterComponent {
     const fileInput = document.getElementById('fileInput') as HTMLInputElement;
     fileInput.click();
   }
-  get isTooltipVisible(): boolean {
-    return !!this.password;
-  }
   validatePassword() {
     const password = this.password;
     this.hasLowercase = /[a-z]/.test(password);
@@ -67,30 +66,33 @@ export class RegisterComponent {
     this.hasNumber = /\d/.test(password);
     this.hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
     this.hasMinLength = password.length >= 8;
-
+  
     const strengthChecks = [
       this.hasLowercase,
       this.hasUppercase,
       this.hasNumber,
       this.hasSpecialChar,
-      this.hasMinLength
+      this.hasMinLength,
     ];
-
+  
     const strengthScore = strengthChecks.filter(Boolean).length;
-
+  
     this.strengthPercentage = (strengthScore / 5) * 100;
+  
     if (strengthScore === 5) {
       this.strengthLabel = 'Forte!';
       this.strengthClass = 'strong';
+      this.isTooltipVisible = false; // Fechar o modal quando todos os requisitos forem atendidos
     } else if (strengthScore >= 3) {
       this.strengthLabel = 'Média';
       this.strengthClass = 'medium';
+      this.isTooltipVisible = true; // Mostrar o modal enquanto os requisitos não forem cumpridos
     } else {
       this.strengthLabel = 'Fraca';
       this.strengthClass = 'weak';
+      this.isTooltipVisible = true; // Mostrar o modal enquanto os requisitos não forem cumpridos
     }
   }
-
   isFormValid(): boolean {
     return (
       this.hasLowercase &&
@@ -99,7 +101,7 @@ export class RegisterComponent {
       this.hasSpecialChar &&
       this.hasMinLength &&
       this.password === this.confirmPassword
-    );
+    ); 
   }
 
   async onSubmit() {
@@ -124,10 +126,13 @@ export class RegisterComponent {
   }
 
   openPasswordValidationModal() {
-    this.passwordValidationModal.open();
+    this.isPasswordValidationModalOpen = true;
   }
-
+  
   closePasswordValidationModal() {
-    this.passwordValidationModal.close();
+    this.isPasswordValidationModalOpen = false;
+  }
+  ngAfterViewInit() {
+    console.log(this.passwordValidationModal); // Verifique se o modal está sendo injetado corretamente
   }
 }

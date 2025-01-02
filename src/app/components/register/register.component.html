@@ -35,13 +35,12 @@
 
           <div class="password-group password-row">
             <po-password
-            name="password"
-            p-label="Senha"
-            [(ngModel)]="password"
-            (ngModelChange)="validatePassword()"
-            required>
-          </po-password>
-      
+              name="password"
+              p-label="Senha"
+              [(ngModel)]="password"
+              (ngModelChange)="validatePassword()"
+              required>
+            </po-password>
 
             <po-password
               name="confirmPassword"
@@ -53,7 +52,12 @@
             <small *ngIf="confirmPassword && confirmPassword !== password" class="validation-error">
               ❌ As senhas não coincidem.
             </small>
-            <div class="password-validation-tooltip" *ngIf="password"   [ngClass]="{'password-validation-tooltip-hidden': !isTooltipVisible}">
+            
+            <!-- Tooltip atualizado -->
+            <div 
+              class="password-validation-tooltip" 
+              *ngIf="isTooltipVisible" 
+              [ngClass]="{'password-validation-tooltip-hidden': !isTooltipVisible}">
               <p>Requisitos para uma senha segura:</p>
               <ul>
                 <li [class.valid]="hasMinLength">✔ Utilize pelo menos 8 caracteres</li>
@@ -72,7 +76,12 @@
           </div>
 
           <div class="button-container">
-            <po-button p-label="CADASTRAR" [p-disabled]="!isFormValid()" type="submit"></po-button>
+            <po-button
+            p-label="CADASTRAR"
+            [p-disabled]="!isFormValid()"
+            (p-click)="onSubmit()"
+            type="button">
+          </po-button>
           </div>
         </form>
 
@@ -81,7 +90,7 @@
         </div>
       </div>
     </div>
-  <div class="register-right">
+    <div class="register-right">
       <img src="assets/ovino-register.jpg" alt="Imagem de cadastro">
     </div>
   </div>
