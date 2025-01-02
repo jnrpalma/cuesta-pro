@@ -3,7 +3,7 @@ import { routes } from './app.routes';
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideHttpClient, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { PoHttpRequestModule, PoModule, PoLoadingModule, PoFieldModule, PoButtonModule, PoLinkModule, PoDynamicModule, PoNotificationModule, PoModalModule } from '@po-ui/ng-components';
+import { PoHttpRequestModule, PoModule, PoLoadingModule, PoFieldModule, PoButtonModule, PoLinkModule, PoDynamicModule, PoNotificationModule } from '@po-ui/ng-components';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 
@@ -24,7 +24,6 @@ export const appConfig: ApplicationConfig = {
       PoLinkModule,
       PoDynamicModule,
       PoNotificationModule,
-      PoModalModule,
       AngularFireModule.initializeApp(environment.firebaseConfig),
       AngularFireAuthModule
     ]),
