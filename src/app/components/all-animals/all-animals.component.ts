@@ -4,12 +4,13 @@ import { PoTableModule, PoButtonModule, PoNotificationService, PoModalModule, Po
 import { AnimalService } from '../../services/animal/animal.service';
 import { Animal } from '../register-animal/interface/animal.interface';
 import { Router } from '@angular/router';
+import { PoInfoModule } from '@po-ui/ng-components';
 import { VaccinationService } from '../../services/vaccination/vaccination.service';
 
 @Component({
   selector: 'app-list-animals',
   standalone: true,
-  imports: [CommonModule, PoTableModule, PoButtonModule, PoModalModule],
+  imports: [CommonModule, PoTableModule, PoButtonModule, PoModalModule, PoInfoModule],
   templateUrl: './all-animals.component.html',
   styleUrls: ['./all-animals.component.css']
 })
@@ -51,6 +52,8 @@ export class AllAnimalsComponent implements OnInit {
     { property: 'observation', label: 'Observações' },
   ];
 
+  totalDeceasedAnimals: number = 0;
+
   animals: Animal[] = [];
   vaccinations: any[] = [];
   
@@ -70,9 +73,9 @@ export class AllAnimalsComponent implements OnInit {
       type: 'default'
     },
     {
-      action: this.confirmDelete.bind(this),
+      action: this.confirmDeath.bind(this),
       icon: 'po-icon-delete',
-      label: 'Excluir',
+      label: 'Informar morte',
       type: 'danger'
     }
   ];
@@ -85,8 +88,12 @@ export class AllAnimalsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Opcional: carregar dados iniciais se desejado.
+    this.animalService.getDeceasedAnimalsCount().subscribe((count) => {
+      this.totalDeceasedAnimals = count;
+      console.log('Total de animais mortos carregado:', this.totalDeceasedAnimals);
+    });
   }
+  
 
   loadAnimals() {
     this.animalService.getAnimals(this.currentPage, this.pageSize).subscribe((data: Animal[]) => {
@@ -131,26 +138,28 @@ export class AllAnimalsComponent implements OnInit {
     this.showVaccinationsTable = !this.showVaccinationsTable;
   }
 
-  confirmDelete(animal: Animal) {
+  confirmDeath(animal: Animal) {
     this.animalToDelete = animal;
     this.poModal.open();
   }
 
-  deleteAnimal() {
+  animalDeath() {
     const firestoreId = this.animalToDelete?.firestoreId;
     if (firestoreId) {
       console.log('Iniciando exclusão do animal com Firestore ID:', firestoreId);
-      this.animalService.deleteAnimal(firestoreId).then(() => {
-        console.log('Animal excluído com sucesso:', firestoreId);
-        this.poNotification.success('Animal excluído com sucesso!');
+      
+      this.animalService.animalDeath(firestoreId).then(() => {
+        console.log(`Animal com Firestore ID ${firestoreId} processado com sucesso.`);
+        this.poNotification.success('Informada morte do Animal com sucesso!');
+        
         setTimeout(() => {
-          this.loadAnimals(); 
+          this.loadAnimals(); // Recarrega a lista de animais
           this.poModal.close();
           this.animalToDelete = null;
         }, 500);
       }).catch(error => {
-        console.error('Erro ao excluir o animal:', error);
-        this.poNotification.error('Erro ao excluir o animal: ' + error.message);
+        console.error(`Erro ao processar o animal com Firestore ID ${firestoreId}:`, error);
+        this.poNotification.error('Erro ao processar o animal: ' + error.message);
         this.poModal.close();
         this.animalToDelete = null;
       });

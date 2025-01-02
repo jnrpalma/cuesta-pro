@@ -36,8 +36,8 @@
   </po-table>
 </div>
 
-<po-modal #poModal p-title="Confirmação de Exclusão">
-  <p>Tem certeza de que deseja excluir este animal?</p>
+<po-modal #poModal p-title="Confirmação de morte 💀">
+  <p>Tem certeza que deseja informar a morte do animal ? </p>
   <po-modal-footer>
     <po-button
       p-label="Cancelar"
@@ -45,9 +45,9 @@
       (p-click)="poModal.close()">
     </po-button>
     <po-button
-      p-label="Excluir"
+      p-label="Informar morte"
       p-kind="danger"
-      (p-click)="deleteAnimal()">
+      (p-click)="animalDeath()">
     </po-button>
   </po-modal-footer>
 </po-modal>

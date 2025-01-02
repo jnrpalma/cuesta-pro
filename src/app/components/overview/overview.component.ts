@@ -105,12 +105,16 @@ export class OverviewComponent implements OnInit {
   
 
   processTotalChartData() {
-    const total = this.animals.length;
-
-    this.totalChartSeries = [
-      { label: 'Total de Animais', data: total }
-    ];
+    const totalAlive = this.animals.length;
+  
+    this.animalService.getDeceasedAnimalsCount().subscribe((totalDeceased) => {
+      this.totalChartSeries = [
+        { label: 'Total de Animais (Vivos)', data: totalAlive },
+        { label: 'Total de Animais Mortos', data: totalDeceased }
+      ];
+    });
   }
+  
 
   processBreedChartData() {
     const breeds = new Map<string, number>();
