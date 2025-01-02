@@ -1,39 +1,27 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, ViewChild } from '@angular/core';
-import { PoAvatarModule, PoButtonModule, PoFieldModule, PoLinkModule, PoLoadingModule, PoModalComponent, PoNotificationService } from '@po-ui/ng-components';
-import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth/auth.service';
-import { ErrorHandleService } from '../../services/error-handle/error-handle.service';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PoFieldModule, PoButtonModule, PoLoadingModule, PoLinkModule, PoAvatarModule, PoNotificationService } from '@po-ui/ng-components';
+import { AuthService } from '../../services/auth/auth.service';
+import { Router } from '@angular/router';
+import { ErrorHandleService } from '../../services/error-handle/error-handle.service';
 
 @Component({
   selector: 'app-register',
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule, PoFieldModule, PoButtonModule, PoLoadingModule, PoLinkModule, PoAvatarModule],
-schemas:[CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
-  @ViewChild('passwordValidationModal') passwordValidationModal!: PoModalComponent;
-
   firstName: string = '';
   email: string = '';
   password: string = '';
   confirmPassword: string = '';
-  profileImage: string = '';
-  fileName: string = 'Nenhum arquivo escolhido';
+  profileImage: string = ''; 
+  fileName: string = 'Nenhum arquivo escolhido'; 
   isLoading: boolean = false;
 
-  hasLowercase: boolean = false;
-  hasUppercase: boolean = false;
-  hasNumber: boolean = false;
-  hasSpecialChar: boolean = false;
-  hasMinLength: boolean = false;
-
-  strengthLabel: string = '';
-  strengthClass: string = '';
-  strengthPercentage: number = 0;
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -57,60 +45,16 @@ export class RegisterComponent {
     const fileInput = document.getElementById('fileInput') as HTMLInputElement;
     fileInput.click();
   }
-  get isTooltipVisible(): boolean {
-    return !!this.password;
-  }
-  validatePassword() {
-    const password = this.password;
-    this.hasLowercase = /[a-z]/.test(password);
-    this.hasUppercase = /[A-Z]/.test(password);
-    this.hasNumber = /\d/.test(password);
-    this.hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-    this.hasMinLength = password.length >= 8;
-
-    const strengthChecks = [
-      this.hasLowercase,
-      this.hasUppercase,
-      this.hasNumber,
-      this.hasSpecialChar,
-      this.hasMinLength
-    ];
-
-    const strengthScore = strengthChecks.filter(Boolean).length;
-
-    this.strengthPercentage = (strengthScore / 5) * 100;
-    if (strengthScore === 5) {
-      this.strengthLabel = 'Forte!';
-      this.strengthClass = 'strong';
-    } else if (strengthScore >= 3) {
-      this.strengthLabel = 'Média';
-      this.strengthClass = 'medium';
-    } else {
-      this.strengthLabel = 'Fraca';
-      this.strengthClass = 'weak';
-    }
-  }
-
-  isFormValid(): boolean {
-    return (
-      this.hasLowercase &&
-      this.hasUppercase &&
-      this.hasNumber &&
-      this.hasSpecialChar &&
-      this.hasMinLength &&
-      this.password === this.confirmPassword
-    );
-  }
 
   async onSubmit() {
-    if (this.isFormValid()) {
+    if (this.firstName && this.email && this.password && this.password === this.confirmPassword) {
       this.isLoading = true;
       try {
-        await this.authService.register(this.email, this.password, this.firstName, this.profileImage);
+        const displayName = this.firstName;
+        await this.authService.register(this.email, this.password, displayName, this.profileImage);
         this.poNotification.success('Registro realizado com sucesso!');
-        this.router.navigate(['/login']);
       } catch (error) {
-        this.errorHandleService.handleRegistrationError(error);
+        this.errorHandleService.handleRegistrationError(error); 
       } finally {
         this.isLoading = false;
       }
@@ -121,13 +65,5 @@ export class RegisterComponent {
 
   goToLogin() {
     this.router.navigate(['/login']);
-  }
-
-  openPasswordValidationModal() {
-    this.passwordValidationModal.open();
-  }
-
-  closePasswordValidationModal() {
-    this.passwordValidationModal.close();
   }
 }
