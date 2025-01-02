@@ -1,12 +1,59 @@
-<div class="container" style="position: relative;">
+<div class="container" style="position: relative">
   <po-loading-overlay *ngIf="isLoading" [p-screen-lock]="true" p-text="Carregando..."></po-loading-overlay>
-  <h3>Visão Geral dos Animais</h3>
-  
-  <po-chart 
-    [p-type]="chartType"
-    [p-series]="chartSeries"
-    [p-options]="chartOptions"
-    p-title="Distribuição de Animais por Categoria">
-  </po-chart>
 
+  <h3>Visão Geral dos Animais</h3>
+
+  <po-tabs>
+    <po-tab
+      p-label="Distribuição Total"
+      (p-click)="toggleTab('total')"
+      [p-active]="activeTab === 'total'">
+      <po-chart
+        *ngIf="activeTab === 'total'"
+        [p-type]="chartType"
+        [p-series]="totalChartSeries"
+        [p-options]="chartOptions"
+        p-title="Distribuição Total de Animais">
+      </po-chart>
+    </po-tab>
+
+    <po-tab
+      p-label="Distribuição por Categoria"
+      (p-click)="toggleTab('category')"
+      [p-active]="activeTab === 'category'">
+      <po-chart
+        *ngIf="activeTab === 'category'"
+        [p-type]="chartType"
+        [p-series]="categoryChartSeries"
+        [p-options]="chartOptions"
+        p-title="Distribuição de Animais por Categoria">
+      </po-chart>
+    </po-tab>
+
+    <po-tab
+      p-label="Distribuição por Gênero"
+      (p-click)="toggleTab('gender')"
+      [p-active]="activeTab === 'gender'">
+      <po-chart
+        *ngIf="activeTab === 'gender'"
+        [p-type]="chartType"
+        [p-series]="genderChartSeries"
+        [p-options]="chartOptions"
+        p-title="Distribuição de Animais por Gênero">
+      </po-chart>
+    </po-tab>
+
+    <po-tab
+      p-label="Distribuição por Raças"
+      (p-click)="toggleTab('breed')"
+      [p-active]="activeTab === 'breed'">
+      <po-chart
+        *ngIf="activeTab === 'breed'"
+        [p-type]="chartType"
+        [p-series]="breedChartSeries"
+        [p-options]="chartOptions"
+        p-title="Distribuição por Raças">
+      </po-chart>
+    </po-tab>
+  </po-tabs>
 </div>

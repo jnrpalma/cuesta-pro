@@ -1,6 +1,7 @@
 <div class="register-container">
   <po-loading-overlay *ngIf="isLoading" [p-screen-lock]="true" p-text="Cadastrando..."></po-loading-overlay>
 
+
   <div class="register-box">
     <div class="register-left">
       <div class="register-form">
@@ -31,16 +32,42 @@
               p-clean="true"
               required>
             </po-email>
+
+          <div class="input-group form-row">
+            <po-input
+              name="firstName"
+              p-label="Nome"
+              [(ngModel)]="firstName"
+              p-clean="true"
+              required>
+            </po-input>
+            <po-email
+              name="email"
+              p-label="Email"
+              [(ngModel)]="email"
+              p-clean="true"
+              required>
+            </po-email>
           </div>
 
           <div class="password-group password-row">
             <po-password
+<<<<<<< HEAD
               name="password"
               p-label="Senha"
               [(ngModel)]="password"
               (ngModelChange)="validatePassword()"
               required>
             </po-password>
+=======
+            name="password"
+            p-label="Senha"
+            [(ngModel)]="password"
+            (ngModelChange)="validatePassword()"
+            required>
+          </po-password>
+      
+>>>>>>> 21dbc5dc8eaae4b67aa2134728150c253d4b1e8d
 
             <po-password
               name="confirmPassword"
@@ -52,12 +79,16 @@
             <small *ngIf="confirmPassword && confirmPassword !== password" class="validation-error">
               ❌ As senhas não coincidem.
             </small>
+<<<<<<< HEAD
             
             <!-- Tooltip atualizado -->
             <div 
               class="password-validation-tooltip" 
               *ngIf="isTooltipVisible" 
               [ngClass]="{'password-validation-tooltip-hidden': !isTooltipVisible}">
+=======
+            <div class="password-validation-tooltip" *ngIf="password"   [ngClass]="{'password-validation-tooltip-hidden': !isTooltipVisible}">
+>>>>>>> 21dbc5dc8eaae4b67aa2134728150c253d4b1e8d
               <p>Requisitos para uma senha segura:</p>
               <ul>
                 <li [class.valid]="hasMinLength">✔ Utilize pelo menos 8 caracteres</li>
@@ -75,6 +106,7 @@
             </div>
           </div>
 
+
           <div class="button-container">
             <po-button
             p-label="CADASTRAR"
@@ -85,12 +117,13 @@
           </div>
         </form>
 
+
         <div class="back-to-login">
           <po-link p-label="Já tem uma conta? Login!" (p-action)="goToLogin()"></po-link>
         </div>
       </div>
     </div>
-    <div class="register-right">
+  <div class="register-right">
       <img src="assets/ovino-register.jpg" alt="Imagem de cadastro">
     </div>
   </div>

@@ -112,7 +112,6 @@ export class AnimalService {
       .catch(error => console.error(`Erro ao excluir documento com Firestore ID ${firestoreId}:`, error));
   }
 
-  // Reseta o controle de paginação
   resetPagination() {
     this.lastVisible = null;
   }
