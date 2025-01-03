@@ -1,12 +1,9 @@
 <div class="dashboard">
+  <!-- Sidebar -->
   <div class="sidebar">
     <h2>Bem-vindo!</h2>
     <div class="user-info">
-      <po-avatar
-        [p-src]="profileImage"
-        p-size="sm"
-        (p-click)="openPhotoModal()"
-      ></po-avatar>
+      <po-avatar [p-src]="profileImage"    (p-click)="openProfileModal()" p-size="sm"></po-avatar>
       <p>{{ userName }}</p>
     </div>
     <ul>
@@ -55,7 +52,6 @@
           p-label="Mortes"
           p-kind="tertiary"
           p-icon="ph-fill ph-ghost"
-          (p-click)="navigateTo('mortes')"
         ></po-button>
       </li>
       <li>
@@ -63,7 +59,6 @@
           p-label="Maternidade"
           p-kind="tertiary"
           p-icon="ph-fill ph-baby-carriage"
-          (p-click)="navigateTo('maternidade')"
         ></po-button>
       </li>
       <li>
@@ -71,87 +66,90 @@
           p-label="Enfermaria"
           p-kind="tertiary"
           p-icon="ph-fill ph-first-aid"
-          (p-click)="navigateTo('enfermaria')"
         ></po-button>
       </li>
     </ul>
   </div>
 
+  <!-- Main Section -->
   <div class="main">
+    <!-- Header -->
     <header class="header">
       <h2>TsonPro</h2>
-      <div class="header-icons">
-        <po-button
-          p-icon="ph-fill ph-bell-ringing"
-          p-kind="tertiary"
-          (p-click)="onNotificationClick()"
-          class="notification-button"
-        ></po-button>
-        <po-button
-          p-label="Sair"
-          p-kind="primary"
-          p-danger="true"
-          (p-click)="openModal()"
-          class="logout-button"
-        ></po-button>
-      </div>
+      <po-button
+      p-label="Sair"
+      p-kind="primary"
+      p-danger="true"
+      (p-click)="openModal()"
+      class="logout-button"
+    ></po-button>
     </header>
 
+    <!-- Content -->
     <div class="content">
       <router-outlet></router-outlet>
     </div>
-
-    <!-- Modal para confirmação de saída -->
-    <po-modal
-      #confirmExitModal
-      p-title="Confirmação"
-      p-size="sm"
-      (p-close)="closeModal()"
-    >
-      <p>Tem certeza de que deseja sair?</p>
-      <po-modal-footer>
-        <po-button
-          p-label="Cancelar"
-          p-kind="default"
-          (p-click)="closeModal()"
-        ></po-button>
-        <po-button
-          p-label="Sair"
-          p-kind="primary"
-          p-danger="true"
-          (p-click)="confirmLogout()"
-        ></po-button>
-      </po-modal-footer>
-    </po-modal>
-
-    <!-- Modal para troca de foto -->
-    <po-modal
-      #photoModal
-      p-title="Alterar Foto de Perfil"
-      p-size="sm"
-      (p-close)="closePhotoModal()"
-    >
-      <div>
-        <label for="photoUpload">Selecione uma nova foto:</label>
-        <input
-          id="photoUpload"
-          type="file"
-          (change)="onPhotoSelected($event)"
-          accept="image/*"
-        />
+    <div class="modal" id="confirmExitModal" tabindex="-1" [ngClass]="{ 'show': isModalVisible }">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Confirmação</h5>
+            <button type="button" class="btn-close" (click)="closeModal()" aria-label="Fechar"></button>
+          </div>
+          <div class="modal-body">
+            <p>Tem certeza de que deseja sair?</p>
+          </div>
+          <div class="modal-footer">
+            <po-button p-label="Cancelar" p-kind="primary"  class="cancel-button" p-danger="false" (click)="closeModal()"></po-button>
+            <po-button p-label="Sair"   p-kind="primary" p-danger="true"(click)="logout()"></po-button>
+          </div>
+        </div>
       </div>
-      <po-modal-footer>
-        <po-button
-          p-label="Cancelar"
-          p-kind="default"
-          (p-click)="closePhotoModal()"
-        ></po-button>
-        <po-button
-          p-label="Salvar"
-          p-kind="primary"
-          (p-click)="savePhoto()"
-        ></po-button>
-      </po-modal-footer>
-    </po-modal>
+    </div>
+<div class="custom-modal" [ngClass]="{ 'show': isProfileModalVisible }">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Editar Perfil</h5>
+        <button class="close-button" (click)="closeProfileModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="profile-picture-section">
+          <div class="profile-picture">
+            <img *ngIf="profileData.photoURL" [src]="profileImage" alt="Foto de Perfil" />
+            <p *ngIf="!profileData.photoURL" class="no-photo-text">Foto de perfil</p> 
+            <button class="edit-icon">
+              <i class="fa fa-camera"></i>
+              <input id="photoUpload" type="file" (change)="onPhotoSelected($event)" />
+            </button>
+          </div>
+        </div>
+        <form class="profile-form">
+          <div class="form-group">
+            <label for="profileName">Nome:</label>
+            <input id="profileName" [(ngModel)]="profileData.name" name="name" type="text" />
+          </div>
+          <div class="form-group">
+            <label for="profileEmail">Email:</label>
+            <input id="profileEmail" [(ngModel)]="profileData.email" name="email" type="email" />
+          </div>
+          <div class="form-group">
+            <label for="profilePhone">Telefone:</label>
+            <input id="profilePhone" [(ngModel)]="profileData.phone" name="telefone" type="text" />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger" (click)="removePhoto()">Remover Foto</button>
+        <button class="btn btn-primary" (click)="saveProfile()">Salvar Alterações</button>
+      </div>
+
+      <!-- Texto de Carregamento -->
+      <div *ngIf="isSaving" class="saving-message">
+        <p>Salvando alterações...</p>
+      </div>
+    </div>
   </div>
+</div>
+</div>
 </div>

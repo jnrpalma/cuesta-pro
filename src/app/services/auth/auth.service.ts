@@ -22,21 +22,23 @@ export class AuthService {
       this.router.navigate(['/dashboard/overview']);
     } catch (error) {
       console.log('Erro de login:', error);
-      throw error; 
+      throw error;
     }
   }
-  
+
   async register(email: string, password: string, displayName: string, profileImage: string) {
     try {
       const userCredential = await this.afAuth.createUserWithEmailAndPassword(email, password);
       if (userCredential.user) {
         if (profileImage) {
-         
           const filePath = `profile_images/${userCredential.user.uid}`;
           const fileRef = this.storage.ref(filePath);
-          const task = this.storage.upload(filePath, this.dataURLtoFile(profileImage, 'profileImage.png'));
-
-          task.snapshotChanges().pipe(
+          const file = this.dataURLtoFile(profileImage, 'profileImage.png');
+  
+          const task = this.storage.upload(filePath, file);
+          
+          // Aguardar o upload completar e buscar a URL
+          await task.snapshotChanges().pipe(
             finalize(async () => {
               const downloadURL = await fileRef.getDownloadURL().toPromise();
               await userCredential.user?.updateProfile({
@@ -46,9 +48,8 @@ export class AuthService {
               await this.syncUserProfileUpdate();
               this.router.navigate(['/dashboard/overview']);
             })
-          ).subscribe();
+          ).toPromise();
         } else {
-          
           await userCredential.user.updateProfile({
             displayName: displayName
           });
@@ -58,13 +59,14 @@ export class AuthService {
       }
     } catch (error) {
       console.log('Erro durante o registro:', error);
-      throw error; 
+      throw error;
     }
   }
+  
 
   private dataURLtoFile(dataurl: string, filename: string): File {
     const arr = dataurl.split(',');
-    const mime = arr[0].match(/:(.*?);/)?.[1] || ''; // Adicionando verificação
+    const mime = arr[0].match(/:(.*?);/)?.[1] || ''; 
     const bstr = atob(arr[1]);
     let n = bstr.length;
     const u8arr = new Uint8Array(n);
@@ -111,7 +113,7 @@ export class AuthService {
           return {
             displayName: user.displayName,
             email: user.email,
-            firstName: firstName || user.email, 
+            firstName: firstName || user.email,
             photoURL: user.photoURL
           };
         } else {
@@ -120,4 +122,46 @@ export class AuthService {
       })
     );
   }
-}
+
+  updateUserProfile(profileData: { displayName: string; photoURL?: string; photoFile?: File }): Observable<void> {
+    return new Observable((observer) => {
+      this.afAuth.currentUser.then(async (user) => {
+        if (user) {
+          try {
+            if (profileData.photoFile) {
+              const filePath = `profile_images/${user.uid}`;
+              const fileRef = this.storage.ref(filePath);
+  
+              const task = this.storage.upload(filePath, profileData.photoFile);
+              
+              await task.snapshotChanges().pipe(
+                finalize(async () => {
+                  const downloadURL = await fileRef.getDownloadURL().toPromise();
+                  await user.updateProfile({
+                    displayName: profileData.displayName,
+                    photoURL: downloadURL,
+                  });
+                  observer.next();
+                  observer.complete();
+                  console.log('Perfil atualizado com imagem!');
+                })
+              ).toPromise();
+            } else {
+              await user.updateProfile({
+                displayName: profileData.displayName,
+                photoURL: profileData.photoURL || user.photoURL || '', // Use valor existente ou vazio
+              });
+              observer.next();
+              observer.complete();
+              console.log('Perfil atualizado sem alterar a imagem!');
+            }
+          } catch (error) {
+            observer.error('Erro ao atualizar o perfil: ' + error);
+          }
+        } else {
+          observer.error('Usuário não autenticado');
+        }
+      });
+    });
+  }
+}  
