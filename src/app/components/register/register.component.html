@@ -3,8 +3,7 @@
   <div class="register-box">
     <div class="register-left">
       <div class="register-form">
-        <h1>Cadastro</h1>
-        <p>Informe seus dados</p>
+        <h1>Informe seus dados</h1>
         <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
           <div class="avatar-container">
             <po-avatar [p-src]="profileImage" p-size="md"></po-avatar>
@@ -24,15 +23,37 @@
           </div>
           <div class="password-confirm">
             <div>
-              <po-password name="password" p-label="Senha" [(ngModel)]="password" required></po-password>
+              <po-password 
+                name="password" 
+                p-label="Senha" 
+                [(ngModel)]="password" 
+                required 
+                p-tooltip="Use pelo menos 8 caracteres, incluindo letras, números e símbolos."
+                p-tooltip-position="top">
+              </po-password>
             </div>
             <div>
-              <po-password name="confirmPassword" p-label="Confirme a senha" [(ngModel)]="confirmPassword" required></po-password>
+              <po-password 
+                name="confirmPassword" 
+                p-label="Confirme a senha" 
+                [(ngModel)]="confirmPassword" 
+                required
+                p-error-pattern="As senhas não coincidem."
+                [p-pattern]="passwordPattern">
+              </po-password>
             </div>
           </div>
+          
+          
           <div class="button-container">
-            <po-button p-label="CADASTRAR" (p-click)="onSubmit()" type="submit"></po-button>
+            <po-button 
+              p-label="CADASTRAR" 
+              type="submit" 
+              (p-click)="onSubmit()" 
+              [p-disabled]="!isFormValid()">
+            </po-button>
           </div>
+          
         </form>
         <div class="back-to-login">
           <po-link p-label="Já tem uma conta? Login!" (p-action)="goToLogin()"></po-link>
