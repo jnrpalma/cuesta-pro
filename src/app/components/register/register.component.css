@@ -21,7 +21,7 @@
 
 .register-left {
   flex: 1;
-  background-color: #f9f9f9;
+  background-color: #eaeaea;
   padding: 20px;
   box-sizing: border-box;
 }
@@ -54,14 +54,14 @@
 .register-form form {
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Adicionando gap entre os elementos do formulário */
+  gap: 10px; 
 }
 
 .register-form .avatar-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 10px; /* Reduzindo margem inferior */
+  margin-bottom: 10px; 
 }
 
 .register-form .file-input-container {
@@ -73,7 +73,7 @@
 .register-form .name-email,
 .register-form .password-confirm {
   display: flex;
-  gap: 10px; /* Espaço entre os campos de nome/email e senha/confirmar senha */
+  gap: 10px; 
 }
 
 .register-form .name-email div,
@@ -82,7 +82,7 @@
 }
 
 .register-form form div {
-  margin-bottom: 5px; /* Reduzindo margem inferior */
+  margin-bottom: 5px;
 }
 
 .register-form form po-input,
