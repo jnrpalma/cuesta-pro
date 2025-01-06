@@ -25,6 +25,65 @@ export class AnimalService {
       .set({ firestoreId, ...animal });
   }
 
+  updateAnimal(animal: Animal): Promise<void> {
+    return this.firestore
+      .collection(this.collectionName)
+      .doc(animal.firestoreId)
+      .update(animal);
+  }
+
+  // Exclui um animal pelo ID do Firestore (informar morte na tabela)
+  animalDeath(firestoreId: string): Promise<void> {
+    console.log(
+      "Iniciando exclusão no serviço para o Firestore ID:",
+      firestoreId
+    );
+
+    return this.firestore
+      .collection(this.collectionName)
+      .doc(firestoreId)
+      .get()
+      .toPromise()
+      .then((docSnapshot) => {
+        if (docSnapshot && docSnapshot.exists) {
+          console.log("Documento encontrado:", docSnapshot.data());
+          const deceasedAnimal = docSnapshot.data(); // Recupera os dados do animal
+          return this.firestore
+            .collection("deceasedAnimals")
+            .add(deceasedAnimal) // Salva na coleção de animais mortos
+            .then((docRef) => {
+              console.log(
+                `Animal movido para deceasedAnimals com ID: ${docRef.id}`
+              );
+              return this.firestore
+                .collection(this.collectionName)
+                .doc(firestoreId)
+                .delete(); // Exclui o animal da coleção original
+            });
+        } else {
+          console.error("Animal não encontrado no Firestore.");
+          throw new Error(
+            "Animal não encontrado no Firestore ou o documento é undefined"
+          );
+        }
+      })
+      .then(() => {
+        console.log(
+          `Animal com Firestore ID ${firestoreId} foi excluído da coleção original.`
+        );
+        return this.vaccinationService.deleteVaccinationsByAnimalId(
+          firestoreId
+        ); // Remove vacinações correspondentes
+      })
+      .catch((error) => {
+        console.error(
+          `Erro ao processar o animal com Firestore ID ${firestoreId}:`,
+          error
+        );
+        throw error;
+      });
+  }
+
   // Obtém uma lista de animais com suporte a paginação
   getAnimals(page: number, pageSize: number): Observable<Animal[]> {
     let query = this.firestore.collection<Animal>(
@@ -32,7 +91,7 @@ export class AnimalService {
       (ref) => {
         let q = ref.orderBy("id").limit(pageSize);
         if (this.lastVisible && page > 1) {
-          q = q.startAfter(this.lastVisible); 
+          q = q.startAfter(this.lastVisible);
         }
         return q;
       }
@@ -81,49 +140,30 @@ export class AnimalService {
       );
   }
 
-  updateAnimal(animal: Animal): Promise<void> {
+  checkAnimalIdExists(id: string): Promise<boolean> {
     return this.firestore
-      .collection(this.collectionName)
-      .doc(animal.firestoreId)
-      .update(animal);
-  }
-
-  // Exclui um animal pelo ID do Firestore (informar morte na tabela)
-  // Serviço AnimalService
-  animalDeath(firestoreId: string): Promise<void> {
-    console.log('Iniciando exclusão no serviço para o Firestore ID:', firestoreId);
-    
-    return this.firestore.collection(this.collectionName).doc(firestoreId).get().toPromise()
-      .then((docSnapshot) => {
-        if (docSnapshot && docSnapshot.exists) {
-          console.log('Documento encontrado:', docSnapshot.data());
-          const deceasedAnimal = docSnapshot.data(); // Recupera os dados do animal
-          return this.firestore.collection('deceasedAnimals').add(deceasedAnimal) // Salva na coleção de animais mortos
-            .then((docRef) => {
-              console.log(`Animal movido para deceasedAnimals com ID: ${docRef.id}`);
-              return this.firestore.collection(this.collectionName).doc(firestoreId).delete(); // Exclui o animal da coleção original
-            });
-        } else {
-          console.error('Animal não encontrado no Firestore.');
-          throw new Error('Animal não encontrado no Firestore ou o documento é undefined');
+      .collection(this.collectionName, (ref) => ref.where("id", "==", id))
+      .get()
+      .toPromise()
+      .then((querySnapshot) => {
+        // Verifica se querySnapshot é válido e não vazio
+        if (querySnapshot && !querySnapshot.empty) {
+          return true; // O ID já existe
         }
-      })
-      .then(() => {
-        console.log(`Animal com Firestore ID ${firestoreId} foi excluído da coleção original.`);
-        return this.vaccinationService.deleteVaccinationsByAnimalId(firestoreId); // Remove vacinações correspondentes
+        return false; // O ID não existe
       })
       .catch((error) => {
-        console.error(`Erro ao processar o animal com Firestore ID ${firestoreId}:`, error);
-        throw error;
+        console.error("Erro ao verificar ID:", error);
+        return false; // Retorna false em caso de erro
       });
   }
-  
-getDeceasedAnimalsCount(): Observable<number> {
-  return this.firestore.collection('deceasedAnimals').snapshotChanges().pipe(
-    map((actions) => actions.length)
-  );
-}
 
+  getDeceasedAnimalsCount(): Observable<number> {
+    return this.firestore
+      .collection("deceasedAnimals")
+      .snapshotChanges()
+      .pipe(map((actions) => actions.length));
+  }
 
   resetPagination() {
     this.lastVisible = null;
