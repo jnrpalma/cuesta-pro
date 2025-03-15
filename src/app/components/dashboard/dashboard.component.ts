@@ -20,6 +20,7 @@ export class DashboardComponent implements OnInit {
   isModalVisible = false;
   isProfileModalVisible: boolean = false;
   selectedPhoto: File | null = null;
+  notificationsVisible: boolean = false;
 
   profileData = {
     name: '',
@@ -70,7 +71,12 @@ export class DashboardComponent implements OnInit {
     this.isProfileModalVisible = false;
   }
 
-  
+  openNotifications() {
+    // Exemplo: apenas alterna um flag que você pode usar para exibir um modal ou dropdown
+    this.notificationsVisible = !this.notificationsVisible;
+    console.log('Notificações', this.notificationsVisible);
+    // Aqui você pode adicionar sua lógica para buscar ou exibir notificações
+  }
 
   isSaving: boolean = false;
 
