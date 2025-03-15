@@ -1,26 +1,16 @@
 <div class="vaccination-container">
   <h2>Gerenciamento de Vacinações</h2>
 
-  <po-select
-    p-label="Selecione o Animal"
-    [p-options]="animals"
-    [ngModel]="selectedAnimalFirestoreId"
-    (ngModelChange)="onAnimalChange($event)"
-  >
+  <po-select p-label="Selecione o Animal" [p-options]="animals" [ngModel]="selectedAnimalFirestoreId"
+    (ngModelChange)="onAnimalChange($event)">
   </po-select>
 
-  <po-input
-    p-label="Nome da Vacina"
-    [(ngModel)]="vaccineName"
-    p-required="true"
-  ></po-input>
+  <po-input p-label="Nome da Vacina" [(ngModel)]="vaccineName" p-required="true"></po-input>
 
-  <po-select
-    p-label="Dose"
-    [p-options]="doseOptions"
-    [ngModel]="dose"
-    (ngModelChange)="dose = $event"
-  >
+  <po-datepicker p-label="Data da Vacinação" [(ngModel)]="vaccinationDate" p-required="true">
+  </po-datepicker>
+
+  <po-select p-label="Dose" [p-options]="doseOptions" [ngModel]="dose" (ngModelChange)="dose = $event">
   </po-select>
 
   <!-- Campo adicional para a segunda dose caso a dose selecionada seja a 1ª -->
@@ -43,17 +33,6 @@
 
   <po-input p-label="Observações" [(ngModel)]="observation"></po-input>
 
-  <po-datepicker
-    p-label="Data da Vacinação"
-    [(ngModel)]="vaccinationDate"
-    p-required="true"
-  >
-  </po-datepicker>
-
-  <po-button
-    p-label="Registrar Vacinação"
-    p-kind="primary"
-    (p-click)="applyVaccination()"
-  >
+  <po-button p-label="Registrar Vacinação" p-kind="primary" (p-click)="applyVaccination()">
   </po-button>
 </div>
