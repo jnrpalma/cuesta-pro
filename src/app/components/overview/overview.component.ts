@@ -7,11 +7,10 @@ import { Animal } from '../register-animal/interface/animal.interface';
 import { Batch } from '../register-batch/interface/batch.interface';
 
 @Component({
-  selector: 'app-overview',
-  standalone: true,
-  imports: [CommonModule, PoChartModule, PoLoadingModule, PoTabsModule],
-  templateUrl: './overview.component.html',
-  styleUrls: ['./overview.component.css']
+    selector: 'app-overview',
+    imports: [CommonModule, PoChartModule, PoLoadingModule, PoTabsModule],
+    templateUrl: './overview.component.html',
+    styleUrls: ['./overview.component.css']
 })
 export class OverviewComponent implements OnInit {
   animals: Animal[] = [];

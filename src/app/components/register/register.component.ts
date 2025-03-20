@@ -7,21 +7,20 @@ import { Router } from '@angular/router';
 import { ErrorHandleService } from '../../services/error-handle/error-handle.service';
 
 @Component({
-  selector: 'app-register',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    PoFieldModule,
-    PoButtonModule,
-    PoLoadingModule,
-    PoLinkModule,
-    PoAvatarModule,
-    PoTooltipModule
-  ],
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+    selector: 'app-register',
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        PoFieldModule,
+        PoButtonModule,
+        PoLoadingModule,
+        PoLinkModule,
+        PoAvatarModule,
+        PoTooltipModule
+    ],
+    templateUrl: './register.component.html',
+    styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
   firstName: string = '';

@@ -6,17 +6,16 @@ import { PoTableColumn } from '@po-ui/ng-components';
 import { Animal } from '../register-animal/interface/animal.interface';
 
 @Component({
-  selector: 'app-add-animals-in-batch',
-  standalone: true,
-  imports: [
-    CommonModule,
-    PoTableModule,
-    PoButtonModule,
-    PoLoadingModule,
-    PoModalModule,
-  ],
-  templateUrl: './add-animals-in-batch.component.html',
-  styleUrls: ['./add-animals-in-batch.component.css'],
+    selector: 'app-add-animals-in-batch',
+    imports: [
+        CommonModule,
+        PoTableModule,
+        PoButtonModule,
+        PoLoadingModule,
+        PoModalModule,
+    ],
+    templateUrl: './add-animals-in-batch.component.html',
+    styleUrls: ['./add-animals-in-batch.component.css']
 })
 export class AddAnimalsInBatchComponent implements OnInit {
   @Input() batchId!: string;

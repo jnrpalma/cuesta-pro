@@ -17,21 +17,20 @@ import { Animal } from "./interface/animal.interface";
 import { RegisterBatchComponent } from "../register-batch/register-batch.component";
 
 @Component({
-  selector: "app-register-animal",
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    RouterModule,
-    PoButtonModule,
-    PoPageModule,
-    PoDynamicModule,
-    PoFieldModule,
-    PoLoadingModule,
-    RegisterBatchComponent,
-  ],
-  templateUrl: "./register-animal.component.html",
-  styleUrls: ["./register-animal.component.css"],
+    selector: "app-register-animal",
+    imports: [
+        CommonModule,
+        FormsModule,
+        RouterModule,
+        PoButtonModule,
+        PoPageModule,
+        PoDynamicModule,
+        PoFieldModule,
+        PoLoadingModule,
+        RegisterBatchComponent,
+    ],
+    templateUrl: "./register-animal.component.html",
+    styleUrls: ["./register-animal.component.css"]
 })
 export class RegisterAnimalComponent implements OnInit {
   showForm: boolean = false;

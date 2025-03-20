@@ -13,11 +13,10 @@ import { VaccinationService } from '../../services/vaccination/vaccination.servi
 import { AnimalService } from '../../services/animal/animal.service';
 
 @Component({
-  selector: 'app-vaccination',
-  standalone: true,
-  imports: [CommonModule, FormsModule, PoTableModule, PoButtonModule, PoModalModule, PoFieldModule],
-  templateUrl: './vaccination.component.html',
-  styleUrls: ['./vaccination.component.css']
+    selector: 'app-vaccination',
+    imports: [CommonModule, FormsModule, PoTableModule, PoButtonModule, PoModalModule, PoFieldModule],
+    templateUrl: './vaccination.component.html',
+    styleUrls: ['./vaccination.component.css']
 })
 export class VaccinationComponent implements OnInit {
   animals: PoSelectOption[] = [];

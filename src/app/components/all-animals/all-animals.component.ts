@@ -8,11 +8,10 @@ import { PoInfoModule } from '@po-ui/ng-components';
 import { VaccinationService } from '../../services/vaccination/vaccination.service';
 
 @Component({
-  selector: 'app-list-animals',
-  standalone: true,
-  imports: [CommonModule, PoTableModule, PoButtonModule, PoModalModule, PoInfoModule],
-  templateUrl: './all-animals.component.html',
-  styleUrls: ['./all-animals.component.css']
+    selector: 'app-list-animals',
+    imports: [CommonModule, PoTableModule, PoButtonModule, PoModalModule, PoInfoModule],
+    templateUrl: './all-animals.component.html',
+    styleUrls: ['./all-animals.component.css']
 })
 export class AllAnimalsComponent implements OnInit {
   @ViewChild(PoModalComponent, { static: true }) poModal!: PoModalComponent;

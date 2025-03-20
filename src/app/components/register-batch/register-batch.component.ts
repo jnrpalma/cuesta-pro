@@ -24,22 +24,21 @@ import { switchMap, take, throwError } from 'rxjs';
 import { AddAnimalsInBatchComponent } from '../add-animals-in-batch/add-animals-in-batch.component';
 
 @Component({
-  selector: 'app-register-batch',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    PoButtonModule,
-    PoPageModule,
-    PoDynamicModule,
-    PoLoadingModule,
-    PoFieldModule,
-    PoTableModule,
-    PoModalModule,
-    AddAnimalsInBatchComponent,
-  ],
-  templateUrl: './register-batch.component.html',
-  styleUrls: ['./register-batch.component.css'],
+    selector: 'app-register-batch',
+    imports: [
+        CommonModule,
+        FormsModule,
+        PoButtonModule,
+        PoPageModule,
+        PoDynamicModule,
+        PoLoadingModule,
+        PoFieldModule,
+        PoTableModule,
+        PoModalModule,
+        AddAnimalsInBatchComponent,
+    ],
+    templateUrl: './register-batch.component.html',
+    styleUrls: ['./register-batch.component.css']
 })
 export class RegisterBatchComponent implements OnInit {
   @ViewChild('confirmCategoryModal') confirmCategoryModal!: PoModalComponent;

@@ -8,11 +8,10 @@ import { FormsModule } from '@angular/forms';
 import { PoDynamicModule, PoDynamicFormField, PoButtonModule, PoLoadingModule } from '@po-ui/ng-components';
 
 @Component({
-  selector: 'app-update-animal',
-  standalone: true,
-  imports: [CommonModule, FormsModule, PoButtonModule, PoDynamicModule, PoLoadingModule],
-  templateUrl: './update-animal.component.html',
-  styleUrls: ['./update-animal.component.css']
+    selector: 'app-update-animal',
+    imports: [CommonModule, FormsModule, PoButtonModule, PoDynamicModule, PoLoadingModule],
+    templateUrl: './update-animal.component.html',
+    styleUrls: ['./update-animal.component.css']
 })
 export class UpdateAnimalComponent implements OnInit {
   animalId!: string;

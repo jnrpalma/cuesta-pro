@@ -6,11 +6,10 @@ import { Animal } from '../register-animal/interface/animal.interface';
 import { CategoryService } from '../../services/category/category.service'; // Importação do CategoryService
 
 @Component({
-  selector: 'app-all-batches',
-  standalone: true,
-  imports: [CommonModule, PoListViewModule, PoInfoModule, PoLoadingModule, PoModalModule, PoButtonModule, PoTableModule],
-  templateUrl: './all-batches.component.html',
-  styleUrls: ['./all-batches.component.css']
+    selector: 'app-all-batches',
+    imports: [CommonModule, PoListViewModule, PoInfoModule, PoLoadingModule, PoModalModule, PoButtonModule, PoTableModule],
+    templateUrl: './all-batches.component.html',
+    styleUrls: ['./all-batches.component.css']
 })
 export class AllBatchesComponent implements OnInit {
   @ViewChild('poModal', { static: true }) poModal!: PoModalComponent;
