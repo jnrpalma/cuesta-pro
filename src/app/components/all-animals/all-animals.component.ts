@@ -67,13 +67,13 @@ export class AllAnimalsComponent implements OnInit {
   actions = [
     {
       action: this.updateAnimal.bind(this),
-      icon: 'po-icon-edit',
+      icon: 'an an-pencil-simple',
       label: 'Atualizar',
       type: 'default'
     },
     {
       action: this.confirmDeath.bind(this),
-      icon: 'po-icon-delete',
+      icon: 'an an-trash',
       label: 'Informar morte',
       type: 'danger'
     }

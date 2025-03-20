@@ -25,12 +25,12 @@ export class AllBatchesComponent implements OnInit {
   actions = [
     {
       label: 'Ver Animais',
-      icon: 'po-icon-list',
+      icon: 'an an-list-bullets',
       action: this.toggleAnimalsView.bind(this)
     },
     {
       label: 'Excluir',
-      icon: 'po-icon-delete',
+      icon: 'an an-trash',
       type: 'danger',
       action: this.confirmDelete.bind(this)
     }
