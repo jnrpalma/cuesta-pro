@@ -3,44 +3,80 @@
   <div class="sidebar">
     <h2>Bem-vindo!</h2>
     <div class="user-info">
-      <po-avatar [p-src]="profileImage" (p-click)="openProfileModal()" p-size="sm"></po-avatar>
+      <po-avatar
+        [p-src]="profileImage"
+        (p-click)="openProfileModal()"
+        p-size="sm"
+      ></po-avatar>
       <p>{{ userName }}</p>
     </div>
     <ul>
       <li>
-        <po-button p-label="Overview" p-kind="tertiary" p-icon="an-fill an-chart-bar-horizontal"
-          (p-click)="navigateTo('overview')"></po-button>
+        <po-button
+          p-label="Overview"
+          p-kind="tertiary"
+          p-icon="an-fill an-chart-bar-horizontal"
+          (p-click)="navigateTo('overview')"
+        ></po-button>
       </li>
       <li>
-        <po-button p-label="Cadastrar" p-kind="tertiary" p-icon="an-fill an-plus-circle"
-          (p-click)="navigateTo('cadastrar')"></po-button>
+        <po-button
+          p-label="Cadastrar"
+          p-kind="tertiary"
+          p-icon="an-fill an-plus-circle"
+          (p-click)="navigateTo('cadastrar')"
+        ></po-button>
       </li>
       <li>
-        <po-button p-label="Animais" p-kind="tertiary" p-icon="an-fill an-paw-print"
-          (p-click)="navigateTo('animais')"></po-button>
+        <po-button
+          p-label="Animais"
+          p-kind="tertiary"
+          p-icon="an-fill an-paw-print"
+          (p-click)="navigateTo('animais')"
+        ></po-button>
       </li>
       <li>
-        <po-button p-label="Lotes" p-kind="tertiary" p-icon="an-fill an-shipping-container"
-          (p-click)="navigateTo('lotes')"></po-button>
+        <po-button
+          p-label="Lotes"
+          p-kind="tertiary"
+          p-icon="an-fill an-shipping-container"
+          (p-click)="navigateTo('lotes')"
+        ></po-button>
       </li>
       <li>
-        <po-button p-label="Vacinação" p-kind="tertiary" p-icon="an-fill an-list-heart"
-          (p-click)="navigateTo('vacinacao')"></po-button>
+        <po-button
+          p-label="Vacinação"
+          p-kind="tertiary"
+          p-icon="an-fill an-list-heart"
+          (p-click)="navigateTo('vacinacao')"
+        ></po-button>
       </li>
       <li>
-        <po-button p-label="Mortes" p-kind="tertiary" p-icon="an-fill an-ghost"></po-button>
+        <po-button
+          p-label="Mortes"
+          p-kind="tertiary"
+          p-icon="an-fill an-ghost"
+        ></po-button>
       </li>
       <li>
-        <po-button p-label="Maternidade" p-kind="tertiary" p-icon="an-fill an-baby-carriage"></po-button>
+        <po-button
+          p-label="Maternidade"
+          p-kind="tertiary"
+          p-icon="an-fill an-baby-carriage"
+        ></po-button>
       </li>
       <li>
-        <po-button p-label="Enfermaria" p-kind="tertiary" p-icon="an-fill an-first-aid"></po-button>
+        <po-button
+          p-label="Enfermaria"
+          p-kind="tertiary"
+          p-icon="an-fill an-first-aid"
+        ></po-button>
       </li>
     </ul>
   </div>
 
   <ng-template #faNotificationTemplate>
-    <i class="fa fa-bell" style="font-size: 24px;"></i>
+    <i class="fa fa-bell" style="font-size: 24px"></i>
   </ng-template>
 
   <!-- Main Section -->
@@ -48,74 +84,137 @@
     <!-- Header -->
     <header class="header">
       <h2>TsonPro</h2>
-      <div class="header-icons" style="display: flex; align-items: center; gap: 10px;">
-        <po-button [p-icon]="faNotificationTemplate" p-type="icon" p-title="Notificações"
-          (p-click)="openNotifications()">
+      <div
+        class="header-icons"
+        style="display: flex; align-items: center; gap: 10px"
+      >
+        <po-button
+          p-icon="an an-bell"
+          p-kind="tertiary"
+          p-title="Notificações"
+          (p-click)="openNotifications()"
+        >
         </po-button>
-        <po-button p-label="Sair" p-kind="primary" p-danger="true" (p-click)="openModal()" class="logout-button">
+        <po-button
+          p-label="Sair"
+          p-kind="primary"
+          p-danger="true"
+          (p-click)="openModal()"
+          class="logout-button"
+        >
         </po-button>
       </div>
     </header>
-
 
     <!-- Content -->
     <div class="content">
       <router-outlet></router-outlet>
     </div>
-    <div class="modal" id="confirmExitModal" tabindex="-1" [ngClass]="{ 'show': isModalVisible }">
+    <div
+      class="modal"
+      id="confirmExitModal"
+      tabindex="-1"
+      [ngClass]="{ show: isModalVisible }"
+    >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Confirmação</h5>
-            <button type="button" class="btn-close" (click)="closeModal()" aria-label="Fechar"></button>
+            <button
+              type="button"
+              class="btn-close"
+              (click)="closeModal()"
+              aria-label="Fechar"
+            ></button>
           </div>
           <div class="modal-body">
             <p>Tem certeza de que deseja sair?</p>
           </div>
           <div class="modal-footer">
-            <po-button p-label="Cancelar" p-kind="primary" class="cancel-button" p-danger="false"
-              (click)="closeModal()"></po-button>
-            <po-button p-label="Sair" p-kind="primary" p-danger="true" (click)="logout()"></po-button>
+            <po-button
+              p-label="Cancelar"
+              p-kind="primary"
+              class="cancel-button"
+              p-danger="false"
+              (click)="closeModal()"
+            ></po-button>
+            <po-button
+              p-label="Sair"
+              p-kind="primary"
+              p-danger="true"
+              (click)="logout()"
+            ></po-button>
           </div>
         </div>
       </div>
     </div>
-    <div class="custom-modal" [ngClass]="{ 'show': isProfileModalVisible }">
+    <div class="custom-modal" [ngClass]="{ show: isProfileModalVisible }">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Editar Perfil</h5>
-            <button class="close-button" (click)="closeProfileModal()">×</button>
+            <button class="close-button" (click)="closeProfileModal()">
+              ×
+            </button>
           </div>
           <div class="modal-body">
             <div class="profile-picture-section">
               <div class="profile-picture">
-                <img *ngIf="profileData.photoURL" [src]="profileImage" alt="Foto de Perfil" />
-                <p *ngIf="!profileData.photoURL" class="no-photo-text">Foto de perfil</p>
+                <img
+                  *ngIf="profileData.photoURL"
+                  [src]="profileImage"
+                  alt="Foto de Perfil"
+                />
+                <p *ngIf="!profileData.photoURL" class="no-photo-text">
+                  Foto de perfil
+                </p>
                 <button class="edit-icon">
                   <i class="fa fa-camera"></i>
-                  <input id="photoUpload" type="file" (change)="onPhotoSelected($event)" />
+                  <input
+                    id="photoUpload"
+                    type="file"
+                    (change)="onPhotoSelected($event)"
+                  />
                 </button>
               </div>
             </div>
             <form class="profile-form">
               <div class="form-group">
                 <label for="profileName">Nome:</label>
-                <input id="profileName" [(ngModel)]="profileData.name" name="name" type="text" />
+                <input
+                  id="profileName"
+                  [(ngModel)]="profileData.name"
+                  name="name"
+                  type="text"
+                />
               </div>
               <div class="form-group">
                 <label for="profileEmail">Email:</label>
-                <input id="profileEmail" [(ngModel)]="profileData.email" name="email" type="email" />
+                <input
+                  id="profileEmail"
+                  [(ngModel)]="profileData.email"
+                  name="email"
+                  type="email"
+                />
               </div>
               <div class="form-group">
                 <label for="profilePhone">Telefone:</label>
-                <input id="profilePhone" [(ngModel)]="profileData.phone" name="telefone" type="text" />
+                <input
+                  id="profilePhone"
+                  [(ngModel)]="profileData.phone"
+                  name="telefone"
+                  type="text"
+                />
               </div>
             </form>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-danger" (click)="removePhoto()">Remover Foto</button>
-            <button class="btn btn-primary" (click)="saveProfile()">Salvar Alterações</button>
+            <button class="btn btn-danger" (click)="removePhoto()">
+              Remover Foto
+            </button>
+            <button class="btn btn-primary" (click)="saveProfile()">
+              Salvar Alterações
+            </button>
           </div>
 
           <!-- Texto de Carregamento -->

@@ -1,17 +1,25 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PoTableModule, PoButtonModule, PoNotificationService, PoModalModule, PoModalComponent, PoTableColumn } from '@po-ui/ng-components';
+import { 
+  PoTableModule, 
+  PoButtonModule, 
+  PoNotificationService, 
+  PoModalModule, 
+  PoModalComponent, 
+  PoTableColumn, 
+  PoInfoModule 
+} from '@po-ui/ng-components';
 import { AnimalService } from '../../services/animal/animal.service';
 import { Animal } from '../register-animal/interface/animal.interface';
 import { Router } from '@angular/router';
-import { PoInfoModule } from '@po-ui/ng-components';
 import { VaccinationService } from '../../services/vaccination/vaccination.service';
 
 @Component({
-    selector: 'app-list-animals',
-    imports: [CommonModule, PoTableModule, PoButtonModule, PoModalModule, PoInfoModule],
-    templateUrl: './all-animals.component.html',
-    styleUrls: ['./all-animals.component.css']
+  selector: 'app-list-animals',
+  standalone: true,
+  imports: [CommonModule, PoTableModule, PoButtonModule, PoModalModule, PoInfoModule],
+  templateUrl: './all-animals.component.html',
+  styleUrls: ['./all-animals.component.css']
 })
 export class AllAnimalsComponent implements OnInit {
   @ViewChild(PoModalComponent, { static: true }) poModal!: PoModalComponent;
@@ -42,7 +50,6 @@ export class AllAnimalsComponent implements OnInit {
     }
   ];
 
-  // Colunas da tabela de vacinações
   vacColumns: PoTableColumn[] = [
     { property: 'animalName', label: 'Animal' },
     { property: 'vaccineName', label: 'Vacina' },
@@ -52,13 +59,10 @@ export class AllAnimalsComponent implements OnInit {
   ];
 
   totalDeceasedAnimals: number = 0;
-
   animals: Animal[] = [];
   vaccinations: any[] = [];
-  
   showTable = false;
   showVaccinationsTable = false;
-  
   animalToDelete: Animal | null = null;
   currentPage = 1;
   pageSize = 10;
@@ -79,10 +83,12 @@ export class AllAnimalsComponent implements OnInit {
     }
   ];
 
+  // Utilize o inject() para obter o Router fora do construtor.
+  private router: Router = inject(Router);
+
   constructor(
     private animalService: AnimalService, 
     private poNotification: PoNotificationService, 
-    private router: Router,
     private vaccinationService: VaccinationService
   ) {}
 
@@ -92,7 +98,6 @@ export class AllAnimalsComponent implements OnInit {
       console.log('Total de animais mortos carregado:', this.totalDeceasedAnimals);
     });
   }
-  
 
   loadAnimals() {
     this.animalService.getAnimals(this.currentPage, this.pageSize).subscribe((data: Animal[]) => {
@@ -119,17 +124,15 @@ export class AllAnimalsComponent implements OnInit {
   }
 
   toggleAnimalsTable() {
-    // Ao abrir a tabela de animais, fecha a de vacinações
     if (!this.showTable) {
       this.showVaccinationsTable = false;
-      this.animalService.resetPagination(); 
+      this.animalService.resetPagination();
       this.loadAnimals();
     }
     this.showTable = !this.showTable;
   }
 
   toggleVaccinationsTable() {
-    // Ao abrir a tabela de vacinações, fecha a de animais
     if (!this.showVaccinationsTable) {
       this.showTable = false;
       this.loadVaccinations();
@@ -146,13 +149,11 @@ export class AllAnimalsComponent implements OnInit {
     const firestoreId = this.animalToDelete?.firestoreId;
     if (firestoreId) {
       console.log('Iniciando exclusão do animal com Firestore ID:', firestoreId);
-      
       this.animalService.animalDeath(firestoreId).then(() => {
         console.log(`Animal com Firestore ID ${firestoreId} processado com sucesso.`);
         this.poNotification.success('Informada morte do Animal com sucesso!');
-        
         setTimeout(() => {
-          this.loadAnimals(); // Recarrega a lista de animais
+          this.loadAnimals();
           this.poModal.close();
           this.animalToDelete = null;
         }, 500);

@@ -1,39 +1,50 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PoFieldModule, PoButtonModule, PoLoadingModule, PoLinkModule, PoAvatarModule, PoTooltipModule, PoNotificationService } from '@po-ui/ng-components';
+import { 
+  PoFieldModule, 
+  PoButtonModule, 
+  PoLoadingModule, 
+  PoLinkModule, 
+  PoAvatarModule, 
+  PoTooltipModule, 
+  PoNotificationService 
+} from '@po-ui/ng-components';
 import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
 import { ErrorHandleService } from '../../services/error-handle/error-handle.service';
 
 @Component({
-    selector: 'app-register',
-    imports: [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        PoFieldModule,
-        PoButtonModule,
-        PoLoadingModule,
-        PoLinkModule,
-        PoAvatarModule,
-        PoTooltipModule
-    ],
-    templateUrl: './register.component.html',
-    styleUrls: ['./register.component.css']
+  selector: 'app-register',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    PoFieldModule,
+    PoButtonModule,
+    PoLoadingModule,
+    PoLinkModule,
+    PoAvatarModule,
+    PoTooltipModule
+  ],
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
   firstName: string = '';
   email: string = '';
   password: string = '';
   confirmPassword: string = '';
-  profileImage: string = ''; 
-  fileName: string = 'Nenhum arquivo escolhido'; 
+  profileImage: string = '';
+  fileName: string = 'Nenhum arquivo escolhido';
   isLoading: boolean = false;
+
+  // Obtenha o Router usando inject() para evitar problemas de injeção
+  private router: Router = inject(Router);
 
   constructor(
     private authService: AuthService,
-    private router: Router,
     private poNotification: PoNotificationService,
     private errorHandleService: ErrorHandleService
   ) {}
@@ -62,7 +73,7 @@ export class RegisterComponent {
         await this.authService.register(this.email, this.password, displayName, this.profileImage);
         this.poNotification.success('Registro realizado com sucesso!');
       } catch (error) {
-        this.errorHandleService.handleRegistrationError(error); 
+        this.errorHandleService.handleRegistrationError(error);
       } finally {
         this.isLoading = false;
       }

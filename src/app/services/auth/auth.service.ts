@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Router } from '@angular/router';
@@ -8,10 +8,12 @@ import { finalize, map, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
+  // Obtenha o Router usando inject()
+  private router: Router = inject(Router);
+
   constructor(
     private afAuth: AngularFireAuth,
-    private storage: AngularFireStorage,
-    private router: Router
+    private storage: AngularFireStorage
   ) {
     this.afAuth.setPersistence('session');
   }
@@ -63,7 +65,6 @@ export class AuthService {
     }
   }
   
-
   private dataURLtoFile(dataurl: string, filename: string): File {
     const arr = dataurl.split(',');
     const mime = arr[0].match(/:(.*?);/)?.[1] || ''; 
@@ -75,7 +76,7 @@ export class AuthService {
     }
     return new File([u8arr], filename, { type: mime });
   }
-
+  
   private async syncUserProfileUpdate() {
     let user = await this.afAuth.currentUser;
     let attempts = 0;
@@ -86,12 +87,12 @@ export class AuthService {
       console.log(`Attempt ${attempts}: User displayName:`, user?.displayName, 'photoURL:', user?.photoURL);
     }
   }
-
+  
   async logout() {
     await this.afAuth.signOut();
     this.router.navigate(['/login']);
   }
-
+  
   async forgotPassword(email: string) {
     try {
       await this.afAuth.sendPasswordResetEmail(email);
@@ -100,11 +101,11 @@ export class AuthService {
       console.log('Erro durante password reset:', error);
     }
   }
-
+  
   isLoggedIn(): Observable<boolean> {
     return this.afAuth.authState.pipe(map(user => !!user));
   }
-
+  
   getUser(): Observable<any> {
     return this.afAuth.authState.pipe(
       map(user => {
@@ -122,7 +123,7 @@ export class AuthService {
       })
     );
   }
-
+  
   updateUserProfile(profileData: { displayName: string; photoURL?: string; photoFile?: File }): Observable<void> {
     return new Observable((observer) => {
       this.afAuth.currentUser.then(async (user) => {
@@ -149,7 +150,7 @@ export class AuthService {
             } else {
               await user.updateProfile({
                 displayName: profileData.displayName,
-                photoURL: profileData.photoURL || user.photoURL || '', // Use valor existente ou vazio
+                photoURL: profileData.photoURL || user.photoURL || '',
               });
               observer.next();
               observer.complete();
@@ -164,4 +165,4 @@ export class AuthService {
       });
     });
   }
-}  
+}

@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PoChartModule, PoChartType, PoChartOptions, PoChartSerie, PoLoadingModule, PoTabsModule } from '@po-ui/ng-components';
+import { PoChartModule, PoChartOptions, PoChartSerie, PoChartType, PoLoadingModule, PoTabsModule } from '@po-ui/ng-components';
 import { AnimalService } from '../../services/animal/animal.service';
 import { BatchService } from '../../services/batch/batch.service';
 import { Animal } from '../register-animal/interface/animal.interface';
 import { Batch } from '../register-batch/interface/batch.interface';
+import { firstValueFrom } from 'rxjs'; // Substituição do toPromise()
 
 @Component({
     selector: 'app-overview',
+    standalone: true,
     imports: [CommonModule, PoChartModule, PoLoadingModule, PoTabsModule],
     templateUrl: './overview.component.html',
     styleUrls: ['./overview.component.css']
@@ -31,38 +33,45 @@ export class OverviewComponent implements OnInit {
     private batchService: BatchService
   ) {}
 
-  ngOnInit() {
-    this.loadAnimals();
-    this.loadBatches();
+  async ngOnInit() {
+    try {
+      await Promise.all([
+        this.loadAnimals(),
+        this.loadBatches()
+      ]);
+    } finally {
+      this.isLoading = false;
+    }
   }
+  
 
-  loadAnimals() {
-    this.animalService.getAllAnimals().subscribe(
-      (data: Animal[]) => {
-        this.animals = data;
-        this.processCategoryChartData();
-        this.processGenderChartData();
-        this.processTotalChartData();
-        this.processBreedChartData(); 
-        this.isLoading = false;
-      },
-      error => {
-        console.error('Erro ao carregar animais:', error);
-        this.isLoading = false;
-      }
-    );
+  async loadAnimals() {
+    try {
+      const data = await firstValueFrom(this.animalService.getAllAnimals());
+      this.animals = data;
+      this.processCategoryChartData();
+      this.processGenderChartData();
+      this.processTotalChartData();
+      this.processBreedChartData();
+    } catch (error) {
+      console.error('Erro ao carregar animais:', error);
+    } finally {
+      this.isLoading = false;
+    }
   }
+  
 
-  loadBatches() {
-    this.batchService.getBatches().subscribe(
-      (data: Batch[]) => {
-        this.batches = data;
-      },
-      error => {
-        console.error('Erro ao carregar lotes:', error);
-      }
-    );
+  async loadBatches() {
+    try {
+      const data = await firstValueFrom(this.batchService.getBatches());
+      this.batches = data;
+    } catch (error) {
+      console.error('Erro ao carregar lotes:', error);
+    } finally {
+      this.isLoading = false;
+    }
   }
+  
 
   processCategoryChartData() {
     const categories = new Map<string, number>();
@@ -101,19 +110,20 @@ export class OverviewComponent implements OnInit {
       data
     }));
   }
-  
 
-  processTotalChartData() {
+  async processTotalChartData() {
     const totalAlive = this.animals.length;
-  
-    this.animalService.getDeceasedAnimalsCount().subscribe((totalDeceased) => {
+
+    try {
+      const totalDeceased = await firstValueFrom(this.animalService.getDeceasedAnimalsCount());
       this.totalChartSeries = [
         { label: 'Total de Animais (Vivos)', data: totalAlive },
         { label: 'Total de Animais Mortos', data: totalDeceased }
       ];
-    });
+    } catch (error) {
+      console.error('Erro ao carregar contagem de animais mortos:', error);
+    }
   }
-  
 
   processBreedChartData() {
     const breeds = new Map<string, number>();

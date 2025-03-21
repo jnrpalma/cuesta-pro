@@ -8,19 +8,20 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PoModule } from '@po-ui/ng-components';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { environment } from './environments/environments';
-
 
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes),
-    importProvidersFrom([
+    importProvidersFrom(
       HttpClientModule,
       BrowserAnimationsModule,
       PoModule,
       AngularFireModule.initializeApp(environment.firebaseConfig),
-      AngularFireAuthModule
-    ])
+      AngularFireAuthModule,
+      AngularFirestoreModule  // Adicionado para fornecer o contexto de injeção para AngularFirestore
+    )
   ]
 })
 .catch(err => console.error(err));
