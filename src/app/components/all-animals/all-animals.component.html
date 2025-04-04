@@ -1,20 +1,20 @@
-<div class="button-container">
-  <po-button
-    p-label="{{ tableButtonLabel }}"
-    p-kind="primary"
-    (p-click)="toggleAnimalsTable()">
+<div class="tabs">
+  <po-button 
+    p-label="Todos os Animais" 
+    p-kind="primary" 
+    (p-click)="selectTab('animals')">
   </po-button>
-
-  <po-button
-    p-label="{{ vaccinationsButtonLabel }}"
-    p-kind="primary"
-   
-    (p-click)="toggleVaccinationsTable()">
+  
+  <po-button 
+    p-label="Animais Vacinados" 
+    p-kind="primary" 
+    (p-click)="selectTab('vaccinated')">
   </po-button>
 </div>
 
 <!-- Tabela de Animais -->
-<div *ngIf="showTable" style="margin-top: 20px">
+<div *ngIf="activeTab === 'animals'" style="margin-top: 20px">
+  <h2>CUESTA SHEEP</h2>
   <po-table
     [p-columns]="columns"
     [p-height]="550"
@@ -27,12 +27,12 @@
 </div>
 
 <!-- Tabela de Vacinações -->
-<div *ngIf="showVaccinationsTable" style="margin-top: 20px">
+<div *ngIf="activeTab === 'vaccinated'" style="margin-top: 20px">
   <h2>Animais Vacinados</h2>
   <po-table
     [p-columns]="vacColumns"
-    [p-hide-table-search]="false"
-    [p-items]="vaccinations">
+    [p-items]="vaccinations"
+    [p-hide-table-search]="false">
   </po-table>
 </div>
 

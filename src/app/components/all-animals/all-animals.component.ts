@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { 
   PoTableModule, 
@@ -9,10 +9,10 @@ import {
   PoTableColumn, 
   PoInfoModule 
 } from '@po-ui/ng-components';
-import { AnimalService } from '../../services/animal/animal.service';
 import { Animal } from '../register-animal/interface/animal.interface';
 import { Router } from '@angular/router';
 import { VaccinationService } from '../../services/vaccination/vaccination.service';
+import { AnimalManagementService } from '../../services/animal/animal-management.service';
 
 @Component({
   selector: 'app-list-animals',
@@ -52,8 +52,8 @@ export class AllAnimalsComponent implements OnInit {
 
   vacColumns: PoTableColumn[] = [
     { property: 'animalName', label: 'Animal' },
-    { property: 'vaccineName', label: 'Vacina' },
-    { property: 'dose', label: 'Dose' },
+    { property: 'vaccineName', label: 'Vacina' }, 
+    { property: 'dose', label: 'Dose' }, 
     { property: 'date', label: 'Data de Aplicação' },
     { property: 'observation', label: 'Observações' },
   ];
@@ -61,8 +61,7 @@ export class AllAnimalsComponent implements OnInit {
   totalDeceasedAnimals: number = 0;
   animals: Animal[] = [];
   vaccinations: any[] = [];
-  showTable = false;
-  showVaccinationsTable = false;
+  activeTab: 'animals' | 'vaccinated' = 'animals';
   animalToDelete: Animal | null = null;
   currentPage = 1;
   pageSize = 10;
@@ -83,13 +82,11 @@ export class AllAnimalsComponent implements OnInit {
     }
   ];
 
-  // Utilize o inject() para obter o Router fora do construtor.
-  private router: Router = inject(Router);
-
   constructor(
-    private animalService: AnimalService, 
+    private animalService: AnimalManagementService, 
     private poNotification: PoNotificationService, 
-    private vaccinationService: VaccinationService
+    private vaccinationService: VaccinationService,
+    private router: Router 
   ) {}
 
   ngOnInit() {
@@ -97,6 +94,8 @@ export class AllAnimalsComponent implements OnInit {
       this.totalDeceasedAnimals = count;
       console.log('Total de animais mortos carregado:', this.totalDeceasedAnimals);
     });
+
+    this.loadAnimals();
   }
 
   loadAnimals() {
@@ -117,27 +116,24 @@ export class AllAnimalsComponent implements OnInit {
   }
 
   loadVaccinations() {
-    this.vaccinationService.getVaccinations().subscribe(vaccinations => {
-      this.vaccinations = vaccinations;
-      console.log('Vacinações carregadas:', this.vaccinations);
-    });
+    this.vaccinationService.getVaccinations().subscribe(
+      (vaccinations) => {
+        console.log('Vacinações carregadas:', vaccinations);
+        this.vaccinations = vaccinations;
+      },
+      (error) => {
+        console.error('Erro ao carregar vacinações:', error);
+      }
+    );
   }
 
-  toggleAnimalsTable() {
-    if (!this.showTable) {
-      this.showVaccinationsTable = false;
-      this.animalService.resetPagination();
+  selectTab(tab: 'animals' | 'vaccinated') {
+    this.activeTab = tab;
+    if (tab === 'animals') {
       this.loadAnimals();
-    }
-    this.showTable = !this.showTable;
-  }
-
-  toggleVaccinationsTable() {
-    if (!this.showVaccinationsTable) {
-      this.showTable = false;
+    } else if (tab === 'vaccinated') {
       this.loadVaccinations();
     }
-    this.showVaccinationsTable = !this.showVaccinationsTable;
   }
 
   confirmDeath(animal: Animal) {
@@ -149,7 +145,7 @@ export class AllAnimalsComponent implements OnInit {
     const firestoreId = this.animalToDelete?.firestoreId;
     if (firestoreId) {
       console.log('Iniciando exclusão do animal com Firestore ID:', firestoreId);
-      this.animalService.animalDeath(firestoreId).then(() => {
+      this.animalService.doesAnimalIdExist(firestoreId).then(() => {
         console.log(`Animal com Firestore ID ${firestoreId} processado com sucesso.`);
         this.poNotification.success('Informada morte do Animal com sucesso!');
         setTimeout(() => {
@@ -172,13 +168,5 @@ export class AllAnimalsComponent implements OnInit {
 
   updateAnimal(animal: Animal) {
     this.router.navigate(['/dashboard/update-animal', animal.firestoreId]);
-  }
-
-  get tableButtonLabel() {
-    return this.showTable ? 'Esconder Todos os Animais' : 'Ver Todos os Animais';
-  }
-
-  get vaccinationsButtonLabel() {
-    return this.showVaccinationsTable ? 'Esconder Animais Vacinados' : 'Ver Todos Animais Vacinados';
   }
 }

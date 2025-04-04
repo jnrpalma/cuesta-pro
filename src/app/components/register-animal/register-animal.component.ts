@@ -11,7 +11,7 @@ import {
   PoFieldModule,
   PoPageModule,
 } from "@po-ui/ng-components";
-import { AnimalService } from "../../services/animal/animal.service";
+import { AnimalManagementService } from "../../services/animal/animal-management.service";
 import { AuthService } from "../../services/auth/auth.service";
 import { Animal } from "./interface/animal.interface";
 import { RegisterBatchComponent } from "../register-batch/register-batch.component";
@@ -192,7 +192,7 @@ export class RegisterAnimalComponent implements OnInit {
   ];
 
   constructor(
-    private animalService: AnimalService,
+    private animalService: AnimalManagementService,
     private authService: AuthService,
     private router: Router,
     private poNotification: PoNotificationService
@@ -224,7 +224,7 @@ export class RegisterAnimalComponent implements OnInit {
     this.isLoading = true;
 
     this.animalService
-      .checkAnimalIdExists(this.animal.id)
+      .doesAnimalIdExist(this.animal.id)
       .then((exists) => {
         if (exists) {
           this.poNotification.error(

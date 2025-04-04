@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PoChartModule, PoChartOptions, PoChartSerie, PoChartType, PoLoadingModule, PoTabsModule } from '@po-ui/ng-components';
-import { AnimalService } from '../../services/animal/animal.service';
 import { BatchService } from '../../services/batch/batch.service';
 import { Animal } from '../register-animal/interface/animal.interface';
 import { Batch } from '../register-batch/interface/batch.interface';
 import { firstValueFrom } from 'rxjs'; // Substituição do toPromise()
+import { AnimalManagementService } from '../../services/animal/animal-management.service';
 
 @Component({
     selector: 'app-overview',
@@ -29,7 +29,7 @@ export class OverviewComponent implements OnInit {
   activeTab: string | null = null;
 
   constructor(
-    private animalService: AnimalService,
+    private animalService: AnimalManagementService,
     private batchService: BatchService
   ) {}
 

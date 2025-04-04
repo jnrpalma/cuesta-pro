@@ -1,0 +1,43 @@
+<div class="container">
+  <ul class="button-container">
+    <li>
+      <po-button 
+        p-label="Mortes" 
+        p-kind="primary" 
+        p-icon="an-fill an-ghost" 
+        (p-click)="loadDeceasedAnimals()">
+      </po-button>
+    </li>
+  </ul>
+
+  <div style="margin-top: 20px">
+    <h2>Animais Mortos</h2>
+    <po-table
+      [p-columns]="columns"
+      [p-items]="deceasedAnimals"
+      [p-height]="550"
+      [p-draggable]="true"
+      p-hide-table-search="false">
+    </po-table>
+  </div>
+
+  <po-modal #poModal p-title="Confirmação de morte 💀">
+    <p>Tem certeza que deseja informar a morte do animal?</p>
+    <po-modal-footer>
+      <po-button 
+        p-label="Cancelar" 
+        p-kind="default" 
+        (p-click)="poModal.close()">
+      </po-button>
+      <po-button 
+        p-label="Informar morte" 
+        p-kind="danger" 
+        (p-click)="animalDeath()">
+      </po-button>
+    </po-modal-footer>
+  </po-modal>
+
+  <div *ngIf="totalDeceasedAnimals > 0" class="total-info">
+    <p>Total de Animais Mortos: {{ totalDeceasedAnimals }}</p>
+  </div>
+</div>
