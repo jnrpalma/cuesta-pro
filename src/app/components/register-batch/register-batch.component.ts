@@ -15,13 +15,13 @@ import {
   PoModalModule,
   PoModalComponent,
 } from '@po-ui/ng-components';
-import { AnimalService } from '../../services/animal/animal.service';
 import { BatchService } from '../../services/batch/batch.service';
 import { Animal } from '../register-animal/interface/animal.interface';
 import { Batch } from './interface/batch.interface';
 import { CategoryService } from '../../services/category/category.service';
 import { switchMap, take, throwError } from 'rxjs';
 import { AddAnimalsInBatchComponent } from '../add-animals-in-batch/add-animals-in-batch.component';
+import { AnimalManagementService } from '../../services/animal/animal-management.service';
 
 @Component({
     selector: 'app-register-batch',
@@ -80,7 +80,7 @@ export class RegisterBatchComponent implements OnInit {
   ];
 
   constructor(
-    private animalService: AnimalService,
+    private animalService: AnimalManagementService,
     private batchService: BatchService,
     private poNotification: PoNotificationService,
     private categoryService: CategoryService,

@@ -1,9 +1,9 @@
 import { Component, Input, Output, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PoTableModule, PoButtonModule, PoLoadingModule, PoModalModule, PoModalComponent } from '@po-ui/ng-components';
-import { AnimalService } from '../../services/animal/animal.service';
 import { PoTableColumn } from '@po-ui/ng-components';
 import { Animal } from '../register-animal/interface/animal.interface';
+import { AnimalManagementService } from '../../services/animal/animal-management.service';
 
 @Component({
     selector: 'app-add-animals-in-batch',
@@ -35,7 +35,7 @@ export class AddAnimalsInBatchComponent implements OnInit {
     { property: 'peso', label: 'Peso', type: 'number' }
   ];
 
-  constructor(private animalService: AnimalService) {}
+  constructor(private animalService: AnimalManagementService) {}
 
   ngOnInit() {
     this.loadAnimals();

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AnimalService } from '../../services/animal/animal.service';
 import { Animal } from '../register-animal/interface/animal.interface';
 import { PoNotificationService } from '@po-ui/ng-components';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PoDynamicModule, PoDynamicFormField, PoButtonModule, PoLoadingModule } from '@po-ui/ng-components';
+import { AnimalManagementService } from '../../services/animal/animal-management.service';
 
 @Component({
     selector: 'app-update-animal',
@@ -114,7 +114,7 @@ export class UpdateAnimalComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private animalService: AnimalService,
+    private animalService: AnimalManagementService,
     private poNotification: PoNotificationService
   ) {}
 

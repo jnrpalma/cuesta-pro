@@ -8,10 +8,11 @@ import { VaccinationService } from '../vaccination/vaccination.service';
 @Injectable({
   providedIn: 'root',
 })
-export class AnimalService {
-  private collectionName = 'animals';
-  private lastVisible: any = null;
-  // Obtenha o Injector usando a função inject() em vez de injetá-lo no construtor.
+export class AnimalManagementService {
+  private animalsCollection = 'animals';
+  private deceasedName = 'id';
+  private lastDocument: any = null;
+
   private injector: Injector = inject(Injector);
 
   constructor(
@@ -20,43 +21,43 @@ export class AnimalService {
   ) {}
 
   addAnimal(animal: Animal): Promise<void> {
-    const firestoreId = this.firestore.createId();
+    const animalId = this.firestore.createId();
     return runInInjectionContext(this.injector, () =>
-      this.firestore.collection(this.collectionName).doc(firestoreId).set({ firestoreId, ...animal })
+      this.firestore.collection(this.animalsCollection).doc(animalId).set({ animalId, ...animal })
     );
   }
 
   updateAnimal(animal: Animal): Promise<void> {
     return runInInjectionContext(this.injector, () =>
-      this.firestore.collection(this.collectionName).doc(animal.firestoreId).update(animal)
+      this.firestore.collection(this.animalsCollection).doc(animal.firestoreId).update(animal)
     );
   }
 
-  async animalDeath(firestoreId: string): Promise<void> {
+  async handleAnimalDeath(animalId: string): Promise<void> {
     try {
-      const docSnapshot = await firstValueFrom(
+      const animalDocSnapshot = await firstValueFrom(
         runInInjectionContext(this.injector, () =>
-          this.firestore.collection(this.collectionName).doc(firestoreId).get()
+          this.firestore.collection(this.animalsCollection).doc(animalId).get()
         )
       );
 
-      if (docSnapshot.exists) {
-        const deceasedAnimal = docSnapshot.data();
+      if (animalDocSnapshot.exists) {
+        const deceasedAnimalData = animalDocSnapshot.data();
         await runInInjectionContext(this.injector, () =>
-          this.firestore.collection('deceasedAnimals').add(deceasedAnimal)
+          this.firestore.collection('deceasedAnimals').add(deceasedAnimalData)
         );
         await runInInjectionContext(this.injector, () =>
-          this.firestore.collection(this.collectionName).doc(firestoreId).delete()
+          this.firestore.collection(this.animalsCollection).doc(animalId).delete()
         );
 
-        await this.vaccinationService.deleteVaccinationsByAnimalId(firestoreId);
-        console.log(`Animal ${firestoreId} movido e excluído com sucesso.`);
+        await this.vaccinationService.deleteVaccinationsByAnimalId(animalId);
+        console.log(`Animal ${animalId} moved and deleted successfully.`);
       } else {
-        console.error('Animal não encontrado no Firestore.');
-        throw new Error('Animal não encontrado ou documento é undefined');
+        console.error('Animal not found in Firestore.');
+        throw new Error('Animal not found or document is undefined');
       }
     } catch (error) {
-      console.error(`Erro ao processar o animal ${firestoreId}:`, error);
+      console.error(`Error processing animal ${animalId}:`, error);
       throw error;
     }
   }
@@ -64,11 +65,11 @@ export class AnimalService {
   getAnimals(page: number, pageSize: number): Observable<Animal[]> {
     return runInInjectionContext(this.injector, () => {
       let query = this.firestore.collection<Animal>(
-        this.collectionName,
+        this.animalsCollection,
         (ref) => {
           let q = ref.orderBy('id').limit(pageSize);
-          if (this.lastVisible && page > 1) {
-            q = q.startAfter(this.lastVisible);
+          if (this.lastDocument && page > 1) {
+            q = q.startAfter(this.lastDocument);
           }
           return q;
         }
@@ -77,12 +78,12 @@ export class AnimalService {
       return query.snapshotChanges().pipe(
         map((actions) => {
           if (actions.length > 0) {
-            this.lastVisible = actions[actions.length - 1].payload.doc;
+            this.lastDocument = actions[actions.length - 1].payload.doc;
           }
           return actions.map((a) => {
             const data = a.payload.doc.data() as Animal;
-            const firestoreId = a.payload.doc.id;
-            return { ...data, firestoreId };
+            const animalId = a.payload.doc.id;
+            return { ...data, animalId };
           });
         })
       );
@@ -91,46 +92,46 @@ export class AnimalService {
 
   getAllAnimals(): Observable<Animal[]> {
     return runInInjectionContext(this.injector, () =>
-      this.firestore.collection<Animal>(this.collectionName)
+      this.firestore.collection<Animal>(this.animalsCollection)
         .snapshotChanges()
         .pipe(
           map((actions) =>
             actions.map((a) => {
               const data = a.payload.doc.data() as Animal;
-              const firestoreId = a.payload.doc.id;
-              return { ...data, firestoreId };
+              const animalId = a.payload.doc.id;
+              return { ...data, animalId };
             })
           )
         )
     );
   }
 
-  getAnimalById(id: string): Observable<Animal> {
+  getAnimalById(animalId: string): Observable<Animal> {
     return runInInjectionContext(this.injector, () =>
-      this.firestore.collection(this.collectionName).doc<Animal>(id)
+      this.firestore.collection(this.animalsCollection).doc<Animal>(animalId)
         .snapshotChanges()
         .pipe(
           map((a) => {
             const data = a.payload.data() as Animal;
-            const firestoreId = a.payload.id;
-            return { ...data, firestoreId };
+            const animalId = a.payload.id;
+            return { ...data, animalId };
           })
         )
     );
   }
 
-  async checkAnimalIdExists(id: string): Promise<boolean> {
+  async doesAnimalIdExist(animalId: string): Promise<boolean> {
     try {
       const querySnapshot = await firstValueFrom(
         runInInjectionContext(this.injector, () =>
-          this.firestore.collection(this.collectionName, (ref) =>
-            ref.where('id', '==', id)
+          this.firestore.collection(this.animalsCollection, (ref) =>
+            ref.where('id', '==', animalId)
           ).get()
         )
       );
       return querySnapshot && !querySnapshot.empty;
     } catch (error) {
-      console.error('Erro ao verificar ID:', error);
+      console.error('Error checking Animal ID:', error);
       return false;
     }
   }
@@ -143,7 +144,13 @@ export class AnimalService {
     );
   }
 
-  resetPagination() {
-    this.lastVisible = null;
+  getDeceasedAnimals(): Observable<any[]> {
+    return runInInjectionContext(this.injector, () =>
+      this.firestore.collection(this.deceasedName).valueChanges()
+    );
+  }
+
+  resetPagination(): void {
+    this.lastDocument = null;
   }
 }

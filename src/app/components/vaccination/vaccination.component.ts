@@ -10,7 +10,7 @@ import {
   PoSelectOption
 } from '@po-ui/ng-components';
 import { VaccinationService } from '../../services/vaccination/vaccination.service';
-import { AnimalService } from '../../services/animal/animal.service';
+import { AnimalManagementService } from '../../services/animal/animal-management.service';
 
 @Component({
     selector: 'app-vaccination',
@@ -42,7 +42,7 @@ export class VaccinationComponent implements OnInit {
 
   constructor(
     private vaccinationService: VaccinationService,
-    private animalService: AnimalService,
+    private animalService: AnimalManagementService,
     private poNotification: PoNotificationService
   ) { }
 
