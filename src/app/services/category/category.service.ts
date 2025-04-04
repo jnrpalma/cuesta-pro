@@ -17,10 +17,7 @@ export class CategoryService {
 
   constructor(private firestore: AngularFirestore) {}
 
-  /**
-   * Obtém todas as categorias do Firebase Firestore.
-   * @returns Observable que emite um array de categorias.
-   */
+  
   getCategories(): Observable<Category[]> {
     return this.firestore.collection<Category>(this.collectionName).snapshotChanges().pipe(
       map(actions => actions.map(a => {
