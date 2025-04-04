@@ -9,7 +9,8 @@
     "zip:generate": "npm run zip:clean && npm run build && node zip.js",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "prepare": "husky install"
   },
   "private": true,
   "dependencies": {
@@ -40,9 +41,12 @@
     "@angular-devkit/schematics": "~19.0.5",
     "@angular/cli": "~19.0.5",
     "@angular/compiler-cli": "~19.0.0",
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
     "@types/jasmine": "~5.1.0",
     "archiver": "^7.0.1",
     "glob": "^10.4.5",
+    "husky": "^9.1.7",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
