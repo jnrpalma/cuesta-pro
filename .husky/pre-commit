@@ -1,0 +1,6 @@
+branch="$(git symbolic-ref --short HEAD)"
+
+if [ "$branch" = "master" ]; then
+  echo "⛔️ Commits direto na branch master não são permitidos!"
+  exit 1
+fi
