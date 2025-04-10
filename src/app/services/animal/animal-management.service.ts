@@ -74,7 +74,7 @@ export class AnimalManagementService {
           return q;
         }
       );
-
+  
       return query.snapshotChanges().pipe(
         map((actions) => {
           if (actions.length > 0) {
@@ -82,8 +82,8 @@ export class AnimalManagementService {
           }
           return actions.map((a) => {
             const data = a.payload.doc.data() as Animal;
-            const animalId = a.payload.doc.id;
-            return { ...data, animalId };
+            const firestoreId = a.payload.doc.id;
+            return { ...data, firestoreId };
           });
         })
       );
@@ -98,8 +98,8 @@ export class AnimalManagementService {
           map((actions) =>
             actions.map((a) => {
               const data = a.payload.doc.data() as Animal;
-              const animalId = a.payload.doc.id;
-              return { ...data, animalId };
+              const firestoreId = a.payload.doc.id;
+              return { ...data, firestoreId };
             })
           )
         )

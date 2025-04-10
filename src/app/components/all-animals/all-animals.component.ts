@@ -137,34 +137,39 @@ export class AllAnimalsComponent implements OnInit {
   }
 
   confirmDeath(animal: Animal) {
+    console.log('Animal selecionado para deletar:', animal); // ajuda a validar o firestoreId
     this.animalToDelete = animal;
     this.poModal.open();
   }
 
   animalDeath() {
     const firestoreId = this.animalToDelete?.firestoreId;
+  
     if (firestoreId) {
       console.log('Iniciando exclusão do animal com Firestore ID:', firestoreId);
-      this.animalService.doesAnimalIdExist(firestoreId).then(() => {
-        console.log(`Animal com Firestore ID ${firestoreId} processado com sucesso.`);
-        this.poNotification.success('Informada morte do Animal com sucesso!');
-        setTimeout(() => {
+  
+      this.animalService.handleAnimalDeath(firestoreId)
+        .then(() => {
+          this.poNotification.success('Informada morte do Animal com sucesso!');
           this.loadAnimals();
           this.poModal.close();
           this.animalToDelete = null;
-        }, 500);
-      }).catch(error => {
-        console.error(`Erro ao processar o animal com Firestore ID ${firestoreId}:`, error);
-        this.poNotification.error('Erro ao processar o animal: ' + error.message);
-        this.poModal.close();
-        this.animalToDelete = null;
-      });
+        })
+        .catch(error => {
+          console.error(`Erro ao processar o animal com Firestore ID ${firestoreId}:`, error);
+          this.poNotification.error('Erro ao processar o animal: ' + error.message);
+          this.poModal.close();
+          this.animalToDelete = null;
+        });
+  
     } else {
       console.error('Erro ao excluir o animal: Firestore ID não encontrado.');
       this.poNotification.error('Erro ao excluir o animal: Firestore ID não encontrado.');
       this.poModal.close();
     }
   }
+  
+  
 
   updateAnimal(animal: Animal) {
     this.router.navigate(['/dashboard/update-animal', animal.firestoreId]);
