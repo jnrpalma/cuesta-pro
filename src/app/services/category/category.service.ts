@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject, Injector, runInInjectionContext } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -9,66 +9,74 @@ export interface Category {
   value: string;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class CategoryService {
-  private collectionName = 'categories';
+  private injector: Injector = inject(Injector);
+  private readonly collectionName = 'categories';
 
   constructor(private firestore: AngularFirestore) {}
 
-  /**
-   * Obtém todas as categorias do Firebase Firestore.
-   * @returns Observable que emite um array de categorias.
-   */
+  /** Obtém todas as categorias */
   getCategories(): Observable<Category[]> {
-    return this.firestore.collection<Category>(this.collectionName).snapshotChanges().pipe(
-      map(actions => actions.map(a => {
-        const data = a.payload.doc.data() as Category;
-        const id = a.payload.doc.id;
-        return { id, ...data };
-      }))
+    return runInInjectionContext(this.injector, () =>
+      this.firestore
+        .collection<Category>(this.collectionName)
+        .snapshotChanges()
+        .pipe(
+          map(actions =>
+            actions.map(a => {
+              const data = a.payload.doc.data() as Category;
+              const id = a.payload.doc.id;
+              return { id, ...data };
+            })
+          )
+        )
     );
   }
 
-  /**
-   * Adiciona uma nova categoria ao Firebase Firestore.
-   * @param category Categoria a ser adicionada.
-   * @returns Promise que resolve quando a categoria é adicionada.
-   */
+  /** Adiciona uma nova categoria */
   addCategory(category: Category): Promise<void> {
     const id = this.firestore.createId();
-    return this.firestore.collection(this.collectionName).doc(id).set({ ...category, id });
-  }
-
-  /**
-   * Verifica se uma categoria já existe no Firebase Firestore com base no valor.
-   * @param value Valor da categoria a ser verificada.
-   * @returns Observable que emite true se a categoria existir, false caso contrário.
-   */
-  categoryExists(value: string): Observable<boolean> {
-    return this.firestore.collection<Category>(this.collectionName, ref => ref.where('value', '==', value)).snapshotChanges().pipe(
-      map(actions => actions.length > 0)
+    return runInInjectionContext(this.injector, () =>
+      this.firestore
+        .collection(this.collectionName)
+        .doc(id)
+        .set({ ...category, id })
     );
   }
 
-   /**
-   * Remove uma categoria do Firebase Firestore com base no valor.
-   * @param value Valor da categoria a ser removida.
-   * @returns Promise que resolve quando a categoria é removida.
-   */
-   removeCategory(value: string): Promise<void> {
-    return this.firestore.collection(this.collectionName, ref => ref.where('value', '==', value))
-      .get().toPromise().then(snapshot => {
-        if (!snapshot || snapshot.empty) {
-          return Promise.reject('Categoria não encontrada.');
-        }
-
-        const batch = this.firestore.firestore.batch(); 
-        snapshot.forEach(doc => {
-          batch.delete(doc.ref);
-        });
-        return batch.commit(); 
-      });
+  /** Verifica existência via campo "value" */
+  categoryExists(value: string): Observable<boolean> {
+    return runInInjectionContext(this.injector, () =>
+      this.firestore
+        .collection<Category>(
+          this.collectionName,
+          ref => ref.where('value', '==', value)
+        )
+        .snapshotChanges()
+        .pipe(map(actions => actions.length > 0))
+    );
   }
+
+  /** Remove uma categoria (batched delete) */
+  async removeCategory(value: string): Promise<void> {
+    const snapshot = await runInInjectionContext(this.injector, () =>
+      this.firestore
+        .collection<Category>(
+          this.collectionName,
+          ref => ref.where('value', '==', value)
+        )
+        .get()
+        .toPromise()
+    );
+  
+    if (!snapshot || snapshot.empty) {
+      throw new Error('Categoria não encontrada.');
+    }
+  
+    const batch = this.firestore.firestore.batch();
+    snapshot.forEach(doc => batch.delete(doc.ref));
+    await batch.commit();
+  }
+  
 }
