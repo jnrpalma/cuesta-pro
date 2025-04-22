@@ -13,6 +13,7 @@
   align-items: center;
 }
 
+
 .sidebar h2 {
   margin-top: 0;
 }
@@ -388,4 +389,13 @@
   margin-top: 10px;
   font-size: 14px;
   color: #666;
+}
+
+/* força o overlay por trás do <div.po-modal> mas acima do header (z-index:1000) */
+:host ::ng-deep .po-overlay {
+  z-index: 1001 !important;
+}
+
+:host ::ng-deep .po-modal {
+  z-index: 1002 !important;
 }

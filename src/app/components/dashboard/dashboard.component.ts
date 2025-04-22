@@ -1,132 +1,176 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { PoButtonModule, PoAvatarModule, PoModalComponent } from '@po-ui/ng-components';
-import { AuthService } from '../../services/auth/auth.service';
-import { Router } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
+import {
+  PoAvatarModule,
+  PoButtonModule,
+  PoFieldModule,
+  PoModalComponent,
+  PoModalModule,
+  PoLoadingModule
+} from '@po-ui/ng-components';
+
+import { AuthService } from '../../services/auth/auth.service';
+import { finalize } from 'rxjs/operators';
+
 @Component({
-    selector: 'app-dashboard',
-    imports: [CommonModule, RouterModule, PoButtonModule, PoAvatarModule, FormsModule],
-    templateUrl: './dashboard.component.html',
-    styleUrls: ['./dashboard.component.css']
+  selector: 'app-dashboard',
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    PoAvatarModule,
+    PoButtonModule,
+    PoFieldModule,
+    PoModalModule,
+    PoLoadingModule
+  ],
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  @ViewChild('confirmExitModal') confirmExitModal!: PoModalComponent;
-  userName: string = 'John Doe';
-  profileImage: string = ''; 
-  isModalVisible = false;
-  isProfileModalVisible: boolean = false;
+  @ViewChild('profileModal', { static: true })
+  profileModal!: PoModalComponent;
+  @ViewChild('confirmExitModal', { static: true })
+  confirmExitModal!: PoModalComponent;
+
+  userName = 'John Doe';
+  profileImage = '';
+  fileName = 'Nenhum arquivo escolhido';
   selectedPhoto: File | null = null;
-  notificationsVisible: boolean = false;
+  isSaving = false;
+  notificationsVisible = false;
 
   profileData = {
     name: '',
     email: '',
-    phone: '',
     photoURL: ''
   };
 
-  constructor(private authService: AuthService, private router: Router,private cdr :ChangeDetectorRef ) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
-    this.authService.getUser().subscribe(user => {
+    this.authService.getUser().subscribe((user) => {
+      console.log('[Dashboard] getUser() subscribe:', user);
       if (user) {
-        this.userName = user.displayName || user.email;
-        this.profileImage = user.photoURL || '';
+        this.userName = user.firstName;
+        this.profileImage = user.photoURL;
         this.profileData = {
-          name: user.displayName || '',
-          email: user.email || '',
-          phone: user.phone || '',
-          photoURL: user.photoURL || ''
+          name: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL
         };
-      } else {
-        this.userName = '';
-        this.profileImage = ''; 
       }
     });
   }
 
-  openModal() {
-    this.isModalVisible = true;
-  }
-
-  closeModal() {
-    this.isModalVisible = false;
-  }
-
-  logout() {
-    this.authService.logout().then(() => {
-      this.router.navigate(['/login']);
-    });
-  }
-
   openProfileModal() {
-    this.isProfileModalVisible = true;
+    this.profileModal.open();
   }
 
   closeProfileModal() {
-    this.isProfileModalVisible = false;
+    this.profileModal.close();
   }
 
-  openNotifications() {
-    // Exemplo: apenas alterna um flag que você pode usar para exibir um modal ou dropdown
-    this.notificationsVisible = !this.notificationsVisible;
-    console.log('Notificações', this.notificationsVisible);
-    // Aqui você pode adicionar sua lógica para buscar ou exibir notificações
+  triggerFileInput() {
+    const input = document.getElementById(
+      'profileFileInput'
+    ) as HTMLInputElement;
+    input.click();
   }
 
-  isSaving: boolean = false;
+  onPhotoSelected(event: any) {
+    const file = event.target.files[0];
+    if (!file) return;
+    this.selectedPhoto = file;
+    this.fileName = file.name;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.profileImage = reader.result as string;
+      this.profileData.photoURL = this.profileImage;
+      this.cdr.detectChanges();
+    };
+    reader.readAsDataURL(file);
+  }
+
+  removePhoto() {
+    this.selectedPhoto = null;
+    this.profileImage = '';
+    this.profileData.photoURL = '';
+    this.fileName = 'Nenhum arquivo escolhido';
+  }
 
   saveProfile() {
-    this.isSaving = true; 
-  
-    const updatedProfile: { displayName: string; photoFile?: File; photoURL?: string } = {
+    console.log('[Dashboard] saveProfile() chamado com', this.profileData);
+    this.isSaving = true;
+
+    const updatedProfile: {
+      displayName: string;
+      email?: string;
+      photoFile?: File;
+      photoURL?: string;
+    } = {
       displayName: this.profileData.name,
+      email: this.profileData.email
     };
-  
+
     if (this.selectedPhoto) {
       updatedProfile.photoFile = this.selectedPhoto;
     } else {
       updatedProfile.photoURL = this.profileData.photoURL;
     }
-  
-    this.authService.updateUserProfile(updatedProfile).subscribe({
-      next: () => {
-        console.log('Perfil atualizado com sucesso!');
-        this.isSaving = false; // Para o indicador de carregamento
-        this.closeProfileModal();
-      },
-      error: (error) => {
-        console.error('Erro ao atualizar perfil:', error);
-        this.isSaving = false; // Para o indicador mesmo com erro
-      },
-    });
-  }
-  
-  
-  onPhotoSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedPhoto = file;
-     
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.profileImage = reader.result as string;  
-        
-        this.profileData.photoURL = this.profileImage;
-        this.cdr.detectChanges();  
-      };
-      reader.readAsDataURL(file); 
-    }
+
+    this.authService
+      .updateUserProfile(updatedProfile)
+      .pipe(finalize(() => (this.isSaving = false)))
+      .subscribe({
+        next: () => {
+          console.log('[Dashboard] updateUserProfile() sucesso');
+          this.userName = this.profileData.name;
+          this.profileImage = this.profileData.photoURL;
+          this.closeProfileModal();
+        },
+        error: (err) => {
+          console.error('[Dashboard] updateUserProfile() erro:', err);
+          if (err.code === 'auth/requires-recent-login') {
+            alert(
+              'Para alterar o e‑mail, faça logout e login novamente antes de tentar.'
+            );
+          }
+        }
+      });
   }
 
-  removePhoto() {
-    this.profileImage = '';
-    this.profileData.photoURL = '';
+  openNotifications() {
+    this.notificationsVisible = !this.notificationsVisible;
   }
-  navigateTo(route: string): void {
+
+  openModal() {
+    this.confirmExitModal.open();
+  }
+
+  closeModal() {
+    this.confirmExitModal.close();
+  }
+
+  logout() {
+    this.authService.logout().then(() => this.router.navigate(['/login']));
+  }
+
+  navigateTo(route: string) {
     this.router.navigate([`/dashboard/${route}`]);
   }
 }
