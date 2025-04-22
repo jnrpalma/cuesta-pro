@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build-and-zip": "powershell -ExecutionPolicy Bypass -File scripts/build-and-zip.ps1",
     "zip:clean": "rimraf dist/portal.zip",
     "zip:generate": "npm run zip:clean && npm run build && node zip.js",
     "watch": "ng build --watch --configuration development",
