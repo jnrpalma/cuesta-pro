@@ -14,7 +14,9 @@ import {
   PoFieldModule,
   PoModalComponent,
   PoModalModule,
-  PoLoadingModule
+  PoLoadingModule,
+  PoNotificationModule,
+  PoNotificationService
 } from '@po-ui/ng-components';
 
 import { AuthService } from '../../services/auth/auth.service';
@@ -31,7 +33,8 @@ import { finalize } from 'rxjs/operators';
     PoButtonModule,
     PoFieldModule,
     PoModalModule,
-    PoLoadingModule
+    PoLoadingModule,
+    PoNotificationModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
@@ -55,15 +58,17 @@ export class DashboardComponent implements OnInit {
     photoURL: ''
   };
 
+  private originalEmail = '';
+
   constructor(
     private authService: AuthService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private notification: PoNotificationService
   ) {}
 
   ngOnInit() {
     this.authService.getUser().subscribe((user) => {
-      console.log('[Dashboard] getUser() subscribe:', user);
       if (user) {
         this.userName = user.firstName;
         this.profileImage = user.photoURL;
@@ -72,6 +77,7 @@ export class DashboardComponent implements OnInit {
           email: user.email,
           photoURL: user.photoURL
         };
+        this.originalEmail = user.email;
       }
     });
   }
@@ -85,14 +91,11 @@ export class DashboardComponent implements OnInit {
   }
 
   triggerFileInput() {
-    const input = document.getElementById(
-      'profileFileInput'
-    ) as HTMLInputElement;
-    input.click();
+    (document.getElementById('profileFileInput') as HTMLInputElement).click();
   }
 
   onPhotoSelected(event: any) {
-    const file = event.target.files[0];
+    const file = event.target.files?.[0];
     if (!file) return;
     this.selectedPhoto = file;
     this.fileName = file.name;
@@ -106,15 +109,7 @@ export class DashboardComponent implements OnInit {
     reader.readAsDataURL(file);
   }
 
-  removePhoto() {
-    this.selectedPhoto = null;
-    this.profileImage = '';
-    this.profileData.photoURL = '';
-    this.fileName = 'Nenhum arquivo escolhido';
-  }
-
   saveProfile() {
-    console.log('[Dashboard] saveProfile() chamado com', this.profileData);
     this.isSaving = true;
 
     const updatedProfile: {
@@ -138,17 +133,38 @@ export class DashboardComponent implements OnInit {
       .pipe(finalize(() => (this.isSaving = false)))
       .subscribe({
         next: () => {
-          console.log('[Dashboard] updateUserProfile() sucesso');
-          this.userName = this.profileData.name;
-          this.profileImage = this.profileData.photoURL;
-          this.closeProfileModal();
+          // troca de e-mail
+          if (
+            updatedProfile.email &&
+            updatedProfile.email !== this.originalEmail
+          ) {
+            this.notification.success({
+              message:
+                'Você foi desconectado. Enviamos um link de confirmação para o novo e-mail. Após confirmar, faça login com seu novo e-mail.'
+            });
+            this.authService.logout().then(() => {
+              this.router.navigate(['/login']);
+            });
+          } else {
+            // atualização de nome/foto
+            this.userName = this.profileData.name;
+            this.profileImage = this.profileData.photoURL;
+            this.closeProfileModal();
+            this.notification.success({
+              message: 'Perfil atualizado com sucesso!'
+            });
+          }
         },
         error: (err) => {
-          console.error('[Dashboard] updateUserProfile() erro:', err);
           if (err.code === 'auth/requires-recent-login') {
-            alert(
-              'Para alterar o e‑mail, faça logout e login novamente antes de tentar.'
-            );
+            this.notification.warning({
+              message:
+                'Para alterar o e-mail, faça logout e login novamente antes de tentar.'
+            });
+          } else {
+            this.notification.error({
+              message: 'Erro ao atualizar perfil. Tente novamente.'
+            });
           }
         }
       });
