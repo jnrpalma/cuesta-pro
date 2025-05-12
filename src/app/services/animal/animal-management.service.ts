@@ -10,7 +10,7 @@ import { VaccinationService } from '../vaccination/vaccination.service';
 })
 export class AnimalManagementService {
   private animalsCollection = 'animals';
-  private deceasedName = 'id';
+  private deceasedName = 'deceasedAnimals';
   private lastDocument: any = null;
 
   private injector: Injector = inject(Injector);

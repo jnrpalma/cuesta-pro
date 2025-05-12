@@ -11,6 +11,7 @@ import { AllBatchesComponent } from './components/all-batches/all-batches.compon
 import { VaccinationComponent } from './components/vaccination/vaccination.component';
 
 import { UpdateAnimalComponent } from './components/update-animal/update-animal.component'; // Import the new component
+import { DeceasedAnimalsComponent } from './components/deceasedAnimals/deceased-animals.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [LoginRegisterGuard] },
@@ -22,7 +23,8 @@ export const routes: Routes = [
       { path: 'animais', component: AllAnimalsComponent },
       { path: 'lotes', component: AllBatchesComponent },
       { path: 'vacinacao', component: VaccinationComponent },
-      { path: 'update-animal/:id', component: UpdateAnimalComponent } // Add the new route
+      { path: 'update-animal/:id', component: UpdateAnimalComponent },
+      { path: 'mortes', component: DeceasedAnimalsComponent }
     ]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
